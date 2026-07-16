@@ -1,0 +1,58 @@
+{% extends 'components/base.html'%}
+{% load static %}
+{% block site_title %} ກ່ຽວກັບໂຮງຮຽນ| {% endblock %}
+{% block content %}
+
+<!-- <div class="container">
+  <img src="{% static 'images/school.png' %}" alt="Banner">
+  <div class="centered">
+    <h1><b>ວິທະຍາໄລ ວິຊາຊີບ ວິຕ້າ</b></h1>
+    <h2><b>VITA VOCATIONAL COLLEGE</b></h2>
+  </div>
+</div> -->
+    <!-- ແບບເປີດເອງເພື່ອລູກຄ້າບໍ່ຕ້ອງການຟັງ -->
+    <!-- <video width="640" height="360" controls>
+    <source src="{% static 'images/AQO.mp4' %}" type="video/mp4">
+    Your browser does not support the video tag.
+       </video> -->
+
+    <!-- ແບບເປີດປິດສຽງເອງ -->
+<video class="fullscreen-video" autoplay muted controls>
+    <source src="{% static 'images/AQO.mp4' %}" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
+
+<div class="containera">
+  <div class="centereda">
+    <h2><b>ວິທະຍາໄລ ວິຊາຊີບ ວີຕ້າ ຕັ້ງຢູ່ໃນນິຄົມອຸດສາຫະກຳ ແລະ ການຄ້າ ວຽງຈັນ-ໂນນທອງ ຖະໜົນເລກທີ 13 ໃຕ້, ບ້ານໂນນທອງ,ເມືອງໄຊທານີ,ນະຄອນຫຼວງວຽງຈັນ<div class=""></div></b></h2>
+    <h2><b>ເບີໂທ ຫຼື ວອດສແອັບ: 020 5556 6217 020 9770 8199 </b></h2>
+  </div>
+</div>
+
+<!-- ແບບບໍ່ມີສຽງ -->
+    <!-- <video width="640" height="360" autoplay muted loop>
+    <source src="{% static 'images/AQO.mp4' %}" type="video/mp4">
+</video>  -->
+
+  <script>
+  // Script to open and close sidebar
+  function w3_open() {
+    document.getElementById("mySidebar").style.display = "block";
+    document.getElementById("myOverlay").style.display = "block";
+  }
+   
+  function w3_close() {
+    document.getElementById("mySidebar").style.display = "none";
+    document.getElementById("myOverlay").style.display = "none";
+  }
+  
+  // Modal Image Gallery
+  function onClick(element) {
+    document.getElementById("img01").src = element.src;
+    document.getElementById("modal01").style.display = "block";
+    var captionText = document.getElementById("caption");
+    captionText.innerHTML = element.alt;
+  }
+  </script>
+{%endblock%}

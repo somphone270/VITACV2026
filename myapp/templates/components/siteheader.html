@@ -1,0 +1,221 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block site_title %}VVC{% endblock %}</title>
+
+  <!-- Fonts & CSS -->
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Phetsarath">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+  <style>
+    body, h1, h2, h3, h4, h5, h6, .w3-bar, button, a {
+      font-family: "Phetsarath", sans-serif;
+    }
+
+    /* ປັບໂທນສີ Sidebar ໃຫ້ສະບາຍຕາ ແລະ ເບິ່ງເປັນມືອາຊີບ */
+    .w3-sidebar {
+      background-color: #2c3e50 !important; 
+      color: #ffffff !important;
+    }
+
+    .logo-img {
+      width: 90px;
+      height: auto;
+      margin-bottom: 10px;
+      border-radius: 50%;
+      background: white;
+      padding: 5px;
+    }
+
+    .h2-danling {
+      font-size: 13px;
+      color: #03a138;
+      margin-bottom: 10px;
+    }
+
+    /* ປັບແຕ່ງປຸ່ມ Dropdown ເຂົ້າສູ່ລະບົບ */
+    .dropbtn {
+      background-color: #1abc9c;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+      padding: 10px 15px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      justify-content: center;
+      transition: 0.3s;
+    }
+
+    .dropbtn:hover {
+      background-color: #16a085;
+    }
+
+    .dropdown-container {
+      position: relative;
+      margin-top: 15px;
+      padding: 0 16px;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: white;
+      min-width: 200px;
+      border-radius: 8px;
+      padding: 8px;
+      margin-top: 5px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+      z-index: 10;
+      width: calc(100% - 32px);
+    }
+
+    .dropdown-content a {
+      color: #2c3e50;
+      padding: 10px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      border-radius: 4px;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #f8f9fa;
+      text-decoration: none;
+    }
+
+    /* ເມນູ Sidebar */
+    .menu-links a {
+      color: #ffffff;
+      padding: 12px 24px;
+      text-decoration: none;
+      display: block;
+      transition: 0.3s;
+      font-size: 16px;
+    }
+
+    .menu-links a:hover {
+      background-color: #34495e !important;
+      color: #1abc9c !important;
+    }
+
+    /* ສ່ວນເນື້ອຫາຫຼັກ ໃຫ້ຍັບຫຼີກ Sidebar ໃນໜ້າຈໍໃຫຍ່ */
+    .main-content {
+      margin-left: 280px;
+      padding: 16px;
+    }
+
+    @media (max-width: 992px) {
+      .main-content {
+        margin-left: 0;
+        padding-top: 60px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- 1. ແກ້ໄຂ: ແຍກປຸ່ມ Hamburger ອອກມາຕ່າງຫາກ (ບໍ່ເອົາເມນູໄປຍັດໄວ້ທາງໃນປຸ່ມ) -->
+<div class="w3-hide-large" style="position:fixed; top:0; left:0; width:100%; background-color:#2c3e50; z-index:99; padding:8px 16px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+  <button class="w3-button w3-text-white w3-xlarge" onclick="toggleMobileMenu()" style="background:none;">
+    ☰
+  </button>
+  <span class="w3-text-green w3-right" style="padding-top: 8px; font-weight: bold;">VVC -> Online</span>
+</div>
+
+<!-- 2. ແກ້ໄຂ: ເມນູມືຖື (Mobile Navigation Menu) ຢູ່ນອກປຸ່ມຢ່າງຖືກຕ້ອງ -->
+<div id="navDemo" class="w3-bar-block w3-hide w3-hide-large" style="position:fixed; top:50px; left:0; width:100%; background-color:#34495e; z-index:99; box-shadow: 0 4px 5px rgba(0,0,0,0.1);">
+  <a class="w3-bar-item w3-button w3-text-white" href="{% url 'home' %}"><i class="fa fa-home"></i> ໜ້າຫຼັກ</a>
+  <a class="w3-bar-item w3-button w3-text-white" href="{% url 'register_page' %}"><i class="fa fa-edit"></i>ປ້ອນຂໍ້ມູນ (Input_CV)</a>
+  <a class="w3-bar-item w3-button w3-text-white" href="{% url 'qr_scanner' %}"><i class="fa fa-edit"></i>ກວດສອບລາຍຊື່ (Check)</a>
+  <a class="w3-bar-item w3-button w3-text-white" href="/admin/">
+  <img src="{% static 'images/user_male_minus.png' %}" style="width:16px; vertical-align:middle;"> ເຂົ້າສູ່ລະບົບ (Admin)
+  </a>
+</div>
+  
+<!-- Sidebar ສໍາລັບໜ້າຈໍໃຫຍ່ -->
+<nav class="w3-sidebar w3-collapse w3-top w3-padding" style="z-index:3; width:280px;" id="mySidebar"><br>
+  <div class="w3-container w3-center">
+    <!-- ກົດຮູບໂລໂກ້ແລ້ວກັບໜ້າຫຼັກ -->
+    <a href="{% url 'home' %}" style="text-decoration: none;">
+      <img src="{% static 'images/CV.jpg' %}" class="logo-img" alt="Logo">
+    </a>
+    <h3 style="font-weight: bold; margin-bottom: 2px; color: white;">ສ້າງ CV ອອນໄລ໌</h3>
+    <div  class="h2-danling">Online CV Generator</div>
+  </div>
+  <hr style="border-color: #4b6584; margin: 10px 0;">
+
+  <!-- ລາຍການເມນູຫຼັກ -->
+  <div class="menu-links">
+    <a href="{% url 'home' %}"><i class="fa fa-home"></i> ໜ້າຫຼັກ (home)</a>
+    <!-- <a href="{% url 'subscription' %}"><i class="fa fa-edit"></i> ປ້ອນຂໍ້ມູນ(Form_CV)_bK</a> -->
+    <a href="{% url 'register_page' %}"><i class="fa fa-edit"></i> ປ້ອນຂໍ້ມູນ (Input_CV)</a>
+    <a href="{% url 'qr_scanner' %}"><i class="fa fa-edit"></i> ກວດສອບລາຍຊື່ (Check)</a>
+
+  </div>
+
+  <!-- ປຸ່ມເຂົ້າສູ່ລະບົບ (Dropdown) -->
+  <div class="dropdown-container">
+    <button class="dropbtn" onclick="toggleDropdown()">
+      <i class="fa fa-lock" style="font-size: 18px; margin-right: 5px;"></i> ເຂົ້າສູ່ລະບົບ <i class="fa fa-caret-down"></i>
+    </button>
+    <!-- ແກ້ໄຂ URL ໃຫ້ກົງກັບພອດ 8000 ຕາມບລັອກຂ້າງລຸ່ມຂອງທ່ານ -->
+    <div class="dropdown-content" id="dropdownMenu">
+      <a href="/admin/">
+        <img src="{% static 'images/user_male_minus.png' %}" style="width: 18px;" alt=""> ຜູ້ດູແລລະບົບ (Admin)
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- Overly ສໍາລັບປິດເມນູມືຖືເວລາຄລິກພື້ນທີ່ຫວ່າງ -->
+<div class="w3-overlay w3-hide-large" onclick="toggleMobileMenu()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- 3. ແກ້ໄຂ: ສ່ວນເນື້ອຫາຫຼັກ (Main Content) ບ່ອນທີ່ block content ຈາກໜ້າອື່ນຈະມາແທນທີ່ -->
+<div class="main-content">
+  {% block content %}
+  <!-- ເນື້ອຫາຈາກໄຟລ໌ອື່ນ ເຊັ່ນ ຕາຕະລາງລາຍຊື່ ຈະມາສະແດງຢູ່ບ່ອນນີ້ -->
+  {% endblock %}
+</div>
+
+<!-- Scripts ການຄວບຄຸມ UI -->
+<script>
+  // ຟັງຊັນ ເປີດ-ປິດ Dropdown ເຂົ້າສູ່ລະບົບ
+  function toggleDropdown() {
+    var menu = document.getElementById("dropdownMenu");
+    if (menu.style.display === "block") {
+      menu.style.display = "none";
+    } else {
+      menu.style.display = "block";
+    }
+  }
+
+  // ຟັງຊັນ ເປີດ-ປິດ ເມນູໃນມືຖື
+  function toggleMobileMenu() {
+    var x = document.getElementById("navDemo");
+    if (x.className.indexOf("w3-show") == -1) {
+      x.className += " w3-show";
+    } else {
+      x.className = x.className.replace(" w3-show", "");
+    }
+  }
+
+  // ປິດ Dropdown ອັດຕະໂນມັດ ຖ້າຜູ້ໃຊ້ຄລິກໄປບ່ອນອື່ນ
+  window.onclick = function(event) {
+    if (!event.target.closest('.dropbtn')) {
+      document.getElementById("dropdownMenu").style.display = "none";
+    }
+  };
+</script>
+
+</body>
+</html>

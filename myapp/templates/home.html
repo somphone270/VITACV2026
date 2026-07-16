@@ -1,0 +1,262 @@
+{% extends 'components/base.html' %}
+{% load static %}
+
+{% block site_title %}ໜ້າຫຼັກ |{% endblock %}
+
+{% block content %}
+<style>
+  /* 1. ກ່ອງຄວບຄຸມຫຼັກ ປັບຕາມໜ້າຈໍ */
+  .excel-container {
+    width: 103%;
+    padding: clamp(20px, 3vw, 20px); /* ປັບໄລຍະຫ່າງຂອບຕາມຄວາມກວ້າງຈໍ */
+    background-color: #ffffff;
+    margin-left: -5px;
+  }
+  
+  /* 2. ສ່ວນຫົວຂໍ້: ຕົວໜັງສືປັບຂະໜາດອັດຕະໂນມັດດ້ວຍ clamp */
+  .excel-title-section {
+    margin-bottom: 20px;
+    font-family: "Phetsarath OT", "Phetsarath", Arial, sans-serif; 
+  }
+  .excel-title-section h3 {
+    margin: 0 0 5px 0; 
+    font-weight: bold;
+    font-size: clamp(1.1rem, 4vw, 1.5rem); /* ຕ່ຳສຸດ 18px, ໃຫຍ່ສຸດ 24px */
+    line-height: 1.4;
+  }
+  .excel-title-section p {
+    margin: 0; 
+    color: #57606f; 
+    font-size: clamp(0.8rem, 2.5vw, 0.95rem); /* ປັບຂະໜາດພາສາອັງກິດ */
+  }
+  .excel-title-section small {
+    color: #747d8c; 
+    display: block; 
+    margin-top: 5px;
+    font-size: clamp(0.7rem, 2vw, 0.8rem);
+  }
+
+  /* 3. ແຖວຄວບຄຸມ (ຊ່ອງຄົ້ນຫາ ແລະ ເຄຣດິດ) ຈັດແບບ Flexbox ຍືດຫຍຸ່ນ */
+  .control-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* ຖ້າຈໍແຄບ (ມືຖື) ຈະຫັກລົງມາລຽງກັນເປັນແນວດິ່ງ */
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .search-box-container {
+    position: relative;
+    width: 100%;
+    max-width: 390px; /* ຈໍຄອມກວ້າງສຸດ 380px, ຈໍມືຖືຈະເຕັມຈໍ */
+  }
+  
+  .input-search {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 25px;
+    font-size: clamp(0.85rem, 2vw, 0.9rem); /* ປັບຂະໜາດຟອນຕ໌ຊ່ອງຄົ້ນຫາ */
+    outline: none;
+    transition: all 0.3s;
+    background-color: #ffffff;
+  }
+  .input-search:focus {
+    border-color: #1abc9c;
+    box-shadow: 0 0 8px rgba(26, 188, 156, 0.15);
+  }
+  .icon-search {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%); /* ຈັດໃຫ້ຢູ່ເຄິ່ງກາງແນວດິ່ງສະເໝີ */
+    color: #a0aec0;
+  }
+  
+  .badge-credit {
+    background-color: #edf2f7;
+    color: #4a5568;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: clamp(0.75rem, 2vw, 0.85rem);
+  }
+  .badge-credit span {
+    color: #1abc9c;
+    font-weight: bold;
+  }
+
+  /* 4. ໂຄງສ້າງຕາຕະລາງ: ເລື່ອນຊ້າຍ-ຂວາໄດ້ໃນມືຖື ໂດຍບໍ່ເຮັດໃຫ້ໜ້າເວັບເພ້ */
+  .excel-table-wrapper {
+    width: 100%;
+    overflow-x: auto; 
+    border: 1px solid #dcdde1;
+    -webkit-overflow-scrolling: touch; /* ເຮັດໃຫ້ເລື່ອນໃນມືຖືໄດ້ນຸ້ມນວນຂຶ້ນ */
+  }
+
+  .excel-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: clamp(0.75rem, 2vw, 0.85rem); /* ຕົວໜັງສືໃນຕາຕະລາງປັບຕາມຈໍ */
+    font-family: "Phetsarath OT", "Phetsarath", Arial, sans-serif; 
+    font-size: 16px;
+    white-space: nowrap; /* ຮັກສາຄວາມເປັນ Excel ບໍ່ໃຫ້ຂໍ້ຄວາມຫັກລົງແຖວ */
+  }
+
+  /* ຫົວຂໍ້ຕາຕະລາງ */
+  .excel-table th {
+    background-color: #f1f2f6 !important; 
+    color: #2f3542 !important;
+    border: 1px solid #ced6e0 !important; 
+    padding: clamp(6px, 1.5vw, 10px) clamp(10px, 2vw, 18px); /* ປັບ Padding ອັດຕະໂນມັດ */
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  /* ຫ້ອງຂໍ້ມູນ */
+  .excel-table td {
+    border: 1px solid #ced6e0 !important; 
+    padding: clamp(5px, 1.2vw, 8px) clamp(8px, 2vw, 14px);
+    color: #2f3542;
+    vertical-align: middle;
+  }
+
+  /* ໄຮໄລ້ເວລາຊີ້ເມົາ */
+  .excel-table tbody tr:hover {
+    background-color: #e4f1fe !important; 
+  }
+
+  /* ການຈັດຕຳແໜ່ງຂໍ້ຄວາມ */
+  .text-left {
+    text-align: left !important;
+  }
+  .text-center {
+    text-align: center !important;
+  }
+
+  /* ລິ້ງລະຫັດນັກຮຽນ */
+  .excel-link {
+    color: #0066cc;
+    text-decoration: underline;
+  }
+  .excel-link:hover {
+    color: #003366;
+  }
+</style>
+
+<div class="excel-container">
+  
+  <!-- ສ່ວນຫົວຂໍ້ -->
+  <div class="excel-title-section">
+    <h3># ລາຍຊື່ນັກສຶກສາທືນຈາກບໍລິສັດລາວວິຕ້າ</h3>
+    <p>(Name list of Vita Scholarship for Palee School)</p>
+    <small>Credit by: somphone BOUNTHANHH</small>
+  </div>
+
+  <!-- ແຖວຄວບຄຸມ: ຊ່ອງຄົ້ນຫາ ແລະ ເຄຣດິດ -->
+  <div class="control-row">
+    <div class="search-box-container">
+      <!-- ແກ້ໄຂ id ໃຫ້ກົງກັບ JavaScript -->
+      <input type="text" id="excelSearch" onkeyup="searchExcelTable()" placeholder="ຄົ້ນຫາ ຊື່, ລະຫັດ, ແຂວງ, ວິຊາຮຽນ..." class="input-search">
+      <i class="fa fa-search icon-search"></i>
+    </div>
+    <div class="badge-credit">
+      Credit by: <span>somphone BOUNTHANHH</span>
+    </div>
+  </div>
+
+  <!-- ຕາຕະລາງ Excel -->
+  <div class="excel-table-wrapper">
+      <table class="excel-table" id="excelStudentTable">
+      <thead>
+        <tr>
+          <th>ລຳດັບ</th>
+          <th class="text-left">ຊື່ ແລະ ນາມສະກຸນ(真实姓名)</th>
+          <th class="text-left">ຊື່ ແລະ ນາມສະກຸນພາສາຈີນ(真实姓名)</th>      
+          <th class="text-left">ມາຈາກໂຮງຮຽນໃດ(来自哪所学校)</th>
+          <th>ແຂວງ (省)</th>
+          <th>ເມືອງ (城市)</th>
+          <th>ຊັ້ນຮຽນ (年级)</th>
+          <th>ລະດັບພາສາຈີນ (中文)</th>
+          <th>ເບີຕິດຕໍ່ (联络手机)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+
+          <td class="text-center"><a href="{% url 'cv_detail' user.id %}" class="excel-link">{{ user.id }}</a></td>
+         
+           <td class="text-center">{{ user.full_name }}</td></a>
+          <td class="text-left">{{ user.name_Chinese }}</td>
+          <td class="text-left">{{ user.organization  }}</td>
+          <td class="text-center">{{ user.province1 }}</td>
+          <td class="text-center">{{ user.district  }}</td>
+          <td class="text-center">{% if user.current_grade %}
+        <!-- ຖ້າມີຂໍ້ມູນ ມໍ6 (current_grade) ໃຫ້ສະແດງຄ່າ ມໍ6 -->
+              {{ user.current_grade }}
+          {% else %}
+              <!-- ຖ້າ ມໍ6 ເປັນ null ຫຼື ວ່າງເປົ່າ ໃຫ້ໄປດຶງຄ່າ ມໍ7 ມາສະແດງແທນ -->
+              {{ user.is_graduated_m7 }}
+          {% endif %}</td>
+          <td class="text-center">{{ user.chinese_level  }}</td>
+          <td class="text-center">{{ user.phone_number  }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="11" class="text-center" style="padding: 20px; color: #747d8c;">ບໍ່ມີຂໍ້ມູນນັກຮຽນໃນລະບົບ</td>
+        </tr>
+        {% endfor %}
+        <!-- ແຖວແຈ້ງເຕືອນເມື່ອຄົ້ນຫາບໍ່ພົບ -->
+        <tr id="noExcelMatchRow" style="display: none;">
+          <td colspan="11" class="text-center" style="padding: 20px; color: #747d8c;">ບໍ່ພົບຂໍ້ມູນທີ່ທ່ານຄົ້ນຫາ</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- JavaScript ຄົ້ນຫາ (ແກ້ໄຂໃຫ້ລະບົບກວດຈັບ ID ຖືກຕ້ອງ) -->
+<script>
+function searchExcelTable() {
+  var input = document.getElementById("excelSearch");
+  var filter = input.value.toLowerCase();
+  var table = document.getElementById("excelStudentTable");
+  var tr = table.getElementsByTagName("tr");
+  var matchCount = 0;
+
+  for (var i = 1; i < tr.length; i++) {
+    if (tr[i].id === "noExcelMatchRow") continue;
+    
+    var rowContainsFilter = false;
+    var tds = tr[i].getElementsByTagName("td");
+    
+    for (var j = 0; j < tds.length; j++) {
+      if (tds[j]) {
+        var text = tds[j].textContent || tds[j].innerText;
+        if (text.toLowerCase().indexOf(filter) > -1) {
+          rowContainsFilter = true;
+          break;
+        }
+      }
+    }
+    
+    if (rowContainsFilter) {
+      tr[i].style.display = "";
+      matchCount++;
+    } else {
+      tr[i].style.display = "none";
+    }
+  }
+
+  var emptyRow = document.getElementById("noExcelMatchRow");
+  if (matchCount === 0 && filter !== "") {
+    emptyRow.style.display = "";
+  } else {
+    emptyRow.style.display = "none";
+  }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'components/base.html' %}
+{% load static %}
+{% block site_title %} ລາຍລະອຽດສາຂາຮຽນ | {% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'main45.css' %}">
+
+<div class="subject-detail-container">
+    <h2 class="subject-title">🎓 {{ subject1.name }}</h2>
+
+    <img src="{% static 'images/' %}{{ subject1.name }}.png"
+         alt="{{ subject1.name }}"
+         class="subject-image">
+
+    <div class="subject-info">
+        {% if subject1.specail_price %}
+            <p><strong>💰 ລາຄາພິເສດ:</strong> <span class="price-highlight">{{ subject1.specail_price }} Kip</span></p>
+            <p><del>💵 ລາຄາປົກກະຕິ: {{ subject1.price }} Kip</del></p>
+        {% else %}
+            <p><strong>💵 ລາຄາ:</strong> {{ subject1.price }} Kip</p>
+        {% endif %}
+
+        <p><strong>📅 ປິດຮັບສະໝັກ:</strong> {{ subject1.promotion_end_at }}</p>
+        <p><strong>📚 ລາຍລະອຽດ:</strong> {{ subject1.description }}</p>
+    </div>
+     <div class="policy-note">
+        <p>📘 <strong>ນະໂຍບາຍສຳຫຼັບນັກສຶກສາ:</strong></p>
+        <ul>
+            <li>💵 ລົງທະບຽນຈ່າຍກ່ອນ 1,500,000 ກີບ ສາມາດເຂົ້າຮຽນໄດ້ເລີຍ</li>
+            <li>🗓️ ສ່ວນທີ່ເຫຼືອນະໂຍບາຍສາມາດຜ່ອນຈ່າຍ / ເດືອນ 500,000 ກີບ</li>
+            <li>💼 ເງີນເດືອນສະເລ່ຍ 3,000,000 ກີບ ຂຶ້ນໄປ</li>
+            <li>🏭 ມີໂອກາດຊອກວຽກຫາເງີນໄປນຳ ຍ້ອນວິທະຍາໄລຕັ້ງຢູ່ໃນເຂດໂຮງຈັກໂຮງງານ</li>
+        </ul>
+    </div>
+
+    <div class="center-button">
+        <a href="{% url 'subscription' %}" class="register-button">
+            📝 ລົງທະບຽນ
+        </a>
+    </div>
+</div>
+{% endblock %}

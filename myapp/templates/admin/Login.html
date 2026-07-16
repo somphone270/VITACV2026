@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | VVC</title>
+
+  <!-- CSS แบบแยกไฟล์ -->
+    <link rel="stylesheet" href="{% static 'main65.css' %}">
+
+ <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+</head>
+<body class="login">
+
+  <!-- Background animation -->
+  <div id="particles-js"></div>
+
+  <!-- Login box -->
+  <div class="login-box">
+    <div class="logo">
+      <img src="{% static 'images/LOGO.png' %}" alt="Logo" />
+    </div>
+    <h2>Vita Vocational College</h2>
+
+    <!-- 1. ເພີ່ມສ່ວນສະແດງ Error ແຈ້ງເຕືອນເມື່ອປ້ອນ Username/Password ບໍ່ຖືກຕ້ອງ -->
+    {% if form.errors or form.non_field_errors %}
+    <div style="background-color: #fff0f1; color: #d93025; padding: 12px; border-radius: 8px; border: 1px solid #fad2cf; margin-bottom: 20px; font-size: 14px; text-align: center; font-weight: bold; font-family: 'Noto Sans Lao', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+        <span>⚠️ ຊື່ຜູ້ໃຊ້ ຫຼື ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ!</span>
+    </div>
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      <div style="margin-bottom: 15px;">
+        <label for="id_username">Username:</label>
+        {{ form.username }}
+      </div>
+      
+      <!-- 2. ປັບປຸງຊ່ອງ Password ໃຫ້ມີປຸ່ມ ສະແດງ/ຊ່ອນ ລະຫັດຜ່ານ -->
+      <div style="margin-bottom: 20px; position: relative;">
+        <label for="id_password">Password:</label>
+        <div style="position: relative; display: flex; align-items: center;">
+          {{ form.password }}
+          <span onclick="togglePassword()" id="toggle-icon" style="position: absolute; right: 15px; cursor: pointer; color: #555; font-size: 14px; user-select: none; background: #ffffff; padding: 2px 6px; border-radius: 4px; font-weight: bold; border: 1px solid #ccc;">
+            👁️ ສະແດງ
+          </span>
+        </div>
+      </div>
+      
+      <button type="submit">Log in</button>
+    </form>
+
+    <!-- Forgot Password -->
+    <div class="forgot-password">
+     <a  href="{% url 'home' %}"> << Back ກັບສູ່ໜ້າຫຼັກ</a>
+
+    </div>
+  </div>
+
+  <!-- JavaScript ສໍາລັບສັ່ງ ສະແດງ/ຊ່ອນ ລະຫັດຜ່ານ -->
+  <script>
+    function togglePassword() {
+      // ດຶງ Input field ຂອງ password ທີ່ Django ສ້າງຂຶ້ນມາໂດຍອັດຕະໂນມັດ (ປົກກະຕິຈະມີ id="id_password" ຫຼື ຊອກຫາຈາກ name="password")
+      var passwordField = document.getElementById("id_password") || document.querySelector("input[type='password']") || document.querySelector("input[name='password']");
+      var toggleIcon = document.getElementById("toggle-icon");
+      
+      if (passwordField) {
+        if (passwordField.type === "password") {
+          passwordField.type = "text";
+          toggleIcon.innerHTML = "🙈 ຊ່ອນ";
+        } else {
+          passwordField.type = "password";
+          toggleIcon.innerHTML = "👁️ ສະແດງ";
+        }
+      }
+    }
+  </script>
+
+  <!-- Gear particles config -->
+  <script>
+    particlesJS("particles-js", {
+      "particles": {
+        "number": {
+          "value": 40,
+          "density": { "enable": true, "value_area": 800 }
+        },
+        "shape": {
+          "type": "image",
+          "image": {
+            "src": "{% static 'images/gear-white.png' %}",
+            "width": 20,
+            "height": 20
+          }
+        },
+        "opacity": {
+          "value": 0.5,
+          "random": true
+        },
+        "size": {
+          "value": 14,
+          "random": true
+        },
+        "move": {
+          "enable": true,
+          "speed": 1.2,
+          "out_mode": "out"
+        }
+      },
+      "interactivity": {
+        "events": {
+          "onhover": {
+            "enable": true,
+            "mode": "repulse"
+          }
+        }
+      },
+      "retina_detect": true
+    });
+  </script>
+
+</body>
+</html>

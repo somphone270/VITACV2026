@@ -1,0 +1,26 @@
+{% load static %}
+<html lang="lo">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block site_title %}ໜ້າຫຼັກ{% endblock %} | ວິທະຍາໄລ ວິຊາຊີບ ວິຕ້າ</title>
+    <link rel="icon" href="{% static 'logo.png' %}" />
+    <link rel="stylesheet" href="{% static 'normalize.css' %}" />
+    <link rel="stylesheet" href="{% static 'main65.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+    {% block head_extra %}{% endblock %}
+  </head>
+  <body class="w3-light-grey">
+    {% include 'components/siteheader.html' %}
+    
+    <div class="main-content" style="margin-left:280px; padding:20px;">
+      {% block content %}{% endblock %}
+    </div>
+    
+    {% include 'components/sitefooter.html' %}
+
+
+  </body>
+</html>

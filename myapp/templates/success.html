@@ -1,0 +1,70 @@
+{% extends 'components/base.html' %}
+{% load static %}
+{% block site_title %}ບັນທຶກສຳເລັດ | Vita Vocational College{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: center; align-items: center; min-height: 70vh; padding: 20px; font-family: 'Noto Sans Lao', sans-serif;">
+    <div style="background: #ffffff; padding: 40px 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); text-align: center; max-width: 450px; width: 100%; border-top: 5px solid #28a745; transform: translateY(0); animation: fadeInUp 0.6s ease-out;">
+        
+        <!-- ອານິເມຊັນ ວົງມົນຕິກຖືກສີຂຽວ -->
+        <div style="width: 80px; height: 80px; background-color: #d4edda; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px auto; animation: pulse 2s infinite;">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        </div>
+
+        <!-- ຂໍ້ຄວາມແຈ້ງເຕືອນ -->
+        <h2 style="color: #0f8f03; font-size: 24px; font-weight: bold; margin-bottom: 12px; margin-top: 0;">
+            ບັນທຶກຂໍ້ມູນສຳເລັດແລ້ວ!
+            数据记录完成！
+        </h2>
+        <p style="color: #7f8c8d; font-size: 15px; line-height: 1.6; margin-bottom: 30px;">
+            ຂໍຂອບໃຈ, ຂໍ້ມູນ ແລະ ຮູບພາບຂອງທ່ານໄດ້ຖືກສົ່ງເຂົ້າຮ່ວມລະບົບ ແລະ ບັນທຶກລົງໃນຖານຂໍ້ມູນຮຽບຮ້ອຍແລ້ວ.
+        </p>
+
+        <!-- ປຸ່ມກົດເພື່ອກັບຄືນ -->
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+            <a href="https://www.facebook.com/groups/1057380466716287/?ref=share&rdid=FKDLwhwx5CVwN3Ro&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2Fg%2F19BmP8g4tC%2F# url 'register_page' %}" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #28a745, #218838); color: #ffffff; text-decoration: none; font-weight: bold; border-radius: 8px; font-size: 15px; box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2); transition: all 0.3s ease;">
+                <svg xmlns="http://w3.org" viewBox="0 0 448 512" style="width: 18px; height: 18px; fill: #1877F2;">
+        <path d="M400 32H48A48 48 0 0 0 0 80v352a48 48 0 0 0 48 48h137.25V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.27c-30.81 0-40.43 19.12-40.43 38.73V256h68.78l-11 71.69h-57.78V480H400a48 48 0 0 0 48-48V80a48 48 0 0 0-48-48z"/>
+    </svg> ກົດເຂົ້າກຸ່ມ ​FaceBook ເພື່ອລາຍງານຕົນ (脸书)
+            </a>
+            <a href="/" style="display: inline-block; padding: 12px 24px; background-color: #f8f9fa; color: #495057; text-decoration: none; font-weight: 500; border-radius: 8px; font-size: 15px; border: 1px solid #dee2e6; transition: all 0.3s ease;">
+                🏠 ກັບຄືນໜ້າຫຼັກ (返回首页)
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ສ່ວນຕົບແຕ່ງ CSS Animation ເພີ່ມຄວາມງາມ -->
+<style>
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(40, 167, 69, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+    }
+}
+
+/* ເອັບເຟັກເວລາເອົາມືຖືໄປຊີກໃສ່ປຸ່ມ */
+a:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+}
+</style>
+{% endblock %}

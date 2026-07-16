@@ -1,0 +1,207 @@
+{% extends 'components/base.html' %}
+{% load static %}
+{% block site_title %}ໜ້າຫຼັກ |{% endblock %}
+{% block content %}
+{% comment %} <div>
+    <div style="background-color: beige;">
+        <p>ລະຫັດວິຊາ == {{sub1}}</p>
+        <center><h3>CURRICULUM VITAE(CV)</h3></center>
+        <section class="content-section">
+            <div class="content-container">
+                <div class="grid1">
+                        {% if sub1 is not None %}
+                            
+                            <img src="{{ sub1.image.url }}" width=120px, height=150px>
+                            <h4>{{ sub1.image }}<h/4>
+                        <div>
+                            <h3>{{sub1.tel}}</h3>
+                        {% endif %}
+                           </p>
+                           <a href="#" class="myButton">ລົງທະບຽນ</a>
+                        <div>
+                    </div>
+                </div>
+         </section>
+
+</div> {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My CV</title>
+</head>
+<body bgcolor="#71BDBD" >
+  <div class="table-container" width="100vw">
+    <table bgcolor="white" align="center" border="0" cellspacing="20" cellpadding="20" width="900" >
+
+      <tr cellpadding="">
+
+        <!--===============-->
+        <!-- Image Section -->
+        <!--===============-->
+        <td bgcolor="#ffffffff" align="center"  >
+          <img src="{{ sub1.image.url }}" width=190px, height=250px>
+        </td>
+
+
+        <!--==============-->
+        <!-- Name Section -->
+        <!--==============-->
+        <td align="center">
+          <fieldset>
+            <legend><h2><font color="black" >CURRICULUM VITAE (CV)</font></legend>
+            <h5><font color="black"> 
+            <p>Name: {{sub1.gender}} {{sub1.name_eng}}</p>
+            <p>Date of Birth: {{sub1.birthday}}</p>
+            <p>Nationality: {{sub1.Nationality}}</p>
+            <p>Religion: {{sub1.Religion}}</p>
+            </font></h5>
+          </fieldset>   
+        </td>
+      </tr>
+      <tr >
+        <!--==================-->
+        <td bgcolor="#2047f3ff" width="35%" >
+          <h3>ປະຫວັດຫຍໍ້ (Profile)</h3>
+          <p>{{sub1.Profile}}</p>
+          <br>
+          <div class="contact-section">
+            <h3>ຂໍ້ມູນການຕິດຕໍ່ (Contact)</h3>
+            <p><a><font>Email: {{sub1.email}}</font></a></p>
+            <p><a><font>Tel\Whatsapp: {{sub1.tel}}</font></a></p>
+            <p><a><font>Facebook: {{sub1.Facebook}}</font></a></p>
+             <p>Place of Birth:
+                {{sub1.village}}
+                {{sub1.districts}}
+                {{sub1.province}}
+            </p>
+            <p>Current address:
+                {{sub1.Current_village}}
+                {{sub1.Current_districts}}
+                {{sub1.Current_province}}
+            </p>
+          </div>
+          <br>
+          <div class="technical-skillset">
+            <table width="100%" cellpadding="7"  >
+              <tr>
+                <th  bgcolor="#df1854d8" colspan="2" ><font color="black"><u>Ability</u></font></th>
+              </tr>
+              <tr>
+                <td>
+                  <ul>
+                    <li><p>Fishing</p></li>
+                    <li><p>Running</p></li>
+                    <li><p>Reading</p></li>
+                  </ul>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </td>
+
+
+
+        <!--=================-->
+        <!-- Details Section -->
+        <!--=================-->
+        <td bgcolor="white" width="100%" cellspacing="20">
+
+          <div class="education">
+            <table  cellpadding="7" width="100%">
+              <tr bgcolor="#2d97eed8" ><th colspan="2"><font color="black" ><u>Education</u></font></th></tr>
+              <tr>
+                <td></td>
+                <td>
+                  <p>{{sub1.academic_year}}  Studies at {{sub1.from_school}}</p>
+                  <p> class {{sub1.M}}, The school is located  {{sub1.village_school}} villege, {{sub1.districts_school}} districts, {{sub1.province_school}} province</p>
+                  <p></p>
+                  <p>2025 - 2026 Studying at the PALEE ELITE Training Center</p>
+                  <p>the subject to study for {{sub1.subject}}</p>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <br>
+          <br>
+          <div class="work-experience">
+            <table cellpadding="7" width="100%" >
+              <tr bgcolor="#2d97eed8" ><th colspan="2"><font color="black"  ><u>Language skills</u></font></th></tr>
+              <tr>
+                <th align="left" > Language skill : {{sub1.Language}}</th>
+              </tr>
+              <tr>
+                <td> Athletics Academy New Jersey January 2018 - September 2019 </td>
+              </tr>
+              
+              <tr>
+               <th align="left" > Language skill : {{sub1.Language1}}</th>
+              </tr>
+              <tr>
+                <td> Olympics Academy New York March 2021 - February 2022</td>
+              </tr>
+
+            </table>
+          </div>
+          <br>
+          <br>
+          <div class="education">
+             <table cellpadding="7" width="100%" >
+              <tr bgcolor="#2d97eed8" ><th colspan="2"><font color="black"  ><u>Skill full</u></font></th></tr>
+              <tr>
+                <th align="left" >skills : {{sub1.Language}}</th>
+              </tr>
+              <tr>
+                <td> Athletics Academy New Jersey January 2018 - September 2019 </td>
+              </tr>
+              
+              <tr>
+               <th align="left" > Other skill : {{sub1.Other_Skill}}</th>
+              </tr>
+            </table>
+
+
+            <h3>what do you do ?</h3>
+            <p>If you want the borders to collapse into one border, add the CSS border-collapse property.</p>
+            <table style="width:100%; border: 1px solid black; border-collapse: collapse;" >
+                
+            <tr style="width:100%; border: 1px solid black; border-collapse: collapse;">
+
+                <th style=" border: 1px solid black; border-collapse: collapse;">No</th>
+                <th style=" border: 1px solid black; border-collapse: collapse;">2025/August</th>
+                <th style=" border: 1px solid black; border-collapse: collapse;">2026/July</th>
+                <th style=" border: 1px solid black; border-collapse: collapse;">2026/August</th>
+            </tr>
+            <tr style="width:100%; border: 1px solid black; border-collapse: collapse;">
+                <td style=" border: 1px solid black; border-collapse: collapse;">School</td>
+                <td style=" border: 1px solid black; border-collapse: collapse;"></td>
+                <td style=" border: 1px solid black; border-collapse: collapse;"></td>
+                <td style=" border: 1px solid black; border-collapse: collapse;"></td>
+                
+            </tr>
+            <tr style="width:100%; border: 1px solid black; border-collapse: collapse;">
+                <td style=" border: 1px solid black; border-collapse: collapse;">Work</td>
+                <td style=" border: 1px solid black; border-collapse: collapse;"></td>
+                <td style=" border: 1px solid black; border-collapse: collapse;"></td>
+                <td style=" border: 1px solid black; border-collapse: collapse;"></td>
+            </tr>
+           <tr style="width:100%; border: 1px solid black; border-collapse: collapse;">
+                <td style=" border: 1px solid black; border-collapse: collapse;">Other</td>
+                <td style=" border: 1px solid black; border-collapse: collapse;"></td>
+                <td style=" border: 1px solid black; border-collapse: collapse;"></td>
+                <td style=" border: 1px solid black; border-collapse: collapse;"></td>
+            </tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>
+
+{% endblock %}

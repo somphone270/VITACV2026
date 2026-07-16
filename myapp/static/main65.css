@@ -1,0 +1,1274 @@
+
+@media (max-width: 768px) {
+    .main-content {
+      margin-left: 0 !important;
+      padding: 10px;
+    }
+    .text-color1 {
+      font-size: 22px !important;
+    }
+    .gallery {
+      width: 100% !important;
+    }
+  }
+
+  .responsive {
+    display: inline-block;
+    width: 100%;
+    margin: 5px;
+    vertical-align: top;
+  }
+
+  .gallery {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 5px;
+    background-color: #fff;
+  }
+
+  .gallery img {
+    width: 100%;
+    height: auto;
+  }
+
+  .desc {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+
+  @media (max-width: 768px) {
+    .responsive {
+      width: 100%;
+    }
+  }
+
+
+
+/* ===== Banner & Centered Headings ===== */
+ .container {
+    position:fixed;
+    width: 105%;
+    margin: 0;
+    padding: 0;
+    left: -20px;
+  }
+
+  .container img {
+    width: 100%;
+    height: auto;
+     /* filter: brightness(1.3) saturate(1.6) contrast(1.1); */
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      width: 117%;
+    }
+  }
+    
+
+.container {
+  position: relative;
+  text-align: center;
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: hwb(235 3% 24%);
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+}
+
+/* ຂະໝາດປົກກະຕິ */
+.centered h1 {
+  font-size: 36px;
+  margin: 0;
+}
+.centered h2 {
+  font-size: 28px;
+  margin: 0;
+}
+
+/* ຂະໝາດໃນໂທລະສັບ */
+@media (max-width: 768px) {
+  .centered h1 {
+    font-size: 100%;
+  }
+  .centered h2 {
+    font-size: 80%;
+  }
+}
+
+
+/* ===== Gallery Section ===== */
+.gallery img {
+  width: 100%;
+  max-width: 320px; /* */
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.gallery img:hover {
+  transform: scale(1.05);
+}
+
+.desc {
+  text-align: center;
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+/* ===== Responsive Columns ===== */
+.responsive {
+  padding: 0 6px;
+  float: left;
+  width: 25%; /* 4 ภาพต่อแถว */
+}
+
+.text-color1 {
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.text-color1 a {
+  font-size: 16px;
+  color: #007BFF;
+  text-decoration: none;
+  margin-left: auto;
+}
+
+.text-color1 a:hover {
+  text-decoration: underline;
+}
+
+
+
+@media screen and (max-width: 800px) {
+  .responsive {
+    width: 50%; /* 2 ຕໍ່ແຖວ */
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .responsive {
+    width: 100%; /* */
+  }
+}
+
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* ===== Horizontal List for Training Courses ===== */
+.horizontal-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 0;
+  list-style-type: none;
+}
+
+.horizontal-list li {
+  flex: 1;
+  min-width: 250px;
+  background-color: #f9f9f9;
+  padding: 12px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: background 0.3s ease;
+}
+
+.horizontal-list li:hover {
+  background-color: #eef4ff;
+}
+
+
+/* HERO SECTION */
+.hero-section {
+  position: relative;
+  text-align: center;
+  color: #fff;
+}
+
+.hero-section .centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+}
+
+.hero-section h1, .hero-section h2 {
+  margin: 0.2em 0;
+  font-family: 'Phetsarath OT', sans-serif;
+}
+
+/* CONTENT CONTAINER */
+.container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* CARD SECTION */
+.card {
+  background-color: #f7f2f2;
+  padding: 1%;
+  margin-top: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+}
+
+
+/* GALLERY SECTION */
+.responsive {
+  padding: auto;
+  width: 24%;
+}
+
+.gallery {
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #bdbbbb;
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.gallery:hover {
+  transform: scale(1.05);
+}
+
+.gallery img {
+  width: 100%;
+  height: auto;
+}
+
+.desc {
+  padding: 10px;
+  font-size: 0.95em;
+}
+
+/* CLEAR FLOATS */
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* RESPONSIVE DESIGN */
+@media screen and (max-width: 768px) {
+  .responsive {
+    width: 49%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .responsive {
+    width: 100%;
+  }
+}
+
+/* ====== Footer Styling ====== */
+.site-footer {
+  background-color: #10b981;
+  color: white;
+  padding: 40px 0;
+  text-align: center;
+  font-size: 16px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  
+}
+
+/* ส่วน container กำหนดความกว้างให้เหมือนเนื้อหา */
+/*footer baner */
+.site-footer{
+  background-color: #067a9e;
+  text-align: left;
+  text-align: center;
+  padding: 16px;
+  }
+.site-footer1{
+    background-color: #067a9e;
+    text-align: left;
+    text-align: center;
+    padding: 16px;
+}
+.site-footer-copyight{  
+  font-size: 18px; 
+  color: whitesmoke;
+}
+
+.footer-links {
+  margin: 15px 0;
+}
+
+.footer-links a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.site-footer-address,
+.site-footer-contact,
+.site-footer-copyight {
+  margin-top: 10px;
+  line-height: 1.6;
+}
+@media (max-width: 768px) {
+  .site-footer .container {
+    padding: 0 15px;
+  }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .footer-links a {
+    margin: 5px 8px;
+  }
+}
+
+
+/* ກຳນົດແບບຟອມ */
+/* ====== Layout Styles ====== */
+.form-page-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 40px;
+  background: #f2f2f8;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  font-family: 'Noto Sans Lao', sans-serif;
+}
+
+.main-panel {
+  width: 100%;
+}
+
+/* ====== Header Section ====== */
+.form-title {
+  font-size: 30px;
+  margin-bottom: 10px;
+  color: #3207ef;
+  text-align: center;
+}
+
+.form-note {
+  font-size: 14px;
+  color: #1010e2;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* ====== Fieldset & Legend ====== */
+.form-section {
+  margin-bottom: 30px;
+  padding: 20px;
+  border: 1px solid #57d8f8;
+  border-radius: 10px;
+}
+
+.form-section legend {
+  font-size: 18px;
+  font-weight: bold;
+  padding: 0 10px;
+  color: #34495e;
+}
+
+/* ====== Form Structure ====== */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* ====== Form Labels & Inputs ====== */
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #2c3e50;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: border 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #3498db;
+  outline: none;
+}
+
+/* ====== Checkbox Styling ====== */
+.form-group input[type="checkbox"] {
+  width: auto;
+  margin-right: 8px;
+}
+
+/* ====== Submit Button ====== */
+.button12 {
+  background: #3498db;
+  color: white;
+  padding: 12px 30px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+  display: block;
+  margin: 20px auto 0;
+}
+
+.button12:hover {
+  background: #2980b9;
+}
+
+/* ====== Error Messages ====== */
+ul {
+  padding-left: 20px;
+}
+
+ul li {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+/* ຈັດຮູບພາບໃນ subject */
+
+/* ປັບຂໍ້ຄວາມໃຫ້ຢູ່ໂຄ້ງກາງ */
+.subject-table th,
+.subject-table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* ຫົວຂໍ້ຕາຕະລາງມີພື່ນຫຼັງ */
+.subject-table thead {
+    background-color: #e5eaef;
+}
+
+.subject-table th {
+    color: #0d47a1;
+    font-weight: bold;
+    padding: 10px;
+}
+
+/*ຮູບພາບໃນຕາຕະລາງ*/
+
+.subject-photo {
+  width: 100%;        /* ใช้เต็ม container */
+  max-width: 450px;   /* ปรับให้ใหญ่ขึ้นตามต้องการ */
+  height: 180px;
+  object-fit: cover;
+  display: block;
+  margin: 10px 0;     /* มีระยะห่างด้านบนล่าง */
+  border-radius: 10px;
+}
+
+
+
+@media (max-width: 768px) {
+    .subject-photo {
+        width: 120%;
+        max-width: 120%;
+        height: auto;
+    }
+
+    .subject-table th,
+    .subject-table td {
+        font-size: 20px;
+        padding: 6px;
+    }
+
+    .button12 {
+        font-size: 14px;
+        padding: 10px 18px;
+    }
+}
+
+/* ປຸ່ມລົງທະບຽນ */
+.button12 {
+    background-color: #11d26b;
+    color: rgb(2, 28, 46);
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.button12:hover {
+    background-color: #1976d2;
+}
+
+/* Responsive table */
+.table-responsive {
+    overflow-x: auto;
+    width: auto;
+}
+
+.subject-table {
+    width: 100%;
+    min-width:auto;
+}
+.photo-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2%; /* ຄວາມກ້ວາງລະຫວ່າງຮູບກັບຂໍ້ຄວາມ */
+    flex-wrap: wrap; /* ຖ້າຈໍນ້ອຍຈະຍ້າຍລົງລຸ່ມ */
+}
+
+.course-label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #260de2;
+}
+
+.course-label {
+  font-size: 18px;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+/* ສີພື່ນຫຼັງສະເພາະຫຼັກສູດພິເສດ */
+.course-label.premium {
+  background-color: #ffebee;      
+  color: #c62828;               
+  border: 1px solid #ef9a9a;
+}
+
+/* ປັບສີສຳຫຼັບຫຼັກສູດທົ່ວໄປ */
+.course-label.normal {
+  background-color: #e3f2fd;      
+  color: #1565c0;                 
+  border: 1px solid #90caf9;
+}
+
+.course-label i {
+  margin-right: 6px;
+  color: indigo; 
+}
+
+
+/* ປັບcssຂອງsubject-detail */
+
+.subject-detail-container {
+  max-width: 950px;
+  margin: 30px auto;
+  padding: 25px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.subject-title {
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #222;
+}
+
+.subject-image {
+  width: 100%;
+  max-height: 4%;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 25px;
+}
+
+.subject-info {
+  font-size: 18px;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.subject-info p {
+  margin-bottom: 10px;
+}
+
+.price-highlight {
+  color: #d32f2f;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.center-button {
+  text-align: center;
+}
+
+.register-button {
+  background-color: #2196f3;
+  color: rgb(239, 242, 238);
+  padding: 14px 28px;
+  font-size: 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  display: inline-block;
+}
+
+.register-button:hover {
+  background-color: #0b7dda;
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+  .subject-detail-container {
+    padding: 15px;
+  }
+
+  .subject-title {
+    font-size: 24px;
+  }
+
+  .register-button {
+    width: 100%;
+    font-size: 20px;
+    padding: 16px 0;
+  }
+}
+
+.policy-note {
+    background-color: #f0f8ff;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 30px;
+    font-size: 1.5rem; /* เพิ่มขนาด */
+    line-height: 1.9;
+    color: #222;
+    font-weight: 500;
+}
+
+.policy-note p {
+    font-size: 1.4rem; /* หัวข้อใหญ่กว่าปกติ */
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.policy-note ul {
+    padding-left: 25px;
+    list-style-type: none;
+}
+
+.policy-note li {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.policy-note li::before {
+    content: "✔️ ";
+    margin-right: 8px;
+    color: #2e8b57;
+    font-size: 1.3rem;
+}
+
+
+
+/* ປັບcss login */
+
+/* Background */
+#particles-js {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1e3a8a, #0ea5e9);
+  z-index: 0;
+}
+
+/* Body layout */
+body.login {
+  margin: 0;
+  font-family: 'Noto Sans Lao', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Login box */
+.login-box {
+  position: relative;
+  z-index: 1;
+  background-color: rgba(60, 209, 222, 0.97);
+  padding: 40px;
+  border-radius: 20px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 1s ease-in-out;
+  box-sizing: border-box;
+}
+
+.login-box .logo img {
+  height: 100px;
+  margin-bottom: 20px;
+}
+
+.login-box h2 {
+  font-size: 32px;
+  color: #1e3a8a;
+  margin-bottom: 24px;
+  font-weight: bold;
+  animation: glowPulse 2s infinite alternate;
+}
+
+.login-box label {
+  display: block;
+  margin-top: 10px;
+  text-align: left;
+  color: #333;
+}
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  border-radius: 8px;
+  border: 1px solid hsl(0, 22%, 96%);
+  box-sizing: border-box;
+}
+
+.login-box button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 16px;
+  background-color: #1e3a8a;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-box button:hover {
+  background-color: #0e63b1;
+}
+
+/* Forgot password link */
+.forgot-password {
+  margin-top: 12px;
+}
+
+.forgot-password a {
+  color: #0e63b1;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+/* Animation */
+@keyframes glowPulse {
+  from {
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+  }
+  to {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .login-box {
+    padding: 24px;
+  }
+
+  .login-box h2 {
+    font-size: 18px;
+  }
+
+  .forgot-password a {
+    font-size: 13px;
+  }
+}
+
+
+ /* ກຳນົດ css studyimages.html  */
+
+ /* จัด layout แถว 1-3 คอลัมน์ ตามขนาดหน้าจอ */
+.gallery-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+.gallery-itemm {
+  width: 120%;
+  height: 100px;
+}
+
+.galleryyy {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+.galleryyy:hover {
+  transform: scale(1.02);
+}
+
+.galleryyy img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.desc {
+  padding: 16px;
+  font-size: 20px;
+  line-height: 1.6;
+  color: #333;
+  font-family: 'Noto Sans Lao', sans-serif;
+  background-color: #f9f9f9;
+}
+
+
+/* ກຳນົດ css ສ່ວນຮູບພາບໝ້າ home */
+
+/* ปรับ container หลัก */
+.card {
+  background-color: #dad9d9;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* ปรับหัวข้อ + ปุ่มลิงก์ */
+.card h2 {
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+/* กำหนดกล่องหลัก */
+.card > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px; 
+  margin-top: 20px;
+}
+
+/* Responsive  */
+[class^="responsive"] {
+  flex: 1 1 280px;
+  max-width: 2800px;
+  box-sizing: border-box;
+}
+
+/* กล่องภาพ */
+[class^="gallery"] {
+  background: #dedddd;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s;
+  height: 100%;
+}
+
+[class^="gallery"]:hover {
+  transform: translateY(-6px);
+}
+
+/* รูปภาพ */
+[class^="gallery"] img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+/* คำอธิบายใต้ภาพ */
+.desc {
+  padding: 16px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fafafa;
+  height: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Responsive แบบแถวเดียวในมือถือ */
+
+
+
+/* ກຳນົດ cssໃນໝ້າ Borntobeaschool.html */
+
+/* โครงสร้าง layout หลักของรายการข่าว */
+.card > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* กล่องแต่ละข่าว */
+.responsive {
+  flex: 1 1 300px;
+  max-width: 300px;
+  box-sizing: border-box;
+}
+
+/* กล่องรูปและคำอธิบาย */
+.gallery {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: 50%;
+  transition: transform 0.3s ease;
+}
+
+.gallery:hover {
+  transform: translateY(-5px);
+}
+
+/* ขนาดรูปภาพให้เท่ากัน */
+.gallery img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* ข้อความคำอธิบายข่าว */
+.desc {
+  padding: 15px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #333;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* ກຳນົດ css about.html  ຂອງ video*/
+.fullscreen-video {
+  width: 100%;
+  height: auto;
+  max-height: 100vh; /* ບໍ່ເກິນຄວາມສູງຂອງຈໍ */
+  object-fit: cover;
+  display: block;
+  z-index: -1; /* ถ้าใช้เป็นพื้นหลัง */
+}
+
+
+/* Default Styles 
+--------------------------------------------------- */
+body {
+	margin: 0px;
+	padding: 0px;
+	background: url("../images/bg_dark_green.png");  
+	background-color: inherit;
+	font-size: 16px; 
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+	color: #000;
+}
+a:link { 
+	text-decoration: underline;
+	color: #000;
+	font-weight: bold;
+}
+a:visited { 
+	text-decoration: underline;
+	color: #000;
+	font-weight: bold;
+}
+a:hover { 
+	text-decoration: underline;
+	color: #669933;
+	font-weight: bold;
+}
+a:active { 
+	text-decoration: underline;
+	color: #000;
+	font-weight: bold;
+}
+#wrapper	{
+	width: 965px;
+	margin: 0 auto;	
+}
+#content {
+	background-color: #eee;
+	width: 960px;
+	text-align: left;
+	overflow: auto;
+	position: relative;
+	margin: 25px 0px 25px 0px;
+	border: #fff solid 2px;
+}
+.clear	{
+	float: none;
+	clear: both;
+	margin: 20px 0px 20px 0px;
+}
+/* Header 
+--------------------------------------------------- */
+#contact-details .header_1 {
+	float: left;
+	width: 350px;
+	text-align: center;
+	margin: 40px 0px 0px 20px;
+}
+#contact-details .header_1 img {
+	border: #fff solid 4px;
+	background: url("../images/bg_img_dark_green.png"); 
+	padding: 16px;
+	margin: 10px 0px 0px 0px;
+}
+#contact-details .header_2 {
+	float: left;
+	width: 570px;
+	margin: 40px 0px 0px 10px;
+}
+#contact-details .header_2 a {
+	font-weight: normal;
+}
+#contact-details  h1	{
+	margin: 0px 0px 0px 20px;
+	font-size: 52px;
+	font-weight: bold;
+}
+#contact-details  h3	{
+	margin: 0px 0px 32px 20px;
+	font-size: 30px;
+	font-weight: bold;
+	font-style: italic;
+}
+#contact-details ul.info_1	{
+	list-style: none;
+	margin: 0px 0px 0px -12px;
+	font-size: 18px;
+}
+#contact-details ul.info_2	{
+	list-style: none;
+	margin: 0px 0px 15px -12px;
+	font-size: 18px;
+}
+#contact-details li.address	{
+    background: url("../images/home.png") no-repeat;
+	background-position: 0px 0px;
+    padding: 0px 0px 12px 40px;
+}
+#contact-details li.phone	{
+    background: url("../images/phone.png") no-repeat;
+	background-position: 0px 0px;
+    padding: 0px 0px 12px 40px;
+}
+#contact-details li.email	{
+    background: url("../images/mail.png") no-repeat;
+	background-position: 0px 0px;
+    padding: 0px 0px 12px 40px;
+}
+#contact-details li.site_url	{
+    background: url("../images/computer.png") no-repeat;
+	background-position: 0px 2px;
+    padding: 0px 0px 12px 40px;
+}
+#contact-details li.twitter	{
+    background: url("../images/twitter_sm.png") no-repeat;
+	background-position: 0px 0px;
+    padding: 0px 0px 12px 40px;
+}
+/* Main Content 
+--------------------------------------------------- */
+h2.top	{
+	margin: 0px; 
+	font-size: 22px;
+	font-weight: bold;
+}
+h2	{
+	margin: 40px 0px 0px 0px; 
+	font-size: 22px;
+	font-weight: bold;
+}
+dl	{
+	margin: 0px 50px 0px 0px;
+}
+dt	{
+	float: left;
+	width: 200px;
+	font-size: 20px;
+	font-weight: bold;
+	font-style: italic;
+	text-align: right;
+}
+dd	{
+	width: 620px; 
+	float: right;
+	margin-right: 20px;
+}
+dl#contact 	{
+	margin: 0px;
+}
+dt#contact 	{
+	margin: 0px;
+}
+dd#contact 	{
+	margin: 0px;
+}
+p.bus1	{
+	margin: 0px;
+	font-weight: bold;
+	color: #669933;
+}
+p.edu-info	{
+	margin: 10px 0px 0px 0px;
+	font-weight: bold;
+	color: #669933;
+}
+p.edu-info a	{
+	color: #000;
+}
+p.edu-info a:hover	{
+	color: #669933;
+}
+p.time	{
+	margin: 0px;
+}
+p.summary	{
+	margin: 10px 0px 0px 0px;
+}
+#skills ul.list1	{	
+	float: left;
+	list-style: none;
+	margin: 0px 0px 0px -40px;
+	width: 220px;
+}
+#skills ul.list2	{	
+	float: left;
+	list-style: none;
+	margin: 0px 0px 0px 0px;
+	width: 220px;
+}
+#skills li {
+    background: url("../images/bullet_green.png") no-repeat;
+	background-position: 0px 2px;
+    padding: 0px 0px 0px 25px;
+}
+abbr	{
+	border-width: 0px;
+}
+/* Footer 
+--------------------------------------------------- */
+#footer	{
+	margin: 60px 40px 0px 40px;
+}
+#footer	img {
+	border: 0px;
+}
+#footer .footer_content	{
+	width: 700px;
+	overflow: auto;
+	margin: auto;
+	border: #fff solid 2px;
+	background-color: #dcdcdc;
+}
+#footer ul.icons_1	{
+	float: left;
+	width: 525px;
+	margin: 15px 10px 10px 15px;
+	padding: 0px;
+}
+#footer ul.icons_2	{
+	float: right;
+	width: 100px;
+	margin: 10px 20px 10px 10px;
+	padding: 0px;
+}
+#footer .icons_1 li, #footer .icons_2 li { 
+	margin: 0px 0px 0px 7px; 
+	padding: 0px; 
+	list-style-type: none; 
+	display: inline; 
+}
+#footer a	{
+	color: #000;
+}
+#footer a:hover	{
+	color: #669933;
+}
+#footer	.credits {
+	float: none;
+	clear: both;
+	margin: 10px 0px 20px 0px;
+	font-size: 12px;
+	text-align: center;
+}
+#footer	.credits a	{
+	font-weight: normal;
+}
+
+

@@ -1,0 +1,752 @@
+{% extends 'components/base.html' %}
+{% load static %}
+{% block site_title %}ລົງທະບຽນ |{% endblock %}
+
+{% block content %}
+<style>
+    /* ------------------------------------------------------------- */
+    /* ໂຄດ CSS ຫຼັກທີ່ຮອງຮັບທຸກໜ້າຈໍ (Responsive Base) */
+    /* ------------------------------------------------------------- */
+    .form-page-container {
+        max-width: 1100px;
+        margin: 10px auto;
+        padding: 30px;
+        font-family: 'Noto Sans Lao', sans-serif;
+   
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 30px;
+        border-bottom: 2px solid #f0f2f5;
+        padding-bottom: 20px;
+    }
+
+    .logo-img {
+        width: 100px;
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 15px;
+    }
+
+    .form-title {
+        color: #1a202c;
+        margin: 5px 0;
+        font-weight: 600;
+    }
+
+    .form-note {
+        color: #e53e3e;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+
+    /* ການຈັດວາງພາຍໃນຟອມ */
+    .form-section {
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 25px;
+        background-color: #f8fafc;
+    }
+
+    .form-section legend {
+        font-weight: bold;
+        color: #2b6cb0;
+        padding: 0 10px;
+        font-size: 18px;
+    }
+
+    /* ລະບົບ Grid ຫຼັກ (ປັບຂະໜາດຕາມອຸປະກອນອັດຕະໂນມັດ) */
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+        margin-bottom: 15px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group label {
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #4a5568;
+        font-size: 15px;
+    }
+    .form-group1 label, label {
+       
+        display: block !important;
+        margin-bottom: 0.5rem;
+        
+    }
+    .form-group1 label {
+    display: block;        /* ເພີ່ມເພື່ອໃຫ້ label ຢູ່ເທິງ input ສະເໝີ */
+    margin-bottom: 8px;
+    font-weight: 400;      /* ປ່ຽນຈາກ 50 ເປັນ 400 (ລະດັບປົກກະຕິ) */
+    font-size: 15px;
+    color: #000000;
+}
+
+/* ປັບແຕ່ງ Input, Select, Textarea ໃຫ້ຍືດຫຍຸ່ນ 100% */
+.form-group1 input, 
+.form-group1 select, 
+.form-group1 textarea {
+    width: 200;           /* ເພີ່ມເພື່ອໃຫ້ຍືດເຕັມ 100% ຕາມຄຳອະທິບາຍ */
+    padding: 10px 14px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-size: 15px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group1 input:focus, 
+.form-group1 select:focus,
+.form-group1 textarea:focus { /* ເພີ່ມ focus ໃຫ້ textarea ນຳ */
+    border-color: #3182ce;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+    outline: none;
+}
+
+/* ສຳລັບ Input ປະເພດໄຟລ໌ */
+.form-group1 input[type="file"] {
+    padding: 8px;
+    background-color: #f7fafc;
+    cursor: pointer;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+
+    /* ປັບແຕ່ງ Input, Select, Textarea ໃຫ້ຍືດຫຍຸ່ນ 100% */
+    .form-group input, 
+    .form-group select, 
+    .form-group textarea {
+        padding: 10px 14px;
+        border: 1px solid #cbd5e0;
+        border-radius: 6px;
+        font-size: 15px;
+        background-color: #fff;
+        color: #2d3748;
+        transition: all 0.3s ease;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .form-group input:focus, 
+    .form-group select:focus {
+        border-color: #3182ce;
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+        outline: none;
+    }
+
+    /* ສຳລັບ Input ປະເພດໄຟລ໌ */
+    .form-group input[type="file"] {
+        padding: 8px;
+        background-color: #f7fafc;
+        cursor: pointer;
+    }
+
+    .full-width {
+        grid-column: 1 / -1;
+    }
+
+    /* ------------------------------------------------------------- */
+    /* ສ່ວນ CSS ສຳລັບ Image Upload & Preview */
+    /* ------------------------------------------------------------- */
+    .image-upload-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 15px;
+    }
+
+  /* 1. ກ່ອງລວມຮອງຮັບ Responsive */
+.image-preview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #cbd5e0;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    text-align: center;
+    min-height: 160px;
+    box-sizing: border-box;
+    
+    /* ປັບປຸງສ່ວນນີ້: ໃຫ້ກ່ອງຍືດຫຍຸ່ນຕາມໜ້າຈໍ */
+    width: 100%;           /* ເຕັມຈໍໃນມືຖື */
+    max-width: 320px;      /* ໃຫຍ່ສຸດບໍ່ເກີນ 320px ໃນຄອມ */
+    margin: 15px auto;     /* ຈັດຢູ່ເຄິ່ງກາງອັດຕະໂນມັດ */
+}
+
+/* 2. ສ່ວນສະແດງຮູບພາບ */
+.image-preview-container img {
+    width: 100%;           /* ໃຫ້ຮູບຂະຫຍາຍຕາມກ່ອງ */
+    max-height: 180px;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* 3. ປັບຕຳແໜ່ງສະເພາະໜ້າຈໍຄອມພິວເຕີ (ຂະໜາດ 768px ຂຶ້ນໄປ) */
+@media (min-width: 768px) {
+    .image-preview-container {
+        /* ໃນຄອມພິວເຕີ ຖ້າຢາກໃຫ້ມັນຍ້າຍໄປເບື້ອງຂວາ 60% ແບບບໍ່ຫຼຸດຂອບ */
+        margin-right: 0%; 
+    }
+}
+
+
+    .upload-icon {
+        font-size: 36px;
+        color: #a0aec0;
+        margin-bottom: 8px;
+    }
+
+    .upload-text {
+        font-size: 13px;
+        color: #718096;
+    }
+
+    /* ຂໍ້ຕົກລົງ ແລະ ເງື່ອນໄຂ */
+    .terms-agreement {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 25px 0;
+        cursor: pointer;
+    }
+
+    .terms-agreement input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+
+    /* ປຸ່ມບັນທຶກ */
+    .button12 {
+        display: inline-block;
+        width: 160px;
+        padding: 12px;
+        background: linear-gradient(135deg, #3182ce, #2b6cb0);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11);
+    }
+    /* ກ່ອງສະແດງຮູບຕົວຢ່າງ */
+.image-preview-container {
+    width: 100%;
+    max-width: 170px;
+    height: 210px;
+    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    transition: border-color 0.2s, background-color 0.2s;
+    margin-top: 5px;
+}
+
+.image-preview-container:hover {
+    border-color: #3b82f6;
+    background-color: #f8fafc;
+}
+
+/* ຂໍ້ຄວາມ ແລະ ໄອຄອນຕອນຍັງບໍ່ມີຮູບ */
+#preview-placeholder {
+    text-align: center;
+    color: #64748b;
+}
+
+.upload-icon {
+    font-size: 40px;
+    margin-bottom: 8px;
+}
+
+.upload-text {
+    font-size: 14px;
+}
+
+/* ຕອນສະແດງຮູບພາບ */
+#image-view {
+    width: 100%;
+    height: 100%;
+    object-fit:cover;
+  
+}
+
+
+    .button12:hover {
+        background: linear-gradient(135deg, #2b6cb0, #2c5282);
+        transform: translateY(-1px);
+        box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1);
+    }
+
+    /* ແຈ້ງເຕືອນ Error */
+    .error-container {
+        background-color: #fff5f5;
+        border-left: 4px solid #e53e3e;
+        padding: 15px;
+        border-radius: 4px;
+        margin-bottom: 25px;
+    }
+    
+    .error-container ul {
+        margin: 0;
+        padding-left: 20px;
+        color: #c53030;
+    }
+    /* 🛠️ ຄຳສັ່ງຊ່ອນປຸ່ມ Radio ຕົວທຳອິດ (ຕົວທີ່ເປັນຈຸດໆ --------) */
+    #id_is_graduated_m7 div:first-child,
+    #id_chinese_level div:first-child,
+    .custom-radio-group ul li:first-child,
+    ul li:first-child {
+        display: none !important;
+    }
+
+
+    /* ------------------------------------------------------------- */
+    /* 📱 ສ່ວນປັບແຕ່ງເພື່ອຮອງຮັບ Tablet ແລະ Mobile (Responsive Breakpoints) */
+    /* ------------------------------------------------------------- */
+    @media (max-width: 768px) {
+        .form-page-container {
+            margin: 15px;
+            padding: 20px;
+        }
+        
+        /* ປ່ຽນການສະແດງຜົນຮູບພາບຈາກ 2 ຄໍລຳ ເປັນ 1 ຄໍລຳໃນແທັບເລັດ ແລະ ມືຖື */
+        .image-upload-row {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .form-section {
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .form-page-container {
+            margin: -10px;
+            padding: 15px;
+        }
+
+        .form-title {
+            font-size: 20px;
+        }
+
+        .form-section legend {
+            font-size: 16px;
+        }
+
+        /* ໃຫ້ປຸ່ມກົດຂະຫຍາຍເຕັມໜ້າຈໍມືຖື ເພື່ອໃຫ້ກົດງ່າຍ */
+        .button12 {
+            width: 100%;
+        }
+
+        .terms-agreement label {
+            font-size: 14px;
+        }
+    }
+</style>
+<style>
+    .image-upload-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    
+    .preview-label {
+        font-weight: bold;
+        color: #495057;
+        margin-bottom: 8px;
+        font-size: 16px;
+    }
+
+    /* ກ່ອງອັດຕາສ່ວນ 3x4 ມາດຕະຖານ (ກວ້າງ 150px, ສູງ 200px) */
+    .image-preview-container {
+        width: 150px;
+        height: 200px;
+        border: 2px dashed #0d6efd; /* ເປັນເສັ້ນປະສີຟ້າ */
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        cursor: pointer;
+        background-color: #f8f9fa;
+        transition: all 0.3s ease;
+        overflow: hidden; /* ຕັດຮູບສ່ວນເກີນຂອບອອກ */
+        position: relative;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .image-preview-container:hover {
+        border-color: #198754; /* ປ່ຽນເປັນສີຂຽວເວລາມືໄປຈີ້ */
+        background-color: #e9ecef;
+        transform: scale(1.02);
+    }
+
+    .upload-placeholder {
+        padding: 10px;
+        animation: fadeIn 0.5s ease;
+    }
+
+    .upload-icon {
+        font-size: 36px;
+        color: #0d6efd;
+        margin-bottom: 5px;
+    }
+
+    .upload-text {
+        font-size: 12px;
+        color: #6c757d;
+        margin: 0;
+        font-weight: 500;
+    }
+
+    /* ແທັກສະແດງຮູບພາບ */
+    #image-view {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* ບັງຄັບໃຫ້ຮູບເຕັມກ່ອງ 3x4 ພໍດີ */
+        display: none;
+        border-radius: 10px;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+</style>
+<script>
+    function previewImage(input) {
+        const previewBox = document.getElementById('preview-box');
+        const placeholder = document.getElementById('preview-placeholder');
+        const imageView = document.getElementById('image-view');
+
+        // ກວດເບິ່ງວ່າຜູ້ໃຊ້ໄດ້ເລືອກ ຫຼື ຖ່າຍໄຟລ໌ຮູບພາບແທ້ຫຼືບໍ່
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            // ເມື່ອລະບົບອ່ານໄຟລ໌ຮູບພາບສຳເລັດ
+            reader.onload = function(e) {
+                // 1. ເອົາຂໍ້ມູນຮູບພາບໄປໃສ່ໃນແທັກ <img>
+                imageView.src = e.target.result;
+                
+                // 2. ສັ່ງໃຫ້ແທັກ <img> ສະແດງຜົນຂຶ້ນມາ
+                imageView.style.display = 'block';
+
+                // 3. ເຊື່ອງຂໍ້ຄວາມ ແລະ ໄອຄອນກ້ອງຖິ້ມ
+                placeholder.style.display = 'none';
+                
+                // 4. ປ່ຽນເສັ້ນປະໃຫ້ເປັນສີຂຽວ ເພື່ອບອກວ່າອັບໂຫລດແລ້ວ
+                previewBox.style.borderColor = '#198754';
+            }
+
+            // ເລີ່ມຕົ້ນອ່ານໄຟລ໌ຮູບພາບ
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+<script>
+function previewImage(input) {
+    const previewBox = document.getElementById('preview-box');
+    const placeholder = document.getElementById('preview-placeholder');
+    const imageView = document.getElementById('image-view');
+
+    // ກວດສອບວ່າມີການເລືອກໄຟລ໌ແທ້ຫຼືບໍ່
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+
+        // ເມື່ອອ່ານໄຟລ໌ສໍາເລັດ
+        reader.onload = function(e) {
+            placeholder.style.display = 'none'; // ຊ່ອນຂໍ້ຄວາມບອກໃຫ້ເລືອກຮູບ
+            imageView.src = e.target.result;    // ເອົາ Source ຮູບມາໃສ່ແທັກ img
+            imageView.style.display = 'block';  // ສະແດງແທັກ img
+            previewBox.style.borderColor = '#22c55e'; // ປ່ຽນຂອບເປັນສີຂຽວ (ສໍາເລັດ)
+        }
+
+        reader.readAsDataURL(input.files[0]); // ອ່ານໄຟລ໌ໃນຮູບແບບ URL Data
+    }
+}
+</script>
+
+<div class="form-page-container">
+    <!-- ສ່ວນຫົວຟອມ -->
+    <div class="form-header">
+        <img src="{% static 'images/LOGO.png' %}" class="logo-img" alt="Logo">
+        <h3 class="form-title">ປະກອບແບບຟຼອມປະຫວັດຜູ້ໄດ້ທືນ CV</h3>
+        <h4 class="form-title" style="font-size: 16px; color: #718096;">Student Inquiry Form palee center</h4>
+        <p class="form-note">* ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ</p>
+    </div>
+
+    <!-- ສະແດງຂໍ້ຜິດພາດຂອງຟອມ -->
+    {% if form.errors %}
+    <div class="error-container">
+        <ul>
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <!-- ເລີ່ມຕົ້ນຟອມ -->
+        {% csrf_token %}
+<form method="POST" action="{% url 'register_page' %}" enctype="multipart/form-data">
+ <!-- ສໍາຄັນຫຼາຍ: ຕ້ອງເພີ່ມ enctype="multipart/form-data" ໃສ່ຟອມຫຼັກຂອງທ່ານ -->
+    {% csrf_token %}
+  <fieldset class="form-section">
+    <!-- ບ່ອນສະແດງຮູບຕົວຢ່າງ ແລະ ປຸ່ມອັບໂຫຼດ -->
+    <!-- 🎨 ສ່ວນຂອງ CSS ຕົບແຕ່ງກ່ອງອັບໂຫລດຮູບ (ວາງໄວ້ໃນແທັກ <style> ຂອງໜ້າເວັບ) -->
+<style>
+    .image-upload-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    
+    .preview-label {
+        font-weight: bold;
+        color: #495057;
+        margin-bottom: 8px;
+        font-size: 16px;
+    }
+
+    /* ກ່ອງອັດຕາສ່ວນ 3x4 ມາດຕະຖານ (ກວ້າງ 150px, ສູງ 200px) */
+    .image-preview-container {
+        width: 150px;
+        height: 200px;
+        border: 2px dashed #0d6efd; /* ເປັນເສັ້ນປະສີຟ້າ */
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        cursor: pointer;
+        background-color: #f8f9fa;
+        transition: all 0.3s ease;
+        overflow: hidden; /* ຕັດຮູບສ່ວນເກີນຂອບອອກ */
+        position: relative;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .image-preview-container:hover {
+        border-color: #198754; /* ປ່ຽນເປັນສີຂຽວເວລາມືໄປຈີ້ */
+        background-color: #e9ecef;
+        transform: scale(1.02);
+    }
+
+    .upload-placeholder {
+        padding: 10px;
+        animation: fadeIn 0.5s ease;
+    }
+
+    .upload-icon {
+        font-size: 36px;
+        color: #0d6efd;
+        margin-bottom: 5px;
+    }
+
+    .upload-text {
+        font-size: 12px;
+        color: #6c757d;
+        margin: 0;
+        font-weight: 500;
+    }
+
+    /* ແທັກສະແດງຮູບພາບ */
+    #image-view {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* ບັງຄັບໃຫ້ຮູບເຕັມກ່ອງ 3x4 ພໍດີ */
+        display: none;
+        border-radius: 10px;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+</style>
+
+<!-- 📝 ສ່ວນຂອງໂຄງສ້າງ HTML -->
+    <div class="image-upload-wrapper">
+        <label class="preview-label">ຮູບໂປຣໄຟລ໌ (Image Preview)</label>      
+        <!-- ເມື່ອກົດໃສ່ກ່ອງນີ້ ຈະໄປເອີ້ນໃຫ້ Input ໄຟລ໌ເຮັດວຽກ -->
+        <div class="image-preview-container" id="preview-box" onclick="document.getElementById('image-input').click();">
+           <!-- 🟢 ເພີ່ມ capture="user" ເພື່ອສັ່ງໃຫ້ມືຖືເປີດກ້ອງໜ້າຂຶ້ນມາຖ່າຍຮູບສົດທັນທີ -->   
+            <!-- ຂໍ້ຄວາມ ແລະ ໄອຄອນກ້ອງ (ຈະຫາຍໄປເມື່ອມີຮູບ) -->
+            <div id="preview-placeholder" class="upload-placeholder">
+                <div class="upload-icon">📷</div>
+                <div class="upload-text">ຄລິກທີ່ນີ້ເພື່ອຖ່າຍຮູບ</div>
+                <p class="upload-text text-muted">ຫຼື ເລືອກຮູບຂະໜາດ 3x4</p>
+            </div>
+            
+            <!-- ແທັກສະແດງຮູບພາບຕົວຢ່າງ -->
+            <img id="image-view" src="#" alt="ຮູບຕົວຢ່າງຂອງທ່ານ">
+        </div>
+
+        <!-- ແທັກ Input ຮັບໄຟລ໌ (ຊ່ອນໄວ້ບໍ່ໃຫ້ເຫັນ) 
+            ⚠️ ປ່ຽນ name="image" ໃຫ້ກົງກັບຟິວໃນ models.py ຂອງທ່ານເດີ້ -->
+        <input type="file" id="image-input" name="image" accept="image/*" style="display: none;" onchange="previewImage(this);">
+    </div>
+
+
+        <!-- ຂໍ້ມູນສ່ວນຕົວ -->
+      
+            <legend>ຂໍ້ມູນສ່ວນຕົວ</legend>
+            <div class="form-row">
+                <div class="form-group">
+                    {{ form.full_name.label_tag }}{{ form.full_name }}
+                </div>
+                <div class="form-group">
+                    {{ form.name_Chinese.label_tag }}{{ form.name_Chinese }}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.organization.label_tag }}{{ form.organization }}
+                </div>
+            </div>
+           
+           <div class="form-row">
+                 <div class="form-group">
+                    {{ form.province1.label_tag }}{{ form.province1 }}
+                </div>
+                <div class="form-group">
+                    {{ form.district.label_tag }}{{ form.district }}
+                </div>
+                <div class="form-group">
+                  
+                </div>
+                 <!-- 1. ກ່ອງເລືອກ Radio ຈົບ ຫຼື ບໍ່ຈົບ -->
+
+            <div class="d-flex gap-3 mt-2">
+                <label class="form-label"><b>ຈົບມໍ7ແລ້ວຫຼືບໍ ? (是否高中毕业):</b></label>
+                {% for radio in form.is_graduated_m7 %}
+                    <!-- 🟢 ເພີ່ມແຖວນີ້: ກວດເບິ່ງວ່າ ຖ້າບໍ່ມີເຄື່ອງໝາຍຈຸດໆ ໃຫ້ສະແດງປຸ່ມອອກມາ -->
+                    {% if '---------' not in radio.choice_label %}
+                        <div class="form-check">
+                            <label class="form-check-label ms-1" for="{{ radio.id_for_label }}">
+                                {{ radio.tag }}
+                                {{ radio.choice_label }}
+                            </label>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+   
+
+            <!-- 2. ກ່ອງ Text ທີ່ຈະໃຫ້ໂຊ (ໃສ່ ID ໃຫ້ກົງກັບ JavaScript ແລະ ເຊື່ອງໄວ້ກ່ອນ) -->
+            <div class="form-group mb-3" id="current-grade-wrapper" style="display: none;">
+                <label class="form-label text-danger fw-bold">ຖ້າບໍ່ຈົບ, ປັດຈຸບັນຮຽນຢູ່ຊັ້ນໃດ? (請註明年級):</label>
+                {{ form.current_grade }}
+            </div>
+
+            <fieldset class="form-section">
+            <legend>ວິຊາທີ່ເລຶອກຮຽນ (选修课程)</legend>
+            
+            <!-- 🟢 ໃຊ້ກ່ອງ div ທີ່ມີ class "custom-radio-group" ມາຄຸມແທັກ Django ໄວ້ -->
+            <div class="custom-radio-group">
+                {{ form.subject_set }}
+            </div>
+            </fieldset>
+
+
+            <fieldset class="form-section">
+            <legend>ຄວາມສາມາດລະດັບພາສາຈີນ (中文)</legend>
+            
+            <!-- 🟢 ໃຊ້ກ່ອງ div ທີ່ມີ class "custom-radio-group" ມາຄຸມແທັກ Django ໄວ້ -->
+            <div class="custom-radio-group">
+                {{ form.chinese_level }}
+            </div>
+            </fieldset>
+
+            <div class="form-group">
+                    {{ form.phone_number.label_tag }}{{ form.phone_number }}
+            </div>
+            <div class="form-group">
+                    {{ form.facebook.label_tag }}{{ form.facebook }}
+            </div>
+        <!-- ກົດຍອມຮັບ -->
+        <div class="terms-agreement">
+            {{ form.accepted }}
+            <label for="{{ form.accepted.id_for_label }}">{{ form.accepted.label }}</label>
+        </div>
+
+        <!-- ປຸ່ມກົດສົ່ງ -->
+        <div style="text-align: center; margin-top: 20px;">
+            <button type="submit" class="button12">ກົດບັນທຶກ(Save)</button>
+        </div>
+    </form>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // 1. ດຶງປຸ່ມ Radio ທັງໝົດທີ່ມີຊື່ຟິວວ່າ is_graduated_m7
+        const radioButtons = document.querySelectorAll('input[name="is_graduated_m7"]');
+        const gradeWrapper = document.getElementById('current-grade-wrapper');
+
+        function toggleGradeInput() {
+            // ຊອກຫາປຸ່ມ Radio ທີ່ຖືກກົດຕິກເລືອກຢູ່ປະຈຸບັນ
+            const selectedRadio = document.querySelector('input[name="is_graduated_m7"]:checked');
+            const textInput = gradeWrapper.querySelector('input'); // ຊອກຫາຊ່ອງພິມຂໍ້ມູນຊັ້ນຮຽນ
+            
+            if (selectedRadio) {
+                // ກວດເບິ່ງຄ່າ Value ວ່າເປັນ "ຍັງບໍ່ຈົບ"
+                const value = selectedRadio.value.trim();
+                
+                if (value === 'ຍັງບໍ່ຈົບ' || value === '未毕业') {
+                    gradeWrapper.style.display = 'block';  // ໂຊຊ່ອງ Text ຂຶ້ນມາ
+                    
+                    // 🟢 ເພີ່ມແຖວນີ້: ບັງຄັບໃຫ້ຕົວກະພິບໄປເຕັ້ນ (Focus) ຢູ່ໃນຊ່ອງພິມທັນທີ
+                    if (textInput) {
+                        textInput.focus();
+                    }
+                } else {
+                    gradeWrapper.style.display = 'none';   // ເຊື່ອງຊ່ອງ Text ໄວ້
+                    // ລ້າງຄ່າໃນຊ່ອງພິມຖ້າກັບໄປກົດ "ຈົບແລ້ວ"
+                    if (textInput) textInput.value = '';
+                }
+            }
+        }
+
+        // ຜູກເຫດການ (Event) ໃຫ້ທຸກປຸ່ມ Radio ເວລາກົດປ່ຽນຄ່າ
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', toggleGradeInput);
+        });
+
+        // ລັນໃຫ້ເຮັດວຽກ 1 ເທື່ອຕອນໂຫຼດໜ້າທຳອິດ
+        toggleGradeInput();
+    });
+</script>
+
+
+{% endblock %}
+
