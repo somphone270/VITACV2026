@@ -137,9 +137,11 @@
   <a class="w3-bar-item w3-button w3-text-white" href="{% url 'home' %}"><i class="fa fa-home"></i> ໜ້າຫຼັກ</a>
   <a class="w3-bar-item w3-button w3-text-white" href="{% url 'register_page' %}"><i class="fa fa-edit"></i>ປ້ອນຂໍ້ມູນ (Input_CV)</a>
   <a class="w3-bar-item w3-button w3-text-white" href="{% url 'qr_scanner' %}"><i class="fa fa-edit"></i>ກວດສອບລາຍຊື່ (Check)</a>
-  <a class="w3-bar-item w3-button w3-text-white" href="/admin/">
-  <img src="{% static 'images/user_male_minus.png' %}" style="width:16px; vertical-align:middle;"> ເຂົ້າສູ່ລະບົບ (Admin)
-  </a>
+   <div class="dropdown-content" id="dropdownMenu">
+      <a href="/admin/">
+        <img src="{% static 'images/user_male_minus.png' %}" style="width: 18px;" alt=""> ຜູ້ດູແລລະບົບ (Admin)
+      </a>
+    </div>
 </div>
   
 <!-- Sidebar ສໍາລັບໜ້າຈໍໃຫຍ່ -->
