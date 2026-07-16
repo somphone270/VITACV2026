@@ -34,11 +34,11 @@ SECRET_KEY = "django-insecure-fk@6pwez0#@6jgt2&lg8_0nx+-c8qa4ri(ryu%x8449&k%_cp%
 DEBUG =True
 # AGE =config("AGE", cast=int)
 
-# ALLOWED_HOSTS = ['192.168.100.34']
+ALLOWED_HOSTS = ['*']
 # ALLOWED_HOSTS =config("ALLOWED_HOSTS").split(",")
 
 
-ALLOWED_HOSTS = ['192.168.100.34','192.168.100.184','localhost', '127.0.0.1','.ngrok-free.app']
+# ALLOWED_HOSTS = ['192.168.100.34','192.168.100.184','localhost', '127.0.0.1','.ngrok-free.app']
 
 # Application definition
 
