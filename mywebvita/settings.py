@@ -38,8 +38,10 @@ ALLOWED_HOSTS = ['*']
 # ALLOWED_HOSTS =config("ALLOWED_HOSTS").split(",")
 
 # 🔥 ເພີ່ມໂດເມນຂອງ Railway ເຂົ້າໄປເພື່ອໃຫ້ຜ່ານລະບົບຄວາມປອດໄພ CSRF
+# 🔥 ບັງຄັບຂຽນແທນຄ່າທັງໝົດ ໂດຍບໍ່ຕ້ອງເອີ້ນໃຊ້ config ໃດໆ
 CSRF_TRUSTED_ORIGINS = [
-    'https://cv-production-6318.up.railway.app/',
+    'https://railway.app',
+    'https://*.up.railway.app',  # ອະນຸຍາດທຸກ Subdomain ຂອງ Railway
 ]
 
 # ALLOWED_HOSTS = ['192.168.100.34','192.168.100.184','localhost', '127.0.0.1','.ngrok-free.app']
