@@ -176,20 +176,6 @@ from .forms import RegistrationForm  # ປ່ຽນເປັນຊື່ຟອ�
 from django.shortcuts import render, redirect
 from .forms import RegistrationForm  # ປ່ຽນເປັນຊື່ຟອມຂອງທ່ານ
 
-import base64
-import uuid  # ເພີ່ມເຂົ້າມາເພື່ອຕັ້ງຊື່ຮູບໃຫ້ບໍ່ຊ້ຳກັນ
-from django.shortcuts import render, redirect
-from django.core.files.base import ContentFile
-from .forms import RegistrationForm  # ປ່ຽນເປັນຊື່ຟອມຂອງທ່ານ
-
-import base64
-import uuid
-from django.shortcuts import render, redirect
-from django.core.files.base import ContentFile
-from .forms import RegistrationForm  # ປ່ຽນເປັນຊື່ຟອມຂອງທ່ານ
-
-import base64
-import uuid
 from django.shortcuts import render, redirect
 from django.core.files.base import ContentFile
 from .forms import RegistrationForm  # ປ່ຽນເປັນຊື່ຟອມຂອງທ່ານ
@@ -197,19 +183,21 @@ import base64
 import uuid
 from django.shortcuts import render, redirect
 from django.core.files.base import ContentFile
-
-import base64
+from .forms import RegistrationForm  # ປ່ຽນເປັນຊື່ຟອມຂອງທ່ານ
+import uuid
+from django.shortcuts import render, redirect
+from django.core.files.base import ContentFile
+from .forms import RegistrationForm  # ປ່ຽນເປັນຊື່ຟອມຂອງທ່ານ
 import uuid
 from django.shortcuts import render, redirect
 from django.core.files.base import ContentFile
 
-import base64
-import uuid
+from django.shortcuts import render, redirect
+from django.core.files.base import ContentFile
+
 from django.core.files.base import ContentFile
 from django.shortcuts import render, redirect
 
-import base64
-import uuid
 from django.core.files.base import ContentFile
 from django.shortcuts import render, redirect
 
