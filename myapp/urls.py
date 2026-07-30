@@ -13,8 +13,9 @@ urlpatterns = [
     path('admin/export-subscriptions/', export_subscriptions_xls, name='export_subscriptions_xls'),
     path('register/', views.register_view, name='register_page'),
     path('success/', views.success_view, name='success_page'),
-    path('qr-scanner/', views.qr_scanner_view, name='qr_scanner'),
-    path('api/check-reg/<int:registration_id>/', views.check_registration_api, name='check_registration_api'),
+    path('check-registration/', views.check_registration_api, name='qr_scanner'),
+    # 💡 ຕ້ອງເປັນ <str:> ເທົ່ານັ້ນ ເພື່ອຮອງຮັບຂໍ້ຄວາມ "VITA062"
+    path('check-registration/<str:registration_id>/', views.check_registration_api, name='check_registration_api'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

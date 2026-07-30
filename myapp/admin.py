@@ -106,6 +106,7 @@ class FormResponseAdmin(ImportExportModelAdmin):
     # ກໍານົດຄໍລຳທີ່ຈະໃຫ້ສະແດງຢູ່ໜ້າຕາຕະລາງລວມ (ໂຄດເດີມຂອງທ່ານ)
     list_display = (
         'row_number',       # ສະແດງລຳດັບ 1, 2, 3...
+        'student_code',
         'show_image',       # ສະແດງຮູບພາບຕົວຢ່າງ
         'full_name',        # ຊື່ ແລະ ນາມສະກຸນ
         'name_Chinese',

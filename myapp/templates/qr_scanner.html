@@ -1,121 +1,470 @@
-{% extends 'components/base.html' %} 
-{% load static %} 
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ລະບົບຄົ້ນຫາກວດສອບການລົງທະບຽນ / 登记信息查询</title>
+    <!-- ດຶງຟອນຕ໌ Noto Sans Lao ແລະ Noto Sans SC ເພື່ອຄວາມສວຍງາມ ແລະ ສະໝໍ່າສະເໝີຂອງພາສາ -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    
+   <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-{% block site_title %}ຄົ້ນຫາກວດສອບ | VVC{% endblock %} 
+        /* 💡 ຈຸດທີ 1: ຕັ້ງຄ່າ body ໃຫ້ຂະຫຍາຍເຕັມພື້ນທີ່ໜ້າຈໍ 100% */
+        body {
+            font-family: 'Noto Sans Lao', 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* ໃຫ້ເລີ່ມຕົ້ນຈາກດ້ານເທິງ */
+            min-height: 100vh;
+            width: 100vw;
+            padding: 40px 20px; /* ຂອບຫວ່າງ ດ້ານເທິງ-ລຸ່ມ */
+            overflow-x: hidden;
+        }
 
-{% block content %} 
-<div style="max-width: 600px; margin: 30px auto; padding: 20px; font-family: 'Noto Sans Lao', sans-serif;"> 
-    <div style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center;"> 
+        /* 💡 ຈຸດທີ 2: ຂະຫຍາຍ Viewport ໃຫ້ເຕັມຮູບແບບ 100% (ສູງສຸດ 1200px ສໍາລັບຄອມ) */
+        .search-content-viewport {
+            width: 100%;
+            max-width: 1200px; 
+            margin: 0 auto;
+        }
+
+        /* 💡 ປັບກ່ອງ Card ໃຫ້ກວ້າງເຕັມຈໍ ແລະ ເບິ່ງຫຼູຫຼາ */
+        .search-container-card {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(148, 163, 184, 0.12);
+            text-align: center;
+            width: 100%;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .main-title {
+            color: #1e293b;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .sub-title {
+            color: #64748b;
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .desc-text {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 35px;
+        }
+
+        /* ຈັດຟອມຄົ້ນຫາໃຫ້ຢູ່ເຄິ່ງກາງແບບພໍດີ */
+        .search-form-wrapper {
+            max-width: 500px;
+            margin: 0 auto 30px auto;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+            color: #1e293b;
+            font-weight: 500;
+        }
+
+        input[type="text"]:focus {
+            border-color: #4f46e5;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 5px rgba(79, 70, 229, 0.12);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-reset {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 30px;
+            padding: 14px 35px;
+            background-color: #f1f5f9;
+            color: #475569;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-reset:hover {
+            background-color: #e2e8f0;
+            color: #0f172a;
+        }
+
+        /* 💡 ຈຸດທີ 3: ກ່ອງສະແດງຜົນຂະຫຍາຍເຕັມຈໍ ແລະ ໃຊ້ລະບົບ Grid 2 ຄໍລຳໃນຄອມ */
+        #result-box {
+            display: none;
+            margin-top: 35px;
+            padding: 10px;
+            border-radius: 20px;
+            background: #ffffff;
+        }
+
+        .result-main-layout {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        /* ລະບົບ Grid Layout ປັບໃຫ້ກວ້າງ ແລະ ແບ່ງເປັນ 2 ຝັ່ງຂ້າງກັນໃນໜ້າຈໍໃຫຍ່ */
+        .info-grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 💡 2 ຄໍລຳໃນຄອມ */
+            gap: 20px;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .info-card-item {
+            background-color: #f8fafc;
+            padding: 18px 24px;
+            border-radius: 16px;
+            border: 1px solid #edf2f7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* ໃຫ້ບາງບັດທີ່ມີຂໍ້ມູນຍາວ ຂະຫຍາຍຍາວເຕັມ 1 ແຖວ */
+        .info-card-item.full-width {
+            grid-column: span 2;
+        }
+
+        .label-block {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            flex-shrink: 0;
+        }
+
+        .label-lao {
+            color: #475569;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .label-cn {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .value-text {
+            color: #0f172a;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: right;
+            white-space: nowrap; /* 💡 ບັງຄັບໃຫ້ຢູ່ແຖວດຽວ ຫ້າມລົງແຖວໃໝ່ */
+        }
+
+        .profile-image-container {
+            text-align: center;
+        }
+
+        .profile-image {
+            width: 140px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 16px;
+            border: 4px solid #ffffff;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .badge-success { background-color: #dcfce7; color: #15803d; }
+        .badge-warning { background-color: #ffedd5; color: #076e03; }
+
+        /* 📱 ປັບແຕ່ງສຳລັບມືຖື: ໃຫ້ຫຍັບມາລຽງແຖວດິ່ງອັດຕະໂນມັດເພື່ອຄວາມພໍດີ */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px 10px;
+            }
+            .search-container-card {
+                padding: 30px 15px;
+            }
+            .info-grid-container {
+                grid-template-columns: 1fr; /* 💡 ປ່ຽນເປັນ 1 ຄໍລຳໃນມືຖື */
+                gap: 12px;
+            }
+            .info-card-item.full-width {
+                grid-column: span 1;
+            }
+            .info-card-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+                padding: 15px;
+            }
+            .value-text {
+                text-align: left;
+                white-space: normal; /* ຍອມໃຫ້ລົງແຖວໄດ້ໃນມືຖື ເພື່ອປ້ອງກັນການລົ້ນຈໍ */
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="search-content-viewport"> 
+    <div class="search-container-card"> 
+        <!-- ຫົວຂໍ້ ພ້ອມພາສາຈີນກຳກັບ --> 
+        <h2 style="color: #2c3e50; margin-bottom: 5px; font-size: 22px;">🔍 ລະບົບຄົ້ນຫາກວດສອບການລົງທະບຽນ / 登记信息查询</h2> 
+        <p style="color: #7f8c8d; font-size: 14px; margin-bottom: 25px;">输入编号 verify 登记信息 / ປ້ອນລະຫັດເພື່ອverifyຂໍ້ມູນ</p> 
         
-        <h2 style="color: #2c3e50; margin-bottom: 5px; font-size: 22px;">🔍 ລະບົບຄົ້ນຫາກວດສອບການລົງທະບຽນ</h2> 
-        <p style="color: #7f8c8d; font-size: 14px; margin-bottom: 25px;">输入编号 verify 登记信息</p> 
-
-        <!-- ຟອມສໍາລັບປ້ອນລະຫັດ -->
-        <form id="search-form" onsubmit="searchRegistration(event)" style="margin: 10px auto; max-width: 400px; text-align: left;">
-            <div style="margin-bottom: 15px;">
-                <label for="reg-code-input" style="display: block; font-size: 14px; font-weight: bold; color: #34495e; margin-bottom: 8px;">
-                    ປ້ອນລະຫັດການລົງທະບຽນ:
-                </label>
-                <input type="text" id="reg-code-input" placeholder="ຕົວຢ່າງ: VITA-XXXX" required
-                    style="width: 100%; padding: 14px; font-size: 16px; border: 2px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; outline: none; transition: border-color 0.2s;">
-            </div>
-            
-            <button type="submit" style="width: 100%; padding: 16px; background-color: #007bff; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(0,123,255,0.2); display: flex; align-items: center; justify-content: center; gap: 10px;"> 
-                🔍 ກວດສອບຂໍ້ມູນ (查询)
-            </button>
-        </form>
+        <!-- ຟອມສໍາລັບປ້ອນລະຫັດ --> 
+        <form id="search-form" onsubmit="searchRegistration(event)" style="margin: 10px auto; max-width: 400px; text-align: left;"> 
+            <div style="margin-bottom: 15px;"> 
+                <label for="reg-code-input" style="display: block; font-size: 14px; font-weight: bold; color: #34495e; margin-bottom: 8px;"> 
+                    | ປ້ອນລະຫັດການລົງທະບຽນ / 请输入登记编号: 
+                </label> 
+                <input type="text" id="reg-code-input" placeholder="ຕົວຢ່າງ / 例如: VITA-062" required autofocus> 
+            </div> 
+            <button type="submit" class="btn-submit" id="btn-search-text"> 
+                🔍 ກວດສອບຂໍ້ມູນ / 查询信息 
+            </button> 
+        </form> 
 
         <!-- ຫຼອດໂຫຼດເວລາປະມວນຜົນ --> 
-        <div id="loading-status" style="display: none; margin-top: 15px; color: #007bff; font-weight: bold; font-size: 14px;"> 
-            ⏳ ກຳລັງຄົ້ນຫາ ແລະ ປະມວນຜົນຂໍ້ມູນ... 
+        <div id="loading-status" style="display: none; margin-top: 15px; color: #007bff; font-weight: bold; font-size: 14px; text-align: center;"> 
+            ⏳ ກຳລັງຄົ້ນຫາ ແລະ ປະມວນຜົນຂໍ້ມູນ... / 正在查询中... 
         </div> 
 
         <!-- ກ່ອງສະແດງຜົນການກວດສອບ --> 
-        <div id="result-box" style="display: none; margin-top: 25px; padding: 25px; border-radius: 12px; text-align: left; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); transition: all 0.3s;"> 
-            <h3 id="result-title" style="margin-top: 0; text-align: center; font-size: 18px; font-weight: bold;"></h3> 
-            
-            <div style="display: flex; gap: 20px; align-items: center; margin-top: 20px; background: rgba(255,255,255,0.7); padding: 15px; border-radius: 8px;"> 
-                <img id="student-img" src="" style="width: 100px; height: 130px; object-fit: cover; border-radius: 6px; border: 1px solid #ddd; display: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1);"> 
-                <div style="font-size: 15px; color: #333; line-height: 1.8;"> 
-                    <p style="margin: 5px 0;"><strong>ຊື່ ແລະ ນາມສະກຸນ:</strong> <span id="student-name" style="color: #000; font-weight: 500;"></span></p> 
-                    <p style="margin: 5px 0;"><strong>ສະຖານະ:</strong> <span id="student-status" style="color: #000; font-weight: 500;"></span></p> 
-                </div> 
-            </div> 
-
-            <button onclick="clearSearch()" style="width: 100%; margin-top: 20px; padding: 12px; background: #6c757d; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 15px; box-shadow: 0 4px 10px rgba(108,117,125,0.2);"> 
-                🔄 ລ້າງຂໍ້ມູນຄົ້ນຫາໃໝ່ 
-            </button> 
-        </div> 
-
-    </div> 
-</div> 
-
+        <div id="result-box"></div> 
+    </div>
+</div>
 <script>
-// ເອົາເອັບເຟັກ Focus ໃຫ້ກ່ອງ Input ເບິ່ງງາມຂຶ້ນ
-const inputField = document.getElementById('reg-code-input');
-inputField.addEventListener('focus', () => inputField.style.borderColor = '#007bff');
-inputField.addEventListener('blur', () => inputField.style.borderColor = '#cbd5e1');
+// 1. ຟັງຊັນຄຳນວນອາຍຸອັດຕະໂນມັດຈາກ ວັນເດືອນປີເກີດ
+function calculateAge(birthdayString) { 
+    if (!birthdayString) return '-'; 
+    const birthDate = new Date(birthdayString); 
+    if (isNaN(birthDate.getTime())) return '-'; 
+    const today = new Date(); 
+    let age = today.getFullYear() - birthDate.getFullYear(); 
+    const monthDifference = today.getMonth() - birthDate.getMonth(); 
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) { 
+        age--; 
+    } 
+    return age >= 0 ? `${age} ປີ / 岁` : '-'; 
+} 
 
-function searchRegistration(event) {
-    event.preventDefault(); // ປ້ອງກັນບໍ່ໃຫ້ໜ້າເວັບ Reload
+async function searchRegistration(event) { 
+    event.preventDefault(); 
     
-    const registrationId = inputField.value.trim();
-    if (!registrationId) return;
-
-    const loadingStatus = document.getElementById('loading-status');
-    const resultBox = document.getElementById('result-box');
+    const regCodeInput = document.getElementById('reg-code-input'); 
+    const regCode = regCodeInput.value.trim(); 
+    const loadingStatus = document.getElementById('loading-status'); 
+    const resultBox = document.getElementById('result-box'); 
+    const btnSearchText = document.getElementById('btn-search-text'); 
     
-    loadingStatus.style.display = 'block';
-    resultBox.style.display = 'none';
-
-    // ເອີ້ນໃຊ້ Django API ຕົວເດີມຂອງທ່ານ
-    fetch(`/api/check-reg/${registrationId}/`) 
-        .then(response => response.json()) 
-        .then(data => { 
-            loadingStatus.style.display = 'none'; 
-            
-            let resultTitle = document.getElementById('result-title'); 
-            let studentName = document.getElementById('student-name'); 
-            let studentStatus = document.getElementById('student-status'); 
-            let studentImg = document.getElementById('student-img'); 
-            
+    loadingStatus.style.display = 'block'; 
+    resultBox.style.display = 'none'; 
+    if(btnSearchText) btnSearchText.disabled = true; 
+    
+    try { 
+        const apiURL = `/check-registration/${encodeURIComponent(regCode)}/`; 
+        const response = await fetch(apiURL); 
+        const data = await response.json(); 
+        
+        loadingStatus.style.display = 'none'; 
+        if(btnSearchText) btnSearchText.disabled = false; 
+        
+        if (data.success) { 
             resultBox.style.display = 'block'; 
 
-            if (data.success) { 
-                resultBox.style.backgroundColor = '#e6f4ea'; 
-                resultBox.style.border = '2px solid #34a853'; 
-                resultTitle.innerHTML = '✅ ກວດສອບຜ່ານ (Verification Passed)'; 
-                resultTitle.style.color = '#137333'; 
-                studentName.innerText = data.name; 
-                studentStatus.innerText = data.status; 
-                
-                if (data.image_url) { 
-                    studentImg.src = data.image_url; 
-                    studentImg.style.display = 'block'; 
-                } else { 
-                    studentImg.style.display = 'none'; 
-                } 
-            } else { 
-                resultBox.style.backgroundColor = '#fce8e6'; 
-                resultBox.style.border = '2px solid #ea4335'; 
-                resultTitle.innerHTML = data.message || '❌ ບໍ່ພົບຂໍ້ມູນລະຫັດນີ້ໃນລະບົບ'; 
-                resultTitle.style.color = '#c5221f'; 
-                studentName.innerText = '-'; 
-                studentStatus.innerText = '-'; 
-                studentImg.style.display = 'none'; 
-            } 
-        }) 
-        .catch(err => { 
-            loadingStatus.style.display = 'none';
-            alert('ເກີດຂໍ້ຜິດພາດໃນການເຊື່ອມຕໍ່ລະບົບ!'); 
-            clearSearch();
-        }); 
+            // 💡 ປ່ຽນແທນສ່ວນນີ້: ດຶງຂໍ້ຄວາມສະຖານະ ແລະ ຊັ້ນຮຽນມາຈາກ Database ໂດຍກົງ
+            // ໃຊ້ data.status_bool (True/False) ທີ່ສົ່ງມາຈາກ Django ເພື່ອເລືອກສີ Badge ໃຫ້ຖືກຕ້ອງ
+            const badgeClass = data.status_bool ? 'badge-success' : 'badge-warning';
+            const statusBadge = `<span class="badge ${badgeClass}">${data.status_text}</span>`;
+
+            // ກວດສອບຮູບພາບນັກຮຽນ 
+            const imageHTML = data.image_url ? `<div class="profile-image-container"> <img src="${data.image_url}" alt="Profile Image" class="profile-image"> </div>` : ''; 
+            
+            // ຄຳນວນອາຍຸ ແລະ ກວດສອບຄ່າຫວ່າງ (Null Safety) 
+            const ageText = calculateAge(data.birthday); 
+            const birthdayText = data.birthday ? data.birthday : '-'; 
+            const schoolText = data.From_school ? data.From_school : '-'; 
+            const nameCnText = data.name_eng ? data.name_eng : '-'; 
+            
+            resultBox.innerHTML = ` 
+                <div class="result-main-layout"> 
+                    ${imageHTML} 
+                    <div style="width: 100%;"> 
+                        <h4 style="color: #16a34a; font-size: 22px; font-weight: 700; margin-bottom: 4px; text-align: center;"> ✓ ພົບຂໍ້ມູນການລົງທະບຽນ </h4> 
+                        <p style="color: #16a34a; font-size: 14px; font-weight: 500; margin-bottom: 30px; text-align: center;"> 查询成功 </p> 
+                        
+                        <div class="info-grid-container"> 
+                            <!-- ບັດລະຫັດລົງທະບຽນ --> 
+                            <div class="info-card-item"> 
+                                <div class="label-block"> 
+                                    <span class="label-lao">ລະຫັດລົງທະບຽນ</span> 
+                                    <span class="label-cn">登记编号</span> 
+                                </div> 
+                                <span class="value-text" style="color: #4f46e5; font-size: 18px;">${regCode.toUpperCase()}</span> 
+                            </div> 
+
+                            <!-- ບັດສະຖານະ --> 
+                            <div class="info-card-item"> 
+                                <div class="label-block"> 
+                                    <span class="label-lao">ສະຖານະລະບົບ</span> 
+                                    <span class="label-cn">系统状态</span> 
+                                </div> 
+                                <div>${statusBadge}</div> 
+                            </div> 
+
+                            <!-- ບັດຊື່ພາສາລາວ (ເຕັມແຖວ) --> 
+                            <div class="info-card-item full-width"> 
+                                <div class="label-block"> 
+                                    <span class="label-lao">ຊື່ ແລະ นາມສະກຸນ</span> 
+                                    <span class="label-cn">姓名 (ລາວ)</span> 
+                                </div> 
+                                <span class="value-text" style="font-size: 17px; color: #0f172a;">${data.name}</span> 
+                            </div> 
+
+                            <!-- ບັດຊື່ພາສາຈີນ/ອັງກິດ (ເຕັມແຖວ) --> 
+                            <div class="info-card-item full-width"> 
+                                <div class="label-block"> 
+                                    <span class="label-lao">ຊື່ພາສາຈີນ / ອັງກິດ</span> 
+                                    <span class="label-cn">中文名 / 英文名</span> 
+                                </div> 
+                                <span class="value-text" style="font-size: 17px; color: #475569;">${nameCnText}</span> 
+                            </div> 
+
+                            <!-- ບັດວັນເກີດ --> 
+                            <div class="info-card-item"> 
+                                <div class="label-block"> 
+                                    <span class="label-lao">ວັນເດືອນປີເກີດ</span> 
+                                    <span class="label-cn">出生日期</span> 
+                                </div> 
+                                <span class="value-text">${birthdayText}</span> 
+                            </div> 
+
+                            <!-- ບັດອາຍຸ --> 
+                            <div class="info-card-item"> 
+                                <div class="label-block"> 
+                                    <span class="label-lao">ອາຍຸປັດຈຸບັນ</span> 
+                                    <span class="label-cn">年龄</span> 
+                                </div> 
+                                <span class="value-text" style="color: #0f172a; font-weight: 700;">${ageText}</span> 
+                            </div> 
+
+                             <!-- 💡 ບັດຊັ້ນຮຽນ: ສະແດງຄ່າຂໍ້ຄວາມທີ່ດຶງມາຈາກ Django Database ໂດຍກົງ (ບໍ່ມີການຂຽນຟິກ) -->
+                            <div class="info-card-item full-width">
+                                <div class="label-block">
+                                    <span class="label-lao">ຊັ້ນຮຽນ / ລະດັບປັດຈຸບັນ</span>
+                                    <span class="label-cn">当前年级 / 班级</span>
+                                </div>
+                                <span class="value-text" style="font-size: 16px; color: #0f172a;">${data.grade_text}</span>
+                            </div>
+
+                            <!-- ບັດໂຮງຮຽນ (ເຕັມແຖວ) --> 
+                            
+                            <div class="info-card-item full-width"> 
+                                <div class="label-block"> 
+                                    <span class="label-lao">ມາຈາກໂຮງຮຽນ / ສະຖາບັນ</span> 
+                                    <span class="label-cn">毕业学校</span> 
+                                </div> 
+                                <span class="value-text" style="color: #1e293b;">${schoolText}</span> 
+                            </div> 
+                        </div> 
+                    </div> 
+                </div> 
+                <div style="text-align: center; margin-top: 25px;"> 
+                    <button type="button" class="btn-reset" onclick="resetSearch()">🔄 ຄົ້ນຫາໃໝ່ / 重新查询</button> 
+                </div> `; 
+        } else { 
+            showError(data.message || 'ບໍ່ພົບຂໍ້ມູນໃນລະບົບ'); 
+        } 
+    } catch (error) { 
+        loadingStatus.style.display = 'none'; 
+        if(btnSearchText) btnSearchText.disabled = false; 
+        showError('❌ ເກີດຂໍ້ຜິດພາດ! ບໍ່ສາມາດເຊື່ອມຕໍ່ກັບ Server ໄດ້ໃນເວລານີ້.'); 
+    } 
 }
 
-function clearSearch() { 
-    document.getElementById('result-box').style.display = 'none'; 
-    inputField.value = ""; 
-    inputField.focus();
+
+// 3. ຟັງຊັນສະແດງຂໍ້ຄວາມຜິດພາດ
+function showError(message) {
+    const resultBox = document.getElementById('result-box');
+    resultBox.style.display = 'block';
+    resultBox.innerHTML = `
+        <div style="background-color: #fef2f2; border: 1px solid #fee2e2; padding: 30px; border-radius: 16px; text-align: center;">
+            <h4 style="color: #dc2626; font-size: 18px; font-weight: bold; margin-bottom: 5px;">🔍 ຜົນການກວດສອບ</h4>
+            <p style="color: #dc2626; font-size: 14px; font-weight: 500; margin-bottom: 15px;">查询結果</p>
+            <p style="margin: 15px 0; font-weight: 600; color: #991b1b; font-size: 15px;">${message}</p>
+            <button type="button" class="btn-reset" style="background-color: #fff; border: 1px solid #fca5a5; color: #b91c1c; margin-top: 15px;" onclick="resetSearch()">🔄 ລອງໃໝ່ / 重试</button>
+        </div>
+    `;
 }
-</script> 
-{% endblock %}
+
+// 4. ຟັງຊັນ Reset ໜ້າເວັບ
+function resetSearch() {
+    const regCodeInput = document.getElementById('reg-code-input');
+    const resultBox = document.getElementById('result-box');
+    if(regCodeInput) {
+        regCodeInput.value = '';
+        regCodeInput.focus();
+    }
+    if(resultBox) resultBox.style.display = 'none';
+}
+</script>
+
+
+</body>
+</html>

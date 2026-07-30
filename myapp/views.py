@@ -193,8 +193,6 @@ import uuid
 from django.shortcuts import render, redirect
 from django.core.files.base import ContentFile
 from .forms import RegistrationForm  # ປ່ຽນເປັນຊື່ຟອມຂອງທ່ານ
-import cv2
-import numpy as np
 import base64
 import uuid
 from django.shortcuts import render, redirect
@@ -292,24 +290,84 @@ def success_view(request):
 def qr_scanner_view(request):
     """ໜ້າເວັບສໍາລັບເປີດກ້ອງສະແກນ QR"""
     return render(request, 'qr_scanner.html')
+from django.http import JsonResponse
 
-def check_registration_api(request, registration_id):
-    """API ສໍາລັບກວດສອບຂໍ້ມູນຫຼັງຈາກສະແກນ QR Code ເຫັນ ID"""
-    try:
-        # ຄົ້ນຫາຂໍ້ມູນຜູ້ລົງທະບຽນຈາກ ID
-        student = FormResponse.objects.get(id=registration_id)
-        
-        # ສົ່ງຂໍ້ມູນກັບໄປສະແດງຜົນຢູ່ໜ້າເວັບ
-        data = {
-            'success': True,
-            'name': f"{student.first_name} {student.last_name}", # ປ່ຽນຟີວໃຫ້ກົງກັບ Model ຂອງທ່ານ
-            'status': student.is_graduated_m7,
-            'image_url': student.image.url if student.image else None
-        }
-    except FormResponse.DoesNotExist:
-        data = {
-            'success': False,
-            'message': '❌ ບໍ່ພົບຂໍ້ມູນການລົງທະບຽນນີ້ໃນລະບົບ!'
-        }
-        
-    return JsonResponse(data)
+import re
+from django.http import JsonResponse
+from django.shortcuts import render
+from .models import FormResponse
+
+import re
+from django.http import JsonResponse
+from django.shortcuts import render
+from .models import FormResponse # 💡 ກວດສອບຊື່ App ຂອງທ່ານຄືນໃຫ້ຖືກຕ້ອງ
+
+import re
+from django.http import JsonResponse
+from django.shortcuts import render
+from .models import FormResponse 
+
+import re
+from django.http import JsonResponse
+from django.shortcuts import render
+from .models import FormResponse  # 💡 ກວດສອບຊື່ App ຂອງທ່ານຄືນໃຫ້ຖືກຕ້ອງ
+
+def check_registration_api(request, registration_id=None):
+    """API ສໍາລັບກວດສອບຂໍ້ມູນ ທີ່ຮອງຮັບ VITA002, VITA-002 ແລະ ຕົວເລກລ້ວນ 002 ຫຼື 2"""
+    if registration_id is not None:
+        try:
+            # 1. ຕັດຫວ່າງ ແລະ ແປງເປັນຕົວພິມໃຫຍ່
+            clean_id = str(registration_id).strip().upper()
+
+            # 2. 💡 ປັບ Regex ໃໝ່: ^([A-Z-]*)([0-9]+)$
+            # ບັງຄັບໃຫ້ໂຄງສ້າງມີແຕ່ ຕົວອັກສອນ/ຂີດຕໍ່ ຢູ່ທາງໜ້າ ແລະ ຕາມດ້ວຍ ຕົວເລກ ຢູ່ທາງຫຼັງເທົ່ານັ້ນ
+            # ຖ້າມີຕົວອັກສອນປົນມາທາງຫຼັງຕົວເລກ (ເຊັ່ນ VITA002tyu) ຈະຖືກບລັອກທັນທີ
+            if not re.match(r'^([A-Z-]*)([0-9]+)$', clean_id):
+                return JsonResponse({
+                    'success': False,
+                    'message': '⚠️ ຮູບແບບລະຫັດບໍ່ຖືກຕ້ອງ! ຫ້າມມີຕົວອັກສອນອື່ນປົນປອມ (编号格式错误)'
+                })
+
+            # 3. ດຶງເອົາສະເພາະຕົວເລກອອກມາ (ເຊັ່ນ: "VITA002" -> "002", "011" -> "011", "2" -> "2")
+            numeric_id = ''.join(re.findall(r'\d+', clean_id))
+            if not numeric_id:
+                return JsonResponse({
+                    'success': False,
+                    'message': '⚠️ ບໍ່ພົບຕົວເລກໃນລະຫັດ! (编号格式错误)'
+                })
+
+            # 4. ຈັດ Format ເລກໃຫ້ເປັນ 3 ຫຼັກ (ເຊັ່ນ: ເລກ 2 ຈະກາຍເປັນ "002") ເພື່ອໃຫ້ຕົງກັບ STUDENT CODE
+            formatted_number = f"{int(numeric_id):03d}" 
+
+            # 5. คົ້ນຫາແບບຕົງເປະ 100% (__exact) ກັບ STUDENT CODE ໃນຖານຂໍ້ມູນ
+            # ປ່ຽນ student_code ໃຫ້ກົງກັບ Field ແທ້ໃນ Model ຂອງທ່ານ
+            student = FormResponse.objects.get(student_code__exact=f"VITA{formatted_number}")
+
+            # 6. ດຶງຄ່າຊັ້ນຮຽນປັດຈຸບັນມາຈາກ Database ໂດຍກົງ
+            grade_display = getattr(student, 'current_grade', '-')
+
+            data = {
+                'success': True,
+                'name': student.full_name,
+                'name_eng': student.name_Chinese,
+                'birthday': student.date_of_birth,
+                'From_school': student.organization,
+                'status_text': "ລົງທະບຽນແລ້ວ / 已註冊",  
+                'grade_text': grade_display if grade_display else '-',
+                'image_url': student.image.url if hasattr(student, 'image') and student.image else None
+            }
+
+        except FormResponse.DoesNotExist:
+            data = {
+                'success': False,
+                'message': f'❌ ບໍ່ພົບຂໍ້ມູນນັກຮຽນລະຫັດ: "VITA{formatted_number}" ໃນລະບົບ!'
+            }
+        except (ValueError, OverflowError):
+            data = {
+                'success': False,
+                'message': f'❌ ລະບົບປະມວນຜົນລະຫັດ: "{registration_id}" ຜິດພາດ!'
+            }
+            
+        return JsonResponse(data)
+
+    return render(request, 'qr_scanner.html')
