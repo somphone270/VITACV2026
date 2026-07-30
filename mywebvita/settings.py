@@ -31,7 +31,7 @@ SECRET_KEY = "django-insecure-fk@6pwez0#@6jgt2&lg8_0nx+-c8qa4ri(ryu%x8449&k%_cp%
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG =config("DEBUG", cast=bool)
 
-DEBUG =True
+DEBUG = False
 # AGE =config("AGE", cast=int)
 
 ALLOWED_HOSTS = ['*']
@@ -199,3 +199,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# 💡 ຕັ້ງຄ່າໃຫ້ Whitenoise ຈັດການໄຟລ໌ Static ທັງໝົດ
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
