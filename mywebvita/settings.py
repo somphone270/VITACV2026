@@ -64,6 +64,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # 💡 ຕື່ມບັນທັດນີ້ເຂົ້າໄປ
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # 🔥 ເພີ່ມແຖວນີ້
@@ -181,7 +182,7 @@ IMPORT_FORMATS = [CSV,XLSX, HTML, ODS]
 
 # single export options
 EXPORT_FORMATS = [XLSX,CSV,HTML,ODS]
-STATIC_URL = '/static/'  
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'myapp', 'static')]
 SIMPLEUI_HOME_INFO = False
 SIMPLEUI_ANALYSIS = False
