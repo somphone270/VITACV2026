@@ -47,4 +47,6 @@ whitenoise==6.12.0
 xlwt==1.3.0
 opencv-python-headless
 gunicorn
+cloudinary
+django-cloudinary-storage
 whitenoise

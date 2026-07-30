@@ -164,41 +164,41 @@ class FormResponseAdmin(ImportExportModelAdmin):
 
     # ຟັງຊັນສຳລັບສ້າງຮູບພາບຕົວຢ່າງ Thumbnail (ໂຄດເດີມຂອງທ່ານ)
     def show_image(self, obj):
-        if obj.image:
-            img_html = format_html(
-                '<img src="{}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px; cursor: pointer;" onclick="openImagePopup(this.src)" />', 
-                obj.image.url
-            )
-            popup_html = """
-            <div id="imageModal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.8); align-items:center; justify-content:center;">
-                <span onclick="closeImagePopup()" style="position:absolute; top:20px; right:35px; color:#fff; font-size:40px; font-weight:bold; cursor:pointer;">&times;</span>
-                <img id="modalImage" style="max-width:80%; max-height:80%; border-radius:8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
-            </div>
-            <script>
-            if (typeof openImagePopup !== 'function') {
-                function openImagePopup(src) {
-                    var modal = document.getElementById("imageModal");
-                    var modalImg = document.getElementById("modalImage");
-                    if (modal && modalImg) {
-                        modal.style.display = "flex";
-                        modalImg.src = src;
-                    }
-                }
-                function closeImagePopup() {
-                    var modal = document.getElementById("imageModal");
-                    if (modal) {
-                        modal.style.display = "none";
-                    }
-                }
-                window.onclick = function(event) {
-                    var modal = document.getElementById("imageModal");
-                    if (event.target == modal) {
-                        modal.style.display = "none";
-                    }
-                }
+        # 💡 ດຶງຮູບພາບແທ້ຈາກ Database ມາສະແດງ (ຖ້າຢູ່ຄອມຈະດຶງຈາກໂຟນເດີ, ຖ້າຢູ່ Railway ຈະດຶງຈາກ Cloud ໃຫ້ເອງ)
+        if obj.image and hasattr(obj.image, 'url'):
+            image_url = obj.image.url
+        else:
+            # ຖ້ານັກຮຽນຄົນນັ້ນບໍ່ມີຮູບ ໃຫ້ສະແດງຮູບ Default ປ້ອງກັນຮູບແຕກ
+            image_url = "/static/images/user_male_minus.png"
+
+        img_html = format_html(
+            '<img src="{}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px; cursor: pointer;" onclick="openImagePopup(this.src)" onerror="this.onerror=null; this.src=\'/static/images/user_male_minus.png\';" />', 
+            image_url
+        )
+        
+        popup_html = """
+        <div id="imageModal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.8); align-items:center; justify-content:center;">
+            <span onclick="closeImagePopup()" style="position:absolute; top:20px; right:35px; color:#fff; font-size:40px; font-weight:bold; cursor:pointer;">&times;</span>
+            <img id="modalImage" style="max-width:80%; max-height:80%; border-radius:8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+        </div>
+        <script>
+        if (typeof openImagePopup !== 'function') {
+            function openImagePopup(src) {
+                var modal = document.getElementById("imageModal");
+                var modalImg = document.getElementById("modalImage");
+                if (modal && modalImg) { modal.style.display = "flex"; modalImg.src = src; }
             }
-            </script>
-            """
-            return mark_safe(f"{img_html}{popup_html}")
-        return format_html('<span style="color: #999;">{}</span>', 'ບໍ່ມີຮູບ')
+            function closeImagePopup() {
+                var modal = document.getElementById("imageModal");
+                if (modal) { modal.style.display = "none"; }
+            }
+            window.onclick = function(event) {
+                var modal = document.getElementById("imageModal");
+                if (event.target == modal) { modal.style.display = "none"; }
+            }
+        }
+        </script>
+        """
+        return mark_safe(f"{img_html}{popup_html}")
+
     show_image.short_description = 'ຮູບພາບ'
