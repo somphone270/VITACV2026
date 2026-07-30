@@ -271,23 +271,25 @@ def qr_scanner_view(request):
 from django.http import JsonResponse
 import re
 
+import re
+from django.http import JsonResponse
+from django.shortcuts import render
+
 def check_registration_api(request, registration_id=None):
-    """API ສໍາລັບກວດສອບຂໍ້ມູນ ທີ່ຮອງຮັບ VITA002, VITA-002 ແລະ ຕົວເລກລ້ວນ 002 ຫຼື 2"""
+    """API ສໍາລັບກວດສອບຂໍ້ມູນ ທີ່ດຶງຄ່າຊັ້ນຮຽນຈາກ DB ໂດຍກົງ ແລະ ສະແດງສະຖານະ ລົງທະບຽນແລ້ວ"""
     if registration_id is not None:
         try:
             # 1. ຕັດຫວ່າງ ແລະ ແປງເປັນຕົວພິມໃຫຍ່
             clean_id = str(registration_id).strip().upper()
 
-            # 2. 💡 ປັບ Regex ໃໝ່: ^([A-Z-]*)([0-9]+)$
-            # ບັງຄັບໃຫ້ໂຄງສ້າງມີແຕ່ ຕົວອັກສອນ/ຂີດຕໍ່ ຢູ່ທາງໜ້າ ແລະ ຕາມດ້ວຍ ຕົວເລກ ຢູ່ທາງຫຼັງເທົ່ານັ້ນ
-            # ຖ້າມີຕົວອັກສອນປົນມາທາງຫຼັງຕົວເລກ (ເຊັ່ນ VITA002tyu) ຈະຖືກບລັອກທັນທີ
+            # 2. 🛡️ ປ້ອງກັນລະຫັດປົນເປື້ອນ (ເຊັ່ນ VITA002tyu): ບັງຄັບໃຫ້ມີແຕ່ ຕົວອັກສອນ/ຂີດຕໍ່ ຢູ່ທາງໜ້າ ແລະ ຕາມດ້ວຍ ຕົວເລກ ຢູ່ທາງຫຼັງ
             if not re.match(r'^([A-Z-]*)([0-9]+)$', clean_id):
                 return JsonResponse({
                     'success': False,
                     'message': '⚠️ ຮູບແບບລະຫັດບໍ່ຖືກຕ້ອງ! ຫ້າມມີຕົວອັກສອນອື່ນປົນປອມ (编号格式错误)'
                 })
 
-            # 3. ດຶງເອົາສະເພາະຕົວເລກອອກມາ (ເຊັ່ນ: "VITA002" -> "002", "011" -> "011", "2" -> "2")
+            # 3. ດຶງເອົາສະເພາະຕົວເລກອອກມາ (ເຊັ່ນ: "VITA011" -> "011")
             numeric_id = ''.join(re.findall(r'\d+', clean_id))
             if not numeric_id:
                 return JsonResponse({
@@ -295,23 +297,24 @@ def check_registration_api(request, registration_id=None):
                     'message': '⚠️ ບໍ່ພົບຕົວເລກໃນລະຫັດ! (编号格式错误)'
                 })
 
-            # 4. ຈັດ Format ເລກໃຫ້ເປັນ 3 ຫຼັກ (ເຊັ່ນ: ເລກ 2 ຈະກາຍເປັນ "002") ເພື່ອໃຫ້ຕົງກັບ STUDENT CODE
+            # 4. ຈັດ Format ເລກໃຫ້ເປັນ 3 ຫຼັກ (ເຊັ່ນ: ເລກ 11 ໃຫ້ກາຍເປັນ "011") ເພື່ອໃຫ້ຕົງກັບ STUDENT CODE
             formatted_number = f"{int(numeric_id):03d}" 
 
-            # 5. คົ້ນຫາແບບຕົງເປະ 100% (__exact) ກັບ STUDENT CODE ໃນຖານຂໍ້ມູນ
-            # ປ່ຽນ student_code ໃຫ້ກົງກັບ Field ແທ້ໃນ Model ຂອງທ່ານ
+            # 5. 💡 ບັງຄັບຄົ້ນຫາແບບຕົງເປະ 100% (__exact) ຈາກ Column student_code
+            # ປ່ຽນ 'student_code' ໃຫ້ເປັນຊື່ field ຕົວຈິງໃນ Model ຂອງທ່ານ
             student = FormResponse.objects.get(student_code__exact=f"VITA{formatted_number}")
 
-            # 6. ດຶງຄ່າຊັ້ນຮຽນປັດຈຸບັນມາຈາກ Database ໂດຍກົງ
+            # 6. 💡 ດຶງຄ່າຊັ້ນຮຽນປັດຈຸບັນມາຈາກ Database ໂດຍກົງ (ມໍ 5 ອອກ ມໍ 5, ມໍ 7 ອອກ ມໍ 7)
             grade_display = getattr(student, 'current_grade', '-')
 
+            # 7. ສ້າງຊຸດຂໍ້ມູນ JSON ສົ່ງກັບໄປຫາ Frontend
             data = {
                 'success': True,
                 'name': student.full_name,
                 'name_eng': student.name_Chinese,
                 'birthday': student.date_of_birth,
                 'From_school': student.organization,
-                'status_text': "ລົງທະບຽນແລ້ວ / 已註冊",  
+                'status_text': "ລົງທະບຽນແລ້ວ / 已註冊",  # ສະແດງຂໍ້ຄວາມນີ້ຄົງທີ່ທັງໝົດ
                 'grade_text': grade_display if grade_display else '-',
                 'image_url': student.image.url if hasattr(student, 'image') and student.image else None
             }
