@@ -8,19 +8,82 @@ from myapp.models import Subscription
 from .forms import RegistrationForm
 from .models import FormResponse
 import xlwt
+from django.shortcuts import render
+from .models import FormResponse, Subject
+from django.db.models import Q
+
+from .models import FormResponse, Subject
+
+from django.shortcuts import render
+from .models import FormResponse, Subject
+from django.db.models import Q
+
+from django.contrib import messages
+from django.contrib.auth import authenticate
+from django.contrib.admin.forms import AdminAuthenticationForm
+from django.contrib.auth.views import LoginView
+
+# 💡 ສ້າງ Class ຫຸ້ມລະບົບ Login ຂອງ Admin ເພື່ອເພີ່ມການກວດສອບ
+class CustomAdminLoginView(LoginView):
+    form_class = AdminAuthenticationForm
+    template_name = 'admin/login.html' # ບັງຄັບໃຫ້ໃຊ້ Template ຂອງ Admin
+
+    def form_invalid(self, form):
+        # 🔥 ດັກຈັບເວລາລະຫັດຜ່ານຜິດ ຫຼື ບໍ່ມີສິດເປັນ Admin ແລ້ວສົ່ງຂໍ້ຄວາມເຕືອນ
+        messages.error(self.request, 'ຊື່ຜູ້ໃຊ້ ຫຼື ລະຫັດຜ່ານ Admin ບໍ່ຖືກຕ້ອງ! (管理员用户名หรือ密码错误)')
+        return super().form_invalid(form)
 
 
 def home(request):
-    # ດຶງຂໍ້ມູນຜູ້ໃຊ້ ແລະ ວິຊາທັງໝົດ ອອກມາລຽງຕາມ ID
-    all_users = FormResponse.objects.all().order_by('id')
+    # 1. ຮັບຄ່າຄຳຄົ້ນຫາ, ສົກຮຽນ ແລະ Action (ເພີ່ມ action ເຂົ້າມາ)
+    search_query = request.GET.get('search', '')
+    school_year_query = request.GET.get('school_year', '')
+    action = request.GET.get('action', '')  # 🔥 ເພີ່ມແຖວນີ້ເພື່ອເຊັກປຸ່ມກົດ
+
+    # 2. ເລີ່ມຕົ້ນດຶງຂໍ້ມູນທັງໝົດອອກມາລຽງຕາມ ID
+    users_queryset = FormResponse.objects.all().order_by('id')
     all_subjects = Subject.objects.all().order_by('id')
-    
-    # ສົ່ງຂໍ້ມູນໄປທີ່ Template ໜ້າ home.html
+
+    # 3. ລະບົບກັ່ນຕອງຂໍ້ມູນ (Filter) ຕາມຊ່ອງຄົ້ນຫາ
+    if search_query:
+        users_queryset = users_queryset.filter(
+            Q(full_name__icontains=search_query) |
+            Q(organization__icontains=search_query) |
+            Q(phone_number__icontains=search_query) |
+            Q(district__icontains=search_query) |
+            Q(province1__icontains=search_query)
+        )
+
+    # 4. ກັ່ນຕອງສົກຮຽນ ໂດຍອ້າງອີງຈາກ "ປີ" ຂອງຟີວ timestamp
+    if school_year_query:
+        if school_year_query == '2027':
+            users_queryset = users_queryset.filter(timestamp__year__in=[2027])
+        elif school_year_query == '2026':
+            users_queryset = users_queryset.filter(timestamp__year__in=[2026])
+        elif school_year_query == '2025':
+            users_queryset = users_queryset.filter(timestamp__year__in=[2025])
+        elif school_year_query == '2024':
+            users_queryset = users_queryset.filter(timestamp__year__in=[2024])
+
+    # 5. ນັບຈຳນວນນັກສຶກສາທີ່ຖືກກັ່ນຕອງແລ້ວ
+    total_students_count = users_queryset.count()
+
+    # 6. ສ້າງ Context ຂໍ້ມູນ
     context = {
-        'users': all_users,
-        'subjects': all_subjects,  # ປ່ຽນເປັນ 'subjects' ເພື່ອໃຫ້ເປັນພຫູພົດ ເຂົ້າໃຈງ່າຍ
+        'users': users_queryset,
+        'subjects': all_subjects,
+        'total_count': total_students_count,
+        'search_query': search_query,
+        'school_year_query': school_year_query,
     }
+
+    # 🔥 7. ຈຸດແຍກໜ້າ: ຖ້າມີການສົ່ງ ?action=print ມາໃຫ້ເປີດໜ້າ CV ທັງໝົດ, ຖ້າບໍ່ມີໃຫ້ເປີດໜ້າໂຮມປົກກະຕິ
+    if action == 'print':
+        return render(request, 'view_all_cv.html', context)
+        
     return render(request, 'home.html', context)
+
+
 
 
 def about(request):
@@ -48,7 +111,6 @@ def subscription_done(request):
     return render(request, 'subscription_done.html')
 
 
-
 def preview_all(request):
     return render(request, 'preview_all.html')
 
@@ -64,12 +126,10 @@ def subject_detail(request, subject_id):
     return render(request, 'myapp/subject_detail.html', context)
 
 
-
 def cv_detail(request, sub_id):
     one_sub =FormResponse.objects.get(id=sub_id)
-    context = {'sub1': one_sub}
+    context = {'user': one_sub}
     return render(request, 'myapp/Create_CV.html', context)
-
 
 
 def studyimages(request):
@@ -79,7 +139,6 @@ def studyimages(request):
 def export_subscriptions_xls(request):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="subscriptions.xls"'
-
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('Subscriptions')
 
@@ -107,21 +166,126 @@ def export_subscriptions_xls(request):
     return response
 
 
+# views.py
+from django.shortcuts import render, redirect
+from django.contrib import messages  # 💡 1. ຕ້ອງອິມພອດ messages ມາຊ່ວຍແຈ້ງເຕືອນ
+from .forms import RegistrationForm
+
+from django.shortcuts import render, redirect
+from .forms import RegistrationForm  # ປ່ຽນເປັນຊື່ຟອມຂອງທ່ານ
+from django.shortcuts import render, redirect
+from .forms import RegistrationForm  # ປ່ຽນເປັນຊື່ຟອມຂອງທ່ານ
+
+import base64
+import uuid  # ເພີ່ມເຂົ້າມາເພື່ອຕັ້ງຊື່ຮູບໃຫ້ບໍ່ຊ້ຳກັນ
+from django.shortcuts import render, redirect
+from django.core.files.base import ContentFile
+from .forms import RegistrationForm  # ປ່ຽນເປັນຊື່ຟອມຂອງທ່ານ
+
+import base64
+import uuid
+from django.shortcuts import render, redirect
+from django.core.files.base import ContentFile
+from .forms import RegistrationForm  # ປ່ຽນເປັນຊື່ຟອມຂອງທ່ານ
+
+import base64
+import uuid
+from django.shortcuts import render, redirect
+from django.core.files.base import ContentFile
+from .forms import RegistrationForm  # ປ່ຽນເປັນຊື່ຟອມຂອງທ່ານ
+import cv2
+import numpy as np
+import base64
+import uuid
+from django.shortcuts import render, redirect
+from django.core.files.base import ContentFile
+
+import base64
+import uuid
+from django.shortcuts import render, redirect
+from django.core.files.base import ContentFile
+
+import base64
+import uuid
+from django.core.files.base import ContentFile
+from django.shortcuts import render, redirect
+
+import base64
+import uuid
+from django.core.files.base import ContentFile
+from django.shortcuts import render, redirect
 
 def register_view(request):
+    custom_error = None
+    form_has_errors = "false"
+    
     if request.method == 'POST':
-        # ⚠️ ສໍາຄັນຫຼາຍ: ຕ້ອງມີ request.FILES ນຳ ເພື່ອຮັບໄຟລ໌ຮູບພາບ
-        form = RegistrationForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save() # ບັນທຶກຂໍ້ມູນ ແລະ ຮູບພາບລົງ Database ທັນທີ
-            return redirect('success_page') # ເມື່ອສຳເລັດໃຫ້ຂ້າມໄປໜ້າອື່ນ (ຫຼື ໜ້າເດີມ)
+        post_data = request.POST.copy()
+        form = RegistrationForm(post_data, request.FILES)
+        image_base64 = request.POST.get('image_base64')
+        img_bytes = None
+        ext = 'jpg'
+        
+        if image_base64 and ';base64,' in image_base64:
+            try:
+                format, imgstr = image_base64.split(';base64,')
+                ext = format.split('/')[-1]
+                img_bytes = base64.b64decode(imgstr)
+            except Exception as e:
+                print(f"Error decoding base64: {e}")
+                
+        if form.is_valid() and img_bytes:
+            obj = form.save(commit=False)
+            file_name = f"profile_{uuid.uuid4().hex[:8]}.{ext}"
+            obj.image.save(file_name, ContentFile(img_bytes), save=False)
+            
+            # 1. 💾 ບັນທຶກຂໍ້ມູນຮອບທີ 1 ເພື່ອເອົາເລກ ID ທີ່ແທ້ຈິງມາຈາກ SQLite ກ່ອນ
+            obj.save()
+            form.save_m2m()
+            
+            # 2. ⚡ ບັງຄັບໃຫ້ Python ເປັນຄົນສ້າງລະຫັດ VITA ຝັງລົງໄປເອງເລີຍ (ຕັດບັນຫາ Trigger ເຮັດວຽກບໍ່ທັນ)
+            # ມັນຈະເອົາ ID ມາເຮັດເປັນເລກ 3 ຫຼັກ ເຊັ່ນ ID = 59 -> VITA059
+            obj.student_code = f"VITA{obj.id:03d}"
+            
+            # 3. 💾 ບັນທຶກທັບລົງໄປຖານຂໍ້ມູນອີກຮອບໜຶ່ງ ເພື່ອອັບເດດລະຫັດໃຫ້ຊົວຣ໌
+            obj.save(update_fields=['student_code'])
+            
+            # 4. 🚀 ສົ່ງ ID ໄປຫາໜ້າ Success ຜ່ານ URL Parameter 
+            return redirect(f'/success/?student_id={obj.id}') 
+        else:
+            form_has_errors = "true"
+            if not img_bytes:
+                custom_error = "❌ ກະລຸນາເລືອກ ແລະ ຕັດຮູບພາບໃບໜ້າ 3x4 ຂອງທ່ານ."
     else:
         form = RegistrationForm()
         
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'register.html', {
+        'form': form,
+        'custom_error': custom_error,
+        'form_has_errors': form_has_errors
+    })
 
+
+# 🎯 ຟັງຊັນໜ້າ Success: ດຶງ ID ຈາກ URL ມາ Query ຫາຄ່າ student_code ຕົວຈິງ
 def success_view(request):
-    return render(request, 'success.html')
+    db_student_id = request.GET.get('student_id', None)
+    actual_student_code = None
+    
+    if db_student_id:
+        try:
+            # 🔄 ດຶງ Model ມາຈາກ Form ໂດຍກົງ ເພື່ອປ້ອງກັນບັນຫາຊື່ Model ຜິດພາດ
+            ModelClass = RegistrationForm.Meta.model
+            
+            # 🔍 Query ໄປຄົ້ນຫາຂໍ້ມູນແຖວນັ້ນໃນ Database ໃໝ່ສົດໆ ໂດຍໃຊ້ ID
+            student_obj = ModelClass.objects.get(id=db_student_id)
+            
+            # ດຶງເອົາຄ່າ student_code ທີ່ຖືກບັນທຶກໄວ້ໃນ SQLite ອອກມາ (ເຊັ່ນ: VITA059)
+            actual_student_code = student_obj.student_code
+        except Exception as e:
+            print(f"❌ Error querying student_code: {e}")
+        
+    # ⚠️ ສຳຄັນທີ່ສຸດ: ສົ່ງຄ່າຕົວແປ 'student_code' (ຊື່ຕ້ອງກົງກັບໃນ HTML ເປະໆ)
+    return render(request, 'success.html', {'student_code': actual_student_code})
 
 
 

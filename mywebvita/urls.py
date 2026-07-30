@@ -18,12 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static  
+from myapp.views import CustomAdminLoginView # 🔥 ເພີ່ມແຖວນີ້ເຂົ້າໄປ (ແຖວທີ 21)
 
 admin.site.site_header="Vita Vocational College"
 admin.site.site_title = 'VVC'
 admin.site.index_title = 'AIP WebAdminVITACOLLEGE'
 
 urlpatterns = [
+    path('admin/login/', CustomAdminLoginView.as_view(), name='admin_login'),
     path('admin/', admin.site.urls),
     path('', include("myapp.urls")),
 ]

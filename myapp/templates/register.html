@@ -3,7 +3,14 @@
 {% block site_title %}ລົງທະບຽນ |{% endblock %}
 
 {% block content %}
+<!-- ໂຫຼດ Library ປະມວນຜົນໃບໜ້າຂະໜາດນ້ອຍ ໄວ ແລະ ບໍ່ເຮັດໃຫ້ເວັບຊ້າ -->
+
+
+
 <style>
+    html, body, p, span, h1, h2, h3, h4, h5, h6, a, button, input, select, textarea, div, th, td, table, b, strong, li, ul {
+    font-family: 'Phetsarath OT', sans-serif !important;
+}
     /* ------------------------------------------------------------- */
     /* ໂຄດ CSS ຫຼັກທີ່ຮອງຮັບທຸກໜ້າຈໍ (Responsive Base) */
     /* ------------------------------------------------------------- */
@@ -12,7 +19,8 @@
         margin: 10px auto;
         padding: 30px;
         font-family: 'Noto Sans Lao', sans-serif;
-   
+        margin-top: -70px !important;
+        margin-left: -10px !important;
     }
 
     .form-header {
@@ -36,7 +44,7 @@
     }
 
     .form-note {
-        color: #e53e3e;
+        color: #0400d3;
         font-size: 14px;
         margin-top: 10px;
     }
@@ -495,10 +503,10 @@ function previewImage(input) {
 <div class="form-page-container">
     <!-- ສ່ວນຫົວຟອມ -->
     <div class="form-header">
-        <img src="{% static 'images/LOGO.png' %}" class="logo-img" alt="Logo">
-        <h3 class="form-title">ປະກອບແບບຟຼອມປະຫວັດຜູ້ໄດ້ທືນ CV</h3>
-        <h4 class="form-title" style="font-size: 16px; color: #718096;">Student Inquiry Form palee center</h4>
-        <p class="form-note">* ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ</p>
+        <!-- <img src="{% static 'images/LOGO.png' %}" class="logo-img" alt="Logo"> -->
+        <h3 class="form-title">ແບບຟຼອມປະຫວັດຜູ້ໄດ້ທືນ Curriculum Vitae </h3>
+        <h4 class="form-title" style="font-size: 16px; color: #718096;">Student Scholarship for palee school</h4>
+        <p class="form-note">* ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ, ເພື່ອທີ່ຈະໄດ້ຮັບການພິຈາລະນາໃນການຮັບທືນ. 請完整填寫信息，以便我們審核您的資助申請。</p>
     </div>
 
     <!-- ສະແດງຂໍ້ຜິດພາດຂອງຟອມ -->
@@ -519,7 +527,9 @@ function previewImage(input) {
 
     <!-- ເລີ່ມຕົ້ນຟອມ -->
         {% csrf_token %}
-<form method="POST" action="{% url 'register_page' %}" enctype="multipart/form-data">
+    <!-- 🟢 ແບບທີ່ຖືກຕ້ອງ: ຕ້ອງມີ enctype ທຸກຄັ້ງທີ່ມີການອັບໂຫລດຮູບ -->
+<form method="POST" action="{% url 'register_page' %}" enctype="multipart/form-data" id="registrationForm">
+
  <!-- ສໍາຄັນຫຼາຍ: ຕ້ອງເພີ່ມ enctype="multipart/form-data" ໃສ່ຟອມຫຼັກຂອງທ່ານ -->
     {% csrf_token %}
   <fieldset class="form-section">
@@ -597,44 +607,238 @@ function previewImage(input) {
     }
 </style>
 
-<!-- 📝 ສ່ວນຂອງໂຄງສ້າງ HTML -->
-    <div class="image-upload-wrapper">
-        <label class="preview-label">ຮູບໂປຣໄຟລ໌ (Image Preview)</label>      
-        <!-- ເມື່ອກົດໃສ່ກ່ອງນີ້ ຈະໄປເອີ້ນໃຫ້ Input ໄຟລ໌ເຮັດວຽກ -->
-        <div class="image-preview-container" id="preview-box" onclick="document.getElementById('image-input').click();">
-           <!-- 🟢 ເພີ່ມ capture="user" ເພື່ອສັ່ງໃຫ້ມືຖືເປີດກ້ອງໜ້າຂຶ້ນມາຖ່າຍຮູບສົດທັນທີ -->   
-            <!-- ຂໍ້ຄວາມ ແລະ ໄອຄອນກ້ອງ (ຈະຫາຍໄປເມື່ອມີຮູບ) -->
-            <div id="preview-placeholder" class="upload-placeholder">
-                <div class="upload-icon">📷</div>
-                <div class="upload-text">ຄລິກທີ່ນີ້ເພື່ອຖ່າຍຮູບ</div>
-                <p class="upload-text text-muted">ຫຼື ເລືອກຮູບຂະໜາດ 3x4</p>
-            </div>
-            
-            <!-- ແທັກສະແດງຮູບພາບຕົວຢ່າງ -->
-            <img id="image-view" src="#" alt="ຮູບຕົວຢ່າງຂອງທ່ານ">
+<div class="image-upload-wrapper" style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+    <!-- 📸 ກ່ອງສະແດງຮູບພາບ 3x4 -->
+    <div class="image-preview-container" id="preview-box" onclick="document.getElementById('image-input').click();" style="position: relative; width: 150px; height: 200px; border: 2px dashed #0d6efd; border-radius: 12px; display: flex; align-items: center; justify-content: center; text-align: center; cursor: pointer; background-color: #f8f9fa; overflow: hidden;">
+        
+        <!-- ຂໍ້ຄວາມ ແລະ ໄອຄອນກ້ອງ (ຈະຊ່ອນເມື່ອມີຮູບ) -->
+        <div id="preview-placeholder" class="upload-placeholder">
+            <div class="upload-icon" style="font-size: 28px; margin-bottom: 5px;">📷</div>
+            <div class="upload-text" style="font-size: 14px; font-weight: bold;">Click Camera</div>
+            <p class="upload-text text-muted" style="font-size: 11px; margin: 4px 0 0 0; color: #6c757d;">相機 ຫຼື ເລືອກຮູບ 3x4</p>
         </div>
 
-        <!-- ແທັກ Input ຮັບໄຟລ໌ (ຊ່ອນໄວ້ບໍ່ໃຫ້ເຫັນ) 
-            ⚠️ ປ່ຽນ name="image" ໃຫ້ກົງກັບຟິວໃນ models.py ຂອງທ່ານເດີ້ -->
-        <input type="file" id="image-input" name="image" accept="image/*" style="display: none;" onchange="previewImage(this);">
+        <!-- ແທັກສະແດງຮູບພາບ -->
+        <img id="image-view" src="" alt="ຮູບຕົວຢ່າງ" style="display: none; width: 100%; height: 100%; object-fit: cover;">
     </div>
+
+    <!-- 💡 ບ່ອນສະແດງຂໍ້ຄວາມເຕືອນສີແດງ -->
+    <div id="error-message" style="color: #dc3545; font-size: 13px; font-weight: bold; margin-top: 10px; text-align: center; max-width: 200px; min-height: 18px;"></div>
+
+    <!-- 🚨 🟢 ແກ້ໄຂ: ໃຫ້ເຫຼືອແທັກ Input ຕົວຈິງພຽງແຖວດຽວທີ່ມີ name="image" ແລະ ຜູກຟັງຊັນ handleImageUpload ໃຫ້ກົງກັບ Script ທາງລຸ່ມ -->
+    <input type="file" id="image-input" name="image" accept="image/*" style="display: none;" onchange="handleImageUpload(this);">
+
+    <!-- 🚨 🟢 ຕ້ອງມີແທັກ Hidden ໂຕນີ້ວາງໄວ້ໃນຟອມນຳ ເພື່ອສົ່ງຄ່າ Base64 ໄປໃຫ້ views.py ຕອນຟອມມີ Error -->
+    <input type="hidden" name="image_base64" id="image-base64">
+    <input type="hidden" id="django-errors-trigger" value="{% if form.errors %}true{% else %}false{% endif %}">
+</div>
+
+<script>
+// 📸 1. ຟັງຊັນຈັດການເລືອກຮູບ / ຖ່າຍກ້ອງສົດ -> ກວດສອບໂຄງສ້າງຮູບເຄິ່ງໂຕ 3x4 (ໄວທີ່ສຸດ 0.001 ວິນາທີ)
+function handleImageUpload(input) {
+    const imageView = document.getElementById('image-view');
+    const previewPlaceholder = document.getElementById('preview-placeholder');
+    const imageBase64Input = document.getElementById('image-base64');
+    const errorMessage = document.getElementById('error-message');
+    const previewBox = document.getElementById('preview-box');
+
+    // ດຶງປຸ່ມ Submit ມາເພື່ອຄວບຄຸມການລັອກ
+    const submitBtn = document.querySelector('button[type="submit"]') || document.querySelector('input[type="submit"]');
+
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        if (errorMessage) errorMessage.innerText = '';
+
+        // 🔒 [ຊັ້ນທີ 1]: ບ໋ອກຮູບກ້ອງສົດທົ່ວໄປ ທີ່ບໍ່ໄດ້ຫຍໍ້ສັດສ່ວນ 3x4 ມາ (ຂະໜາດໄຟລ໌ຕ້ອງບໍ່ເກີນ 1.5MB)
+        if (file.size > 1.5 * 1024 * 1024) { 
+            if (errorMessage) errorMessage.innerText = '❌ ບໍ່ຜ່ານ! ຕ້ອງເປັນຮູບຖ່າຍເຄິ່ງໂຕຫາໃບໜ້າ 3x4 ເທົ່ານັ້ນ ❌ 不接受！必須是僅包含半身和臉部的 3x4 照片。';
+            clearImageInput(submitBtn);
+            return;
+        }
+
+        // ກວດສອບປະເພດໄຟລ໌
+        if (!file.type.startsWith('image/')) {
+            if (errorMessage) errorMessage.innerText = '❌ ກະລຸນາເລືອກໄຟລ໌ຮູບພາບເທົ່ານັ້ນ!';
+            clearImageInput(submitBtn);
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const base64Data = e.target.result;
+
+            const img = new Image();
+            img.src = base64Data;
+            img.onload = function() {
+                
+                // 🔒 [ຊັ້ນທີ 2]: ບັງຄັບໃຫ້ເປັນຮູບຊົງຕັ້ງ (ຮູບເຮືອນ ຫຼື ວິວແນວນອນ ຈະໂດນບ໋ອກທັນທີ)
+                if (img.width >= img.height) {
+                    if (errorMessage) errorMessage.innerText = '❌ ບໍ່ຜ່ານ! ຕ້ອງເປັນຮູບຖ່າຍເຄິ່ງໂຕຫາໃບໜ້າ 3x4 ເທົ່ານັ້ນ ❌ 不接受！必須是僅包含半身和臉部的 3x4 照片。';
+                    clearImageInput(submitBtn);
+                    return;
+                }
+
+                // 🔍 [ຊັ້ນທີ 3]: ສະແກນໂຄງສ້າງຮູບຖ່າຍເຄິ່ງໂຕ (Symmetry & Density Scan)
+                try {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 100; 
+                    canvas.height = 133; // ບັງຄັບຫຍໍ້ເປັນສັດສ່ວນ 3x4 ເພື່ອສະແກນ
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                    // ດຶງຂໍ້ມູນພິກເຊວ 3 ຈຸດສຳຄັນ: ມຸມຊ້າຍເທິງ, ມຸມຂວາເທິງ (ພື້ນຫຼັງ) ແລະ ເຂດກາງລຸ່ມ (ຊ່ວງເອິກ/ເສື້ອ)
+                    const topLeft = ctx.getImageData(10, 10, 15, 15).data;
+                    const topRight = ctx.getImageData(75, 10, 15, 15).data;
+                    const bottomCenter = ctx.getImageData(40, 110, 20, 15).data; // ເຂດບ່າໄຫຼ່/ເອິກ
+                    
+                    // ຟັງຊັນຄຳນວນຫາຄ່າສະເລ່ຍສີ RGB ແລະ ຄວາມຜັນຜວນ (Texture)
+                    function analyzeZone(data) {
+                        let r = 0, g = 0, b = 0, total = 0;
+                        for (let i = 0; i < data.length; i += 4) {
+                            r += data[i]; g += data[i+1]; b += data[i+2]; total++;
+                        }
+                        const avgR = r / total; const avgG = g / total; const avgB = b / total;
+                        const bright = (avgR + avgG + avgB) / 3;
+
+                        let variance = 0;
+                        for (let i = 0; i < data.length; i += 4) {
+                            const pixelBright = (data[i] + data[i+1] + data[i+2]) / 3;
+                            variance += Math.pow(pixelBright - bright, 2);
+                        }
+                        return { r: avgR, g: avgG, b: avgB, bright: bright, texture: variance / total };
+                    }
+
+                    const leftBg = analyzeZone(topLeft);
+                    const rightBg = analyzeZone(topRight);
+                    const bodyZone = analyzeZone(bottomCenter);
+
+                    // 1. ຄຳນວນຄວາມແຕກຕ່າງຂອງສີພື້ນຫຼັງ ມຸມຊ້າຍ ແລະ ຂວາ (ຕ້ອງເປັນສີດຽວກັນ)
+                    const bgDiff = Math.sqrt(
+                        Math.pow(leftBg.r - rightBg.r, 2) +
+                        Math.pow(leftBg.g - rightBg.g, 2) +
+                        Math.pow(leftBg.b - rightBg.b, 2)
+                    );
+
+                    // 2. ຄຳນວນຄວາມແຕກຕ່າງລະຫວ່າງ ພື້ນຫຼັງ ກັບ ຊ່ວງຕົວເອິກ (ຮູບເຄິ່ງໂຕ ຕົວເສື້ອຕ້ອງຕັດກັບພື້ນຫຼັງ)
+                    const bodyDiff = Math.abs(leftBg.bright - bodyZone.bright);
+
+                    console.log("--- ຜົນສະແກນໂຄງສ້າງ 3x4 ---");
+                    console.log("ຄວາມຄືກັນຂອງພື້ນຫຼັງ (ຊ້າຍ-ຂວາ):", bgDiff);
+                    console.log("ຄວາມແຕກຕ່າງ ພື້ນຫຼັງ ກັບ ຕົວເສື້ອ:", bodyDiff);
+                    console.log("ລວດລາຍພື້ນຫຼັງ:", leftBg.texture, rightBg.texture);
+
+                    // ❌ [ເງື່ອນໄຂບ໋ອກເດັດຂາດ]:
+                    // - ຖ້າພື້ນຫຼັງຊ້າຍຂວາຄົນລະສີ (bgDiff > 35) -> ຮູບເຮືອນ/ຮູບວິວ
+                    // - ຖ້າພື້ນຫຼັງກັບຊ່ວງເອິກເປັນສີດຽວກັນກົມກືນ (bodyDiff < 15) -> ຮູບຢືນເຕັມໂຕເຫັນແຕ່ໄກ ຫຼື ຮູບວັດຖຸລຽບໆ
+                    // - ຖ້າມີລວດລາຍຢູ່ແຈຮູບຫຼາຍເກີນ (texture > 85) -> ຮູບຫຼັງຄາເຮືອນ, ຝາກຳແພງ
+                    if (bgDiff > 35 || bodyDiff < 15 || leftBg.texture > 85 || rightBg.texture > 85) {
+                        if (errorMessage) errorMessage.innerText = '❌ ບໍ່ຜ່ານ! ຕ້ອງເປັນຮູບຖ່າຍເຄິ່ງໂຕຫາໃບໜ້າ 3x4 ເທົ່ານັ້ນ ❌ 不接受！必須是僅包含半身和臉部的 3x4 照片。';
+                        clearImageInput(submitBtn);
+                        return;
+                    }
+
+                } catch (canvasErr) {
+                    console.error("Scan error:", canvasErr);
+                }
+
+                // 🟢 ຖ້າຖືກຕ້ອງຕາມໂຄງສ້າງຮູບເຄິ່ງໂຕ: ໃຫ້ໂຫຼດເຂົ້າກ່ອງທັນທີ 0.001 ວິນາທີ
+                if (errorMessage) errorMessage.innerText = '';
+                if (imageView) {
+                    imageView.src = base64Data;
+                    imageView.style.display = 'block';
+                }
+                if (previewPlaceholder) previewPlaceholder.style.display = 'none';
+                if (imageBase64Input) imageBase64Input.value = base64Data;
+                if (submitBtn) submitBtn.disabled = false; // ເປີດປຸ່ມ Submit
+
+                localStorage.setItem('persistent_3x4_img', base64Data);
+                if (previewBox) previewBox.style.borderColor = "#28a745"; // ຂອບສີຂຽວ
+            };
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+// 🧼 2. ຟັງຊັນລ້າງຄ່າ ແລະ Lock ປຸ່ມ Submit (ຕອນຮູບບໍ່ຜ່ານ)
+function clearImageInput(submitBtn) {
+    document.getElementById('image-input').value = '';
+    document.getElementById('image-base64').value = '';
+    if (document.getElementById('image-view')) document.getElementById('image-view').style.display = 'none';
+    if (document.getElementById('preview-placeholder')) document.getElementById('preview-placeholder').style.display = 'block';
+    if (document.getElementById('preview-box')) document.getElementById('preview-box').style.borderColor = "#dc3545"; // ຂອບສີແດງ
+    localStorage.removeItem('persistent_3x4_img');
+    
+    if (submitBtn) submitBtn.disabled = true; // 🔒 ບັງຄັບລັອກປຸ່ມ Submit
+}
+
+// 🔄 3. ຄຳສັ່ງຈັດການ Cache ເມື່ອ Django Form ມີ Error (ສ່ວນເດີມຂອງທ່ານ)
+window.addEventListener('DOMContentLoaded', () => {
+    const cachedImage = localStorage.getItem('persistent_3x4_img');
+    const imageView = document.getElementById('image-view');
+    const previewPlaceholder = document.getElementById('preview-placeholder');
+    const imageBase64Input = document.getElementById('image-base64');
+    const previewBox = document.getElementById('preview-box');
+    const submitBtn = document.querySelector('button[type="submit"]') || document.querySelector('input[type="submit"]');
+
+    const djangoTrigger = document.getElementById('django-errors-trigger');
+    const backendHasErrors = djangoTrigger && djangoTrigger.value === "true";
+    const isPageReloaded = performance.getEntriesByType("navigation")?.[0]?.type === "reload" || (window.performance && window.performance.navigation.type === 1);
+
+    if (cachedImage && cachedImage !== "" && (backendHasErrors || isPageReloaded)) {
+        if (imageView) { imageView.src = cachedImage; imageView.style.display = 'block'; }
+        if (previewPlaceholder) previewPlaceholder.style.display = 'none';
+        if (imageBase64Input) imageBase64Input.value = cachedImage;
+        if (previewBox) previewBox.style.borderColor = "#28a745";
+        if (submitBtn) submitBtn.disabled = false;
+    } else {
+        localStorage.removeItem('persistent_3x4_img');
+        if (submitBtn) submitBtn.disabled = true; // ບັງຄັບປິດປຸ່ມ ຖ້າຍັງບໍ່ທັນເລືອກຮູບ
+    }
+});
+</script>
 
 
         <!-- ຂໍ້ມູນສ່ວນຕົວ -->
       
-            <legend>ຂໍ້ມູນສ່ວນຕົວ</legend>
-            <div class="form-row">
-                <div class="form-group">
-                    {{ form.full_name.label_tag }}{{ form.full_name }}
-                </div>
-                <div class="form-group">
-                    {{ form.name_Chinese.label_tag }}{{ form.name_Chinese }}
-                </div>
-                
-                <div class="form-group">
-                    {{ form.organization.label_tag }}{{ form.organization }}
-                </div>
-            </div>
+           <legend>ຂໍ້ມູນສ່ວນຕົວ</legend>
+<div class="form-row">
+    <div class="form-group">
+        {{ form.full_name.label_tag }}{{ form.full_name }}
+    </div>
+    
+    <div class="form-group">
+        {{ form.name_Chinese.label_tag }}{{ form.name_Chinese }}
+    </div>
+    
+    <div class="form-group">
+        {{ form.date_of_birth.label_tag }}{{ form.date_of_birth }}
+    </div>
+    
+    <div class="form-group">
+        {{ form.ethnicity.label_tag }}{{ form.ethnicity }}
+    </div>
+    
+    <!-- 💡 ປັບປຸງ: ຫໍ່ດ້ວຍ class="form-group" ເພື່ອໃຫ້ຮູບຮ່າງອອກມາງາມ ແລະ ຍາວສະເໝີກັນຄືໝູ່ ✅ -->
+    <div class="form-group" id="ethnicity-other-box" style="display: none;">
+        <label style="color: #1d4ed8;">ກະລຸນາພິມຊົນເຜົ່າຂອງທ່ານ:</label>
+        {{ form.ethnicity_other }}
+    </div>
+    
+    <div class="form-group">
+        {{ form.religion.label_tag }}{{ form.religion }}
+    </div>
+
+    <!-- 💡 ເພີ່ມເຕີມ: ກັນໄວ້ສຳລັບຊ່ອງກອກສາດສະໜາອື່ນໆ ໃຫ້ສະແດງຜົນງາມຄືກັນ ✅ -->
+    <div class="form-group" id="religion-other-box" style="display: none;">
+        <label style="color: #1d4ed8;">ກະລຸນາພິມສາສະໜາຂອງທ່ານ:</label>
+        {{ form.religion_other }}
+    </div>
+    
+    <div class="form-group">
+        {{ form.organization.label_tag }}{{ form.organization }}
+    </div>
+</div>
+
            
            <div class="form-row">
                  <div class="form-group">
@@ -644,7 +848,7 @@ function previewImage(input) {
                     {{ form.district.label_tag }}{{ form.district }}
                 </div>
                 <div class="form-group">
-                  
+                    {{ form.Village.label_tag }}{{ form.Village }}
                 </div>
                  <!-- 1. ກ່ອງເລືອກ Radio ຈົບ ຫຼື ບໍ່ຈົບ -->
 
@@ -666,16 +870,16 @@ function previewImage(input) {
 
             <!-- 2. ກ່ອງ Text ທີ່ຈະໃຫ້ໂຊ (ໃສ່ ID ໃຫ້ກົງກັບ JavaScript ແລະ ເຊື່ອງໄວ້ກ່ອນ) -->
             <div class="form-group mb-3" id="current-grade-wrapper" style="display: none;">
-                <label class="form-label text-danger fw-bold">ຖ້າບໍ່ຈົບ, ປັດຈຸບັນຮຽນຢູ່ຊັ້ນໃດ? (請註明年級):</label>
+                <label class="form-label text-danger fw-bold">ຖ້າບໍ່ຈົບ, ຫຼັງຈາກເດືອນ9 ສົກ2026 ນີ້ນ້ອງຮຽນຊັ້ນໃດ? (請註明年級):</label>
                 {{ form.current_grade }}
             </div>
 
             <fieldset class="form-section">
-            <legend>ວິຊາທີ່ເລຶອກຮຽນ (选修课程)</legend>
-            
+            <legend>ວິຊາເລືອກຮຽນທີ່ສູນປາລີ (选修课程)</legend>       
             <!-- 🟢 ໃຊ້ກ່ອງ div ທີ່ມີ class "custom-radio-group" ມາຄຸມແທັກ Django ໄວ້ -->
             <div class="custom-radio-group">
                 {{ form.subject_set }}
+                {{ form.subject_set.errors }}
             </div>
             </fieldset>
 
@@ -746,6 +950,157 @@ function previewImage(input) {
         toggleGradeInput();
     });
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const dobInput = document.querySelector('input[name="date_of_birth"]');
+    if (dobInput) {
+        dobInput.addEventListener('input', function (e) {
+            let v = this.value.replace(/\D/g, ''); // ລຶບໂຕອັກສອນທີ່ບໍ່ແມ່ນຕົວເລກອອກ
+            if (v.length > 8) v = v.substring(0, 8); // ຈຳກັດຄວາມຍາວບໍ່ໃຫ້ເກີນ 8 ໂຕ
+            
+            // ໃສ່ເຄື່ອງໝາຍ / ໃຫ້ອັດຕະໂນມັດເມື່ອພິມຮອດຕຳແໜ່ງ
+            if (v.length > 4) {
+                this.value = v.substring(0, 2) + '/' + v.substring(2, 4) + '/' + v.substring(4, 8);
+            } else if (v.length > 2) {
+                this.value = v.substring(0, 2) + '/' + v.substring(2, 4);
+            } else {
+                this.value = v;
+            }
+        });
+    }
+});
+</script>
+
+
+<script> 
+document.addEventListener("DOMContentLoaded", function () { 
+    // 1. ຈັດການສ່ວນ ຊົນເຜົ່າ (Ethnicity Other) 
+    const ethnicitySelect = document.querySelector('select[name="ethnicity"]'); 
+    const ethnicityOtherInput = document.querySelector('input[name="ethnicity_other"]'); 
+    const ethnicityOtherContainer = ethnicityOtherInput ? ethnicityOtherInput.closest('.form-group') || ethnicityOtherInput.parentElement : null; 
+
+    function toggleEthnicityOther() { 
+        if (ethnicitySelect && ethnicityOtherContainer) { 
+            if (ethnicitySelect.value === 'Other') { 
+                ethnicityOtherContainer.style.display = 'block'; // ໂຊຊ່ອງພິມ 
+                if (ethnicityOtherInput) {
+                    ethnicityOtherInput.setAttribute('required', 'required'); // ບັງຄັບໃຫ້ພິມ
+                    
+                    // 💡 ໂຟກັດ (Focus) ເອົາເຄີເຊີໄປຈັບຊ່ອງພິມອັດຕະໂນມັດ 
+                    setTimeout(function() {
+                        ethnicityOtherInput.focus();
+                    }, 150);
+                }
+            } else { 
+                ethnicityOtherContainer.style.display = 'none'; // ຊ່ອນຊ່ອງພິມ 
+                if(ethnicityOtherInput) {
+                    ethnicityOtherInput.value = ''; // ລ້າງຂໍ້ມູນ 
+                    ethnicityOtherInput.removeAttribute('required'); // ປົດການບັງຄັບ
+                }
+            } 
+        } 
+    } 
+
+    // 2. ຈັດການສ່ວນ ສາດສະໜາ (Religion Other) 
+    const religionSelect = document.querySelector('select[name="religion"]'); 
+    const religionOtherInput = document.querySelector('input[name="religion_other"]'); 
+    const religionOtherContainer = religionOtherInput ? religionOtherInput.closest('.form-group') || religionOtherInput.parentElement : null; 
+
+    function toggleReligionOther() { 
+        if (religionSelect && religionOtherContainer) { 
+            if (religionSelect.value === 'Other') { 
+                religionOtherContainer.style.display = 'block'; // ໂຊຊ່ອງພິມ 
+                if (religionOtherInput) {
+                    religionOtherInput.setAttribute('required', 'required'); // ບັງຄັບໃຫ້ພິມ
+                    
+                    // 💡 ໂຟກັດ (Focus) ເອົາເຄີເຊີໄປຈັບຊ່ອງພິມອັດຕະໂນມັດ
+                    setTimeout(function() {
+                        religionOtherInput.focus();
+                    }, 150);
+                }
+            } else { 
+                religionOtherContainer.style.display = 'none'; // ຊ່ອນຊ່ອງພິມ 
+                if(religionOtherInput) {
+                    religionOtherInput.value = ''; // ລ້າງຂໍ້ມູນ 
+                    religionOtherInput.removeAttribute('required'); // ປົດການບັງຄັບ
+                }
+            } 
+        } 
+    } 
+
+    // ຜູກ Event ເມື່ອມີການປ່ຽນແປງຄ່າໃນ Dropdown 
+    if (ethnicitySelect) ethnicitySelect.addEventListener('change', toggleEthnicityOther); 
+    if (religionSelect) religionSelect.addEventListener('change', toggleReligionOther); 
+
+    // ຣັນເທື່ອທຳອິດຫຼັງໂຫຼດໜ້າເວັບ (ກັນໄວ້) 
+    toggleEthnicityOther(); 
+    toggleReligionOther(); 
+}); 
+</script>
+<script>
+// 🧼 ຟັງຊັນຫຼັກ: ບັງຄັບລ້າງຂໍ້ມູນທຸກຟິວໃນຟອມ ແລະ ເຄຼຍ Cache ຮູບພາບທັງໝົດ
+function clearEntireFormAndCache() {
+    // 1. ບັງຄັບ Reset ຟອມ HTML ທຸກຟິວ (ຊື່, ວັນທີ, Dropdown, Radio, Checkbox ຈະກາຍເປັນຄ່າຫວ່າງທັນທີ)
+    const regForm = document.getElementById('registrationForm');
+    if (regForm) {
+        regForm.reset();
+    }
+
+    // 2. ລຶບ Cache ຮູບພາບ 3x4 ອອກຈາກເຄື່ອງຜູ້ໃຊ້ (LocalStorage)
+    localStorage.removeItem('persistent_3x4_img');
+    
+    // 3. ລ້າງຄ່າໃນ Input Hidden ທີ່ເກັບຂໍ້ມູນຮູບພາບ Base64
+    const imageBase64Input = document.getElementById('image-base64');
+    if (imageBase64Input) {
+        imageBase64Input.value = '';
+    }
+    
+    // 4. ເຊື່ອງກ່ອງສະແດງຮູບພາບໃຫ້ກັບໄປເປັນກ່ອງຫວ່າງສີຟ້າເລີ່ມຕົ້ນ
+    const imageView = document.getElementById('image-view');
+    const previewPlaceholder = document.getElementById('preview-placeholder');
+    const previewBox = document.getElementById('preview-box');
+    
+    if (imageView) {
+        imageView.src = '#';
+        imageView.style.display = 'none';
+    }
+    if (previewPlaceholder) {
+        previewPlaceholder.style.display = 'block';
+    }
+    if (previewBox) {
+        previewBox.style.borderColor = "#0d6efd"; // ກັບໄປເປັນສີຟ້າເລີ່ມຕົ້ນ
+    }
+
+    // 5. ເຊື່ອງກ່ອງຂໍ້ມູນພິເສດ (ຊົນເຜົ່າອື່ນໆ, ສາສະໜາອື່ນໆ, ຊັ້ນຮຽນ) ໃຫ້ກັບໄປເຊື່ອງຄືເກົ່າ
+    const ethOtherBox = document.getElementById('ethnicity-other-box');
+    const relOtherBox = document.getElementById('religion-other-box');
+    const gradeWrapper = document.getElementById('current-grade-wrapper');
+    
+    if (ethOtherBox) ethOtherBox.style.display = 'none';
+    if (relOtherBox) relOtherBox.style.display = 'none';
+    if (gradeWrapper) gradeWrapper.style.display = 'none';
+
+    console.log("🧼 ລະບົບໄດ້ທຳການລ້າງຂໍ້ມູນໃນຟອມ ແລະ Cache ຮູບພາບອອກທັງໝົດ 100% ແລ້ວ.");
+}
+
+// 🔄 ເຊັກຕອນທີ່ຜູ້ໃຊ້ກຳລັງຈະປິດໜ້າ, ປ່ຽນໜ້າ, ຫຼື ກົດປຸ່ມ Back ຖອຍຫຼັງ
+window.addEventListener('pagehide', clearEntireFormAndCache);
+
+// 🔄 ເຊັກຕອນໜ້າເວັບຖືກໂຫຼດຄືນ (ກັນບຣາວເຊີບາງໂຕດຶງຄ່າເກົ່າຈາກ Memory/bfcache ກັບມາໂຊ)
+window.addEventListener('pageshow', function(event) {
+    // ດຶງສະຖານະ Error ຈາກ Django
+    const errorTrigger = document.getElementById('django-errors-trigger');
+    const backendHasErrors = errorTrigger ? (errorTrigger.value === 'true') : false;
+
+    // event.persisted === true ໝາຍເຖິງໜ້າເວັບຖືກດຶງມາຈາກຄວາມຈຳ Browser (ເກີດຈາກການກົດ Back)
+    // ຖ້າເປັນການແບັກກັບມາໂດຍທີ່ຟອມປົກກະຕິ (ບໍ່ມີ error ຂອງ backend ຄ້າງຢູ່) ໃຫ້ລ້າງທັນທີ
+    if (event.persisted || !backendHasErrors) {
+        clearEntireFormAndCache();
+    }
+});
+</script>
+
 
 
 {% endblock %}

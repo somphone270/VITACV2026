@@ -9,7 +9,114 @@
     <link rel="stylesheet" href="{% static 'main65.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+   <style>
+    /* ==========================================================================
+   🎨 ບັງຄັບໃຊ້ຟອນຕ໌ Phetsarath OT ທັງເວັບໄຊ 100%
+   ========================================================================== */
 
+/* 1. ດຶງຟອນຕ໌ Phetsarath OT ມາຈາກ Google Fonts */
+@import url('https://googleapis.com');
+
+/* 2. ບັງຄັບໃຊ້ Phetsarath ກັບທຸກໆ Element (ຍົກເວັ້ນແທັກໄອຄອນ <i> ຂອງ Font Awesome) */
+html, body, p, span, h1, h2, h3, h4, h5, h6, a, button, input, select, textarea, div, th, td, table, b, strong, li, ul {
+    font-family: 'Phetsarath OT', sans-serif !important;
+}
+
+/* 3. [ກູ້ຄືນໄອຄອນ] ບັງຄັບໃຫ້ແທັກ <i> ຂອງ Font Awesome ໃຊ້ຟອນຕ໌ໄອຄອນຂອງມັນເອງ ເພື່ອບໍ່ໃຫ້ໄອຄອນຫາຍ */
+i, .fa, .fas, .far, .fab, .fa-solid, .fa-regular, [class^="fa-"], [class*=" fa-"] {
+    font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands', 'FontAwesome' !important;
+    font-weight: 900 !important;
+}
+
+/* 4. ຕັ້ງຄ່າ Layout ໜ້າເວັບ ແລະ ແກ້ໄຂບັນຫາສະຫຼະລາວເພ/ຕຳກັນ */
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    font-size: 18px !important; /* 💡 ປັບຂະໜາດຟອນຕ໌ພື້ນຖານຂອງເວັບໃຫ້ໃຫຍ່ຂຶ້ນ */
+    line-height: 1.8 !important; /* ເພີ່ມຄວາມສູງແຖວໃຫ້ສະຫຼະລາວເທີງ-ລຸ່ມ ມີພື້ນທີ່ສະແດງຜົນໄດ້ເຕັມທີ່ */
+}
+
+/* 5. 📊 ປັບແຕ່ງຕາຕະລາງ Excel Style ໃຫ້ສະແດງຜົນເຕັມຈໍ ແລະ ຊິດຊ້າຍ */
+.table-responsive { 
+    width: 100% !important; 
+    max-width: 100% !important; 
+    overflow-x: auto !important; 
+    -webkit-overflow-scrolling: touch; 
+    margin-top: 15px !important; 
+} 
+
+table { 
+    width: 100% !important; 
+    border-collapse: collapse !important; 
+    background-color: #ffffff !important; 
+} 
+
+table thead tr { 
+    background-color: #f3f3f3 !important; 
+    border-top: 1px solid #bbb !important; 
+    border-bottom: 2px solid #999 !important; 
+} 
+
+/* ບັງຄັບຊິດຊ້າຍທັງໝົດ */ 
+table th, 
+table td, 
+table th *, 
+table td * { 
+    text-align: left !important; 
+    text-align-last: left !important; 
+} 
+
+th { 
+    border: 1px solid #ccc !important; 
+    padding: 8px 12px !important; 
+    font-size: 13px !important; 
+    font-weight: 600 !important; 
+    color: #333333 !important; 
+    white-space: nowrap; 
+} 
+
+table tbody tr { 
+    background-color: #ffffff !important; 
+} 
+
+table tbody tr:hover { 
+    background-color: #e9eef4 !important; 
+} 
+
+td { 
+    border: 1px solid #d4d4d4 !important; 
+    padding: 8px 12px !important; 
+    font-size: 13px !important; 
+    color: #000000 !important; 
+    vertical-align: middle !important; 
+    white-space: normal !important; /* ແກ້ໄຂສະຫຼະລາວເພ */
+    word-break: break-word !important; 
+    overflow-wrap: break-word !important;
+} 
+
+/* ປັບແຕ່ງປຸ່ມ ວີວ CV */
+.btn-view-cv {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background-color: #00b074 !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    padding: 3px 8px !important;
+    font-size: 12px !important;
+    border-radius: 3px !important;
+    font-weight: 600 !important;
+}
+.btn-view-cv:hover {
+    background-color: #008f5d !important;
+}
+
+   </style>
     {% block head_extra %}{% endblock %}
   </head>
   <body class="w3-light-grey">

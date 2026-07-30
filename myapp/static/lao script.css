@@ -1,0 +1,41 @@
+/* 1. ດຶງຟອນຕ໌ພາສາລາວມາດຕະຖານ (Phetsarath ແລະ Noto Sans Lao) */
+@import url('https://googleapis.com');
+
+/* 2. ບັງຄັບໃຊ້ກັບທຸກ Element ແລະ ແກ້ໄຂບັນຫາ Layout */
+*, *::before, *::after {
+  box-sizing: border-box;
+  
+  /* ໃຊ້ Phetsarath ເປັນຫຼັກ ຫາກບໍ່ມີຈະດຶງ Noto Sans Lao ທີ່ອ່ານງ່າຍມາແທນ */
+  font-family: 'Phetsarath', 'Noto Sans Lao', sans-serif !important;
+  
+  /* ແກ້ບັນຫາສະຫຼະເທີງ-ລຸ່ມ ຕັດຂາດ ຫາກມີການກຳນົດຄວາມສູງແຖວ */
+  line-height: 1.6 !important; 
+  
+  /* ເພີ່ມໄລຍະຫ່າງລະຫວ່າງຕົວອັກສອນເລັກນ້ອຍ ໃຫ້ອ່ານງ່າຍຂຶ້ນ */
+  letter-spacing: 0.5px; 
+}
+
+/* 3. ຕັ້ງຄ່າໜ້າເວັບ (ຕາມໂຄ້ດຂອງທ່ານ) */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+  background-color: #6fbdb9;
+  
+  /* ເປີດໃຊ້ລະບົບຊ່ວຍຕັດຄຳອັດຕະໂນມັດຂອງ Browser ສໍາລັບພາສາລາວ */
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* 4. [ແຖມ] CSS ພິເສດສໍາລັບຫົວຂໍ້ ແລະ ຂໍ້ຄວາມຍາວໆ */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.4 !important; /* ຫົວຂໍ້ໃຊ້ຄວາມຫ່າງແຖວຫຼຸດລົງເລັກນ້ອຍເພື່ອຄວາມງາມ */
+  font-weight: 700; /* ເຮັດໃຫ້ຕົວໜາ */
+}
+
+p {
+  font-size: 16px; /* ຂະໜາດແນະນຳສໍາລັບຟອນຕ໌ລາວ ເພາະຫາກນ້ອຍກວ່ານີ້ຈະອ່ານຍາກ */
+  text-align: justify; /* ຈັດຂໍ້ຄວາມໃຫ້ສະເໝີທັງຊ້າຍແລະຂວາ ເຮັດໃຫ້ເວັບເບິ່ງເປັນລະບຽບ */
+}

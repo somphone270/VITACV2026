@@ -1,217 +1,315 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="lo">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login | VVC</title>
-  
-  <!-- 1. ປັບ Font ໃຫ້ໂຫຼດໄວຂຶ້ນແບບພິເສດ (Preconnect) -->
-  <link rel="preconnect" href="https://googleapis.com">
-  <link rel="preconnect" href="https://gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://googleapis.com/css2?family=Noto+Sans+Lao:wght@400;700&display=swap" media="print" onload="this.media='all'">
-  
-  <style>
-    :root {
-      --primary-color: #4a90e2;
-      --primary-hover: #357abd;
-      --bg-dark: #0f172a;
-      --text-main: #ffffff;
-      --text-muted: #94a3b8;
-      --input-bg: rgba(15, 23, 42, 0.6);
-      --border-color: rgba(255, 255, 255, 0.1);
-    }
+{% extends 'components/base.html' %} 
+{% load static %} 
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      /* ໃຊ້ຟອນລະບົບກ່ອນໃນລະຫວ່າງທີ່ລໍຖ້າ Font ລາວ ໂຫຼດ ເພື່ອບໍ່ໃຫ້ເວັບຄ້າງ */
-      font-family: 'Noto Sans Lao', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
+{% block site_title %}ເຂົ້າສູ່ລະບົບ | 登录 | VVC{% endblock %} 
 
-    body.login {
-      background-color: white;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      position: relative;
-    }
+{% block content %} 
+<style> 
+    /* --- 1. ລ້າງຄ່າຂອບ Parent ທັງໝົດໃນ base.html --- */ 
+    .container, .content-wrapper, .main-content, .body-content { 
+        max-width: 100% !important; 
+        width: 100% !important; 
+        padding: 0 !important; 
+        margin: 0 !important; 
+        transform: none !important; 
+        filter: none !important; 
+        perspective: none !important; 
+    } 
 
-    #particles-js {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: 1;
-    }
+    body { 
+        background-color: #f8f9fa; 
+        margin: 0; 
+        padding: 0; 
+    } 
 
-    .login-container {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      max-width: 420px;
-      padding: 40px 30px;
-      margin: 20px;
-      background: rgb(2, 60, 250);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border-color);
-      border-radius: 24px;
-      box-shadow: 0 20px 40px rgba(255, 255, 255, 0.986);
-      text-align: center;
-    }
-
-    .logo-wrapper {
-      width: 90px;
-      height: 90px;
-      margin: 0 auto 15px auto;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 12px;
-      border-radius: 50%;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .logo-wrapper img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
-
-    h2 {
-      color: var(--text-main);
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 5px;
-    }
-
-    .subtitle {
-      color: var(--text-muted);
-      font-size: 14px;
-      margin-bottom: 30px;
-    }
-
-    .form-group {
-      text-align: left;
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      color: var(--text-muted);
-      font-size: 14px;
-      margin-bottom: 8px;
-    }
-
-    .input-wrapper input {
-      width: 100%;
-      padding: 14px 16px;
-      background: var(--input-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      color: var(--text-main);
-      font-size: 15px;
-      outline: none;
-    }
-
-    .input-wrapper input:focus {
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px rgba(208, 210, 212, 0.822);
-    }
-
-    .btn-login {
-      width: 100%;
-      padding: 14px;
-      background: var(--primary-color);
-      border: none;
-      border-radius: 12px;
-      color: white;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .btn-login:hover {
-      background: var(--primary-hover);
-    }
-
-    .messages {
-      list-style: none;
-      margin-bottom: 20px;
-      padding: 10px;
-      background: rgba(239, 68, 68, 0.2);
-      border: 1px solid rgba(239, 68, 68, 0.4);
-      border-radius: 8px;
-      color: #fca5a5;
-      font-size: 14px;
-    }
-  </style>
-</head>
-<body class="login">
-
-  <div id="particles-js"></div>
-
-  <div class="login-container">
-    <div class="logo-wrapper">
-      <img src="{% static 'images/logo.png' %}" alt="VVC Logo" width="66" height="66">
-    </div>
+    /* --- 2. ສ່ວນຫົວ ແລະ ໂປຣຟາຍ (Header Section) --- */ 
+    .profile-header { 
+        background-color: #eef5fc; 
+        padding: 40px 20px; 
+        text-align: center; 
+    } 
+    .profile-title { 
+        font-weight: 700; 
+        color: #1a202c; 
+        margin: 0 0 5px 0; 
+        font-size: 24px; 
+        text-transform: uppercase; 
+    } 
+    .profile-subtitle { 
+        color: #718096; 
+        font-size: 14px; 
+        max-width: 400px; 
+        margin: 0 auto 20px auto; 
+    } 
     
-    <h2>ເຂົ້າສູ່ລະບົບ</h2>
-    <p class="subtitle">ຍິນດີຕ້ອນຮັບເຂົ້າສູ່ລະບົບ VVC</p>
+    /* 🔥 3. ສ້າງແອນິເມຊັນການໝູນ (Rotation Animation) */
+    @keyframes rotateClockwise {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    @keyframes rotateCounterClockwise {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(-360deg); }
+    }
 
-    {% if messages %}
-      <ul class="messages">
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
+    /* 💡 ບັງຄັບໃຫ້ວົງມົນສີຟ້າໝູນຕາມເຂັມໂມງ */
+    .profile-avatar { 
+        width: 110px; 
+        height: 110px; 
+        background-color: #0ad6fa; 
+        border-radius: 50%; 
+        margin: 0 auto 15px auto; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        color: white; 
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+        
+        /* ເພີ່ມເສັ້ນຂອບ ຫຼື ລວດລາຍໃຫ້ເຫັນການໝູນຊັດເຈນຂຶ້ນ (ສາມາດລຶບອອກໄດ້ຖ້າບໍ່ມັກ) */
+        border: 3px dashed #ffffff; 
+        
+        /* ໃສ່ animation ໃຫ້ວົງມົນໝູນ */
+        animation: rotateClockwise 8s linear infinite; 
+    } 
 
-    <form method="POST" action="">
-      {% csrf_token %}
-      <div class="form-group">
-        <label for="username"><b>ຊື່ຜູ້ໃຊ້ງານ</b></label>
-        <div class="input-wrapper">
-          <input type="text" id="username" name="username" placeholder="ປ້ອນຊື່ຜູ້ໃຊ້ງານຂອງທ່ານ" required>
-        </div>
-      </div>
+    /* 💡 ບັງຄັບໃຫ້ໄອຄອນຄົນດ້ານໃນ ໝູນສວນທາງຄືນ ເພື່ອໃຫ້ມັນຕັ້ງຊື່ຢູ່ຄືເກົ່າ ບໍ່ປິ່ນຕາມວົງມົນ */
+    .profile-avatar svg {
+        animation: rotateCounterClockwise 8s linear infinite; 
+    }
 
-      <div class="form-group">
-        <label for="password"><b>ລະຫັດຜ່ານ</b></label>
-        <div class="input-wrapper">
-          <input type="password" id="password" name="password" placeholder="ປ້ອນລະຫັດຜ່ານ" required>
-        </div>
-      </div>
+    /* --- 4. ຕົວຫຸ້ມຫຼັກຈັດກາງ: ສ່ວນຟອມ ແລະ Gallery (Main Section) --- */ 
+    .main-content-viewport { 
+        width: 100%; 
+        max-width: 1200px; 
+        margin: 0 auto; 
+        padding: 10px 20px 40px 20px; 
+        box-sizing: border-box; 
+    } 
 
-      <button type="submit" class="btn-login">ເຂົ້າສູ່ລະບົບ</button>
-    </form>
-  </div>
+    /* ກອບຟອມເຂົ້າສູ່ລະບົບ (Login Card) */ 
+    .login-container-card { 
+        background: #ffffff; 
+        width: 100%; 
+        max-width: 400px; 
+        padding: 40px 30px; 
+        border-radius: 16px; 
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), 0 5px 15px rgba(0, 0, 0, 0.03); 
+        box-sizing: border-box; 
+        margin: 0 auto 40px auto; 
+    } 
 
-  <!-- 2. ໃສ່ defer ເພື່ອໂຫຼດ Script ພື້ນຫຼັງຫຼັງຈາກໂຫຼດໜ້າເວັບແລ້ວ (ບໍ່ດຶງໃຫ້ເວັບຊ້າ) -->
-  <script src="https://jsdelivr.net" defer></script>
-  <script>
-    // ລໍຖ້າໃຫ້ Script ໂຫຼດສຳເລັດກ່ອນ ຈຶ່ງເລີ່ມເຮັດວຽກ
-    window.addEventListener('DOMContentLoaded', () => {
-      if(typeof particlesJS !== 'undefined') {
-        particlesJS('particles-js', {
-          "particles": {
-            "number": { "value": 30, "density": { "enable": true, "value_area": 800 } },
-            "color": { "value": "#ffffff" },
-            "opacity": { "value": 0.1 },
-            "size": { "value": 3 },
-            "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.05, "width": 1 },
-            "move": { "enable": true, "speed": 1 }
-          }
+    /* --- 5. ກ່ອງຂໍ້ຄວາມແຈ້ງເຕືອນຂໍ້ຜິດພາດ (Error Message Alert) ແບບຝັງໃນໜ້າເວັບ --- */ 
+    .login-error-alert { 
+        background-color: #fce8e6; 
+        border: 1px solid #ea4335; 
+        color: #c5221f; 
+        padding: 12px 15px; 
+        border-radius: 8px; 
+        font-size: 14px; 
+        margin-bottom: 20px; 
+        text-align: left; 
+        line-height: 1.5; 
+    } 
+
+    /* --- 6. ປັບແຕ່ງຊ່ອງກອກຂໍ້ມູນ (Form Group) --- */ 
+    .login-form-group { 
+        margin-bottom: 18px; 
+        display: flex; 
+        flex-direction: column; 
+        gap: 6px; 
+    } 
+    .login-form-group label { 
+        display: block; 
+        font-size: 13px; 
+        font-weight: 600; 
+        color: #475569; 
+        text-align: left; 
+    } 
+    .login-form-group input { 
+        width: 100%; 
+        padding: 12px 14px; 
+        border: 1px solid #cbd5e1; 
+        border-radius: 8px; 
+        font-size: 14px; 
+        color: #000000; 
+        background-color: #f8fafc; 
+        box-sizing: border-box; 
+        outline: none; 
+        transition: all 0.2s ease-in-out; 
+    } 
+    .login-form-group input:focus { 
+        border-color: #007bff; 
+        background-color: #ffffff; 
+        box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.1); 
+    } 
+
+    /* ປຸ່ມກົດ (Sign In Button) */ 
+    .btn-login-submit { 
+        width: 100%; 
+        padding: 12px; 
+        background-color: #007bff; 
+        color: #ffffff; 
+        border: none; 
+        border-radius: 8px; 
+        font-size: 15px; 
+        font-weight: 600; 
+        cursor: pointer; 
+        box-sizing: border-box; 
+        margin-top: 10px; 
+        transition: all 0.2s; 
+    } 
+    .btn-login-submit:hover { 
+        background-color: #0056b3; 
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2); 
+    } 
+
+    /* --- 7. ສ່ວນຄັງຮູບພາບ (Gallery Section) --- */ 
+    .gallery-section { 
+        text-align: center; 
+        margin-top: 20px; 
+    } 
+    .gallery-title { 
+        font-weight: 800; 
+        letter-spacing: 2px; 
+        margin-bottom: 30px; 
+        color: #111; 
+        font-size: 24px; 
+    } 
+    /* ລະບົບ Grid ແບບ Flexbox ຮອງຮັບທຸກອຸປະກອນ */ 
+    .gallery-grid { 
+        display: flex; 
+        flex-wrap: wrap; 
+        gap: 20px; 
+        justify-content: center; 
+    } 
+    .gallery-col { 
+        flex: 1 1 100%; 
+        max-width: 100%; 
+    } 
+    .gallery-card { 
+        background-color: #b3bcc7; 
+        border-radius: 12px; 
+        aspect-ratio: 1 / 1; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        color: #ffffff; 
+        font-size: 40px; 
+        transition: transform 0.2s, background-color 0.2s; 
+        cursor: pointer; 
+    } 
+    .gallery-card:hover { 
+        transform: scale(1.03); 
+        background-color: #a0aec0; 
+    } 
+
+    /* --- 8. ສ່ວນທ້າຍທີ່ມີສີໄລ່ລະດັບ (Gradient Footer Banner) --- */ 
+    .footer-banner { 
+        background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%); 
+        height: 120px; 
+        border-top-left-radius: 24px; 
+        border-top-right-radius: 24px; 
+        margin-top: 40px; 
+    } 
+
+    /* 📱 9. Responsive: ປັບແຕ່ງຂະໜາດຈໍຄອມພິວເຕີ ແລະ ມືຖື */ 
+    @media screen and (min-width: 768px) { 
+        .gallery-col { 
+            flex: 0 0 calc(33.333% - 14px); 
+            max-width: calc(33.333% - 14px); 
+        } 
+    } 
+    
+    /* ບັງຄັບຍັບຂຶ້ນເທິງສຸດ 100% ສໍາລັບໜ້າຈໍໂທລະສັບມືຖື */
+    @media screen and (max-width: 480px) { 
+        .main-content-viewport { 
+            padding: 0px 15px 30px 15px !important; 
+        } 
+        .login-container-card { 
+            padding: 25px 20px !important; 
+            margin-top: 0px !important; 
+            margin-bottom: 25px !important;
+        } 
+        .profile-title { 
+            font-size: 22px; 
+        } 
+    } 
+</style> 
+
+<!-- 2. ສ່ວນເນື້ອຫາຫຼັກ (ຟອມເຂົ້າສູ່ລະບົບ + Gallery) --> 
+<div class="main-content-viewport"> 
+    
+    <!-- ກອບຟອມເຂົ້າສູ່ລະບົບ --> 
+    <div class="login-container-card"> 
+        <div style="text-align: center; margin-bottom: 25px;"> 
+            <!-- 💡 ວົງມົນສີຟ້າຈະໝູນ ແຕ່ໄອຄອນຄົນດ້ານໃນຈະຕັ້ງຊື່ຢູ່ຄືເກົ່າ -->
+            <div class="profile-avatar"> 
+                <svg width="46" height="46" fill="currentColor" viewBox="0 0 16 16"><path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/></svg> 
+            </div> 
+            <h2 style="margin: 0; font-size: 22px; color: #1e293b; font-weight: 700;">ເຂົ້າສູ່ລະບົບ / 登录</h2> 
+            <p style="margin: 6px 0 0 0; font-size: 14px; color: #64748b;">ຍິນດີຕ້ອນຮັບເຂົ້າສູ່ລະບົບ VVC / 欢迎登录 VVC</p> 
+        </div> 
+
+        <!-- 🔥 ສະແດງຂໍ້ຄວາມແຈ້ງເຕືອນແບບຝັງໃນໜ້າເວັບ ແທນການໃຊ້ Popup --> 
+        {% if messages %} 
+            <div class="login-error-alert"> 
+                <strong>❌ ເຂົ້າສູ່ລະບົບບໍ່ສຳເລັດ / 登录失败:</strong><br> 
+                {% for message in messages %} 
+                    • {{ message }}<br> 
+                {% endfor %} 
+            </div> 
+        {% endif %} 
+
+        <form method="POST" action=""> 
+            {% csrf_token %} 
+            <div class="login-form-group"> 
+                <label for="username">ຜູ້ໃຊ້ງານ (Username) / 用户名</label> 
+                <input type="text" id="username" name="username" placeholder="请输入用户名" required> 
+            </div> 
+            <div class="login-form-group"> 
+                <label for="password">ລະຫັດຜ່ານ (Password) / 密码</label> 
+                <input type="password" id="password" name="password" placeholder="******" required> 
+            </div> 
+            <button type="submit" class="btn-login-submit">ເຂົ້າສູ່ລະບົບ / 登录</button> 
+        </form> 
+    </div> 
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    const usernameInput = document.getElementById("username");
+    const passwordInput = document.getElementById("password");
+    const loginForm = document.querySelector("form");
+
+    // 1. ບັງຄັບໃຫ້ຕົວກະພິບ (Cursor) ໄປພ້ອມທີ່ຈະພິມຢູ່ຊ່ອງ Username ທັນທີ 100%
+    if (usernameInput) {
+        setTimeout(function() {
+            usernameInput.focus();
+        }, 100); // ໜ່ວງເວລາ 100ms ເພື່ອໃຫ້ບຣາວເຊີໃນມືຖື ແລະ ຄອມພິວເຕີໂຟກັສໄດ້ຢ່າງສະຖຽນ
+    }
+
+    // 2. ທາງລັດ: ເມື່ອພິມ Username ແລ້ວກົດ Enter ໃຫ້ Cursor ເລື່ອນໄປຊ່ອງ Password ອັດຕະໂນມັດ
+    if (usernameInput && passwordInput) {
+        usernameInput.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault(); // ປ້ອງກັນການ Submit ຟອມກ່ອນກອກ Password
+                passwordInput.focus(); // ເລື່ອນ Cursor ໄປຊ່ອງ Password
+            }
         });
-      }
-    });
-  </script>
-</body>
-</html>
+    }
+
+    // 3. ປ້ອງກັນການກົດ Submit ປຸ່ມເຂົ້າສູ່ລະບົບຊ້ຳໆ (Double Submit) ຕອນອິນເຕີເນັດຊ້າ
+    if (loginForm) {
+        loginForm.addEventListener("submit", function () {
+            const submitBtn = document.querySelector(".btn-login-submit");
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = "⏳ ກຳລັງເຂົ້າສູ່ລະບົບ... / 登录中...";
+                submitBtn.style.opacity = "0.7";
+                submitBtn.style.cursor = "not-allowed";
+            }
+        });
+    }
+});
+
+    </script>
+{% endblock %}

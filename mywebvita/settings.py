@@ -177,7 +177,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-
 IMPORT_FORMATS = [CSV,XLSX, HTML, ODS]
 
 # single export options
@@ -186,7 +185,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'myapp', 'static')]
 SIMPLEUI_HOME_INFO = False
 SIMPLEUI_ANALYSIS = False
-SIMPLEUI_LOGO ='/mywebvita/myapp/static/images/logo1.png'
+SIMPLEUI_LOGO = '/static/images/LOGO.png'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 

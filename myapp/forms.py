@@ -128,36 +128,76 @@ class SubscriptionModelForm(forms.ModelForm):
             if field_name not in excluded_fields:
                 field.widget.attrs.update({'class': 'form-control'})
 
+
+from .models import FormResponse
+
 class RegistrationForm(forms.ModelForm):
+    # 💡 ປະກາດຟິວ date_of_birth ແຍກອອກມາທາງເທິງເພື່ອຮອງຮັບຮູບແບບ ວັນ/ເດືອນ/ປີ (DD/MM/YYYY)
+    date_of_birth = forms.DateField(
+        input_formats=['%d/%m/%Y', '%Y-%m-%d'],  # ຮອງຮັບທັງການພິມແບບລາວ ແລະ ຮູບແບບຖານຂໍ້ມູນ
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'ວັນ/ເດືອນ/ປີ (ຕົວຢ່າງ: 25/12/2005)',
+            'inputmode': 'numeric',              # 📱 ບັງຄັບໃຫ້ໂທລະສັບເປີດແປ້ນພິມຕົວເລກທັນທີ
+            'pattern': '[0-9]{2}/[0-9]{2}/[0-9]{4}', # ກຳນົດໃຫ້ພິມເປັນ ວັນ/ເດືອນ/ປີ ເທົ່ານັ້ນ
+        }),
+        label="ວັນເດືອນປີເກີດ (出生日期)",
+        required=False
+    )
+
     class Meta:
         model = FormResponse
-        # ເອົາທຸກຟິວມາສະແດງໃນຟອມ (ຍົກເວັ້ນ timestamp ທີ່ມັນບັນທຶກອັດຕາໂນມັດ)
+        # 1. ເພີ່ມ 'ethnicity' ແລະ 'religion' ເຂົ້າໄປໃນລາຍການ fields (ໄວ້ຖັດຈາກ date_of_birth)
         fields = [
-            'full_name','name_Chinese', 'organization', 'district', 'province1', 
-            'is_graduated_m7', 'current_grade', 'chinese_level','subject_set', 
-            'phone_number','facebook', 'image'
+            'full_name', 'name_Chinese', 'date_of_birth', 
+            'ethnicity', 'ethnicity_other',  # 💡 ເພີ່ມ ethnicity_other
+            'religion', 'religion_other',    # 💡 ເພີ່ມ religion_other
+            'organization', 'Village', 'district', 'province1', 
+            'is_graduated_m7', 'current_grade', 'chinese_level', 
+            'subject_set', 'phone_number', 'facebook', 'image'
         ]
-       
-        # ຕົບແຕ່ງ Form Style (ໃຊ້ Bootstrap class ເພື່ອຄວາມສວຍງາມ)
+        
+        # 2. ຕົບແຕ່ງ Form Style (ເພີ່ມ widget Dropdown ສຳລັບຊົນເຜົ່າ ແລະ ສາດສະໜາ)
         widgets = {
             'full_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'ທ້າວ/ນາງ ...'}),
             'name_Chinese': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '先生/女士……'}),
+            
+            # 💡 ກຳນົດໃຫ້ເປັນ Select (Dropdown ລາຍການເລືອກ) ພ້ອມກັບ Bootstrap class
+            # (widgets ໂຕອື່ນໆ ປ່ອຍໄວ້ຄືເກົ່າ...)
+            'ethnicity': forms.Select(attrs={'class': 'form-control'}),
+            'religion': forms.Select(attrs={'class': 'form-control'}),
+            
+            # 💡 ຕົບແຕ່ງຊ່ອງພິມ "ອື່ນໆ" ໃຫ້ສວຍງາມ
+            'ethnicity_other': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'ພິມຊົນເຜົ່າຂອງທ່ານ...'}),
+            'religion_other': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'ພິມສາດສະໜາຂອງທ່ານ...'}),
+            
             'organization': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'ໂຮງຮຽນ ຫຼື ມະຫາວິທະຍາໄລ...'}),
+            'Village': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'ບ້ານ...'}),
+            'district': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'ເມືອງ...'}),
             'province1': forms.Select(attrs={'class': 'form-control'}),
-            'district': forms.TextInput(attrs={'class': 'form-control'}),
             'is_graduated_m7': forms.RadioSelect(attrs={'class': 'form-check-input'}),
-            'current_grade': forms.TextInput(attrs={'class': 'form-control'}),
-            'subject_set': forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}),
+            'current_grade': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'ມໍ4, ມໍ5, ມໍ6, ...'}),
             'chinese_level': forms.RadioSelect(attrs={'class': 'form-check-input'}),
+            'subject_set': forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '020...'}),
-            'facebook' :forms.TextInput(attrs={'class': 'form-control'}),
+            'facebook': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'ຊື່ Facebook...'}),
             'image': forms.FileInput(attrs={'class': 'form-control'}),
         }
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            # ສັ່ງລຶບຄ່າຫວ່າງ (---------) ອອກຈາກປຸ່ມ Radio ທັງສອງຟິວ
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # ສັ່ງລຶບຄ່າຫວ່າງ (---------) ອອກຈາກປຸ່ມ Radio ທັງສອງຟິວ
+        if 'is_graduated_m7' in self.fields:
             self.fields['is_graduated_m7'].empty_label = None
+        if 'chinese_level' in self.fields:
             self.fields['chinese_level'].empty_label = None
-             # 💡 ຖ້າຕ້ອງການໃຫ້ດຶງຂໍ້ມູນ Subject ທັງໝົດມາສະແດງ (ກໍລະນີ subject_set ເປັນ ManyToManyField)
-            if 'subject_set' in self.fields:
-                self.fields['subject_set'].queryset = Subject.objects.all()
+            
+        # 💡 ກັນໄວ້: ສັ່ງລຶບຄ່າຫວ່າງ (---------) ອອກຈາກ Dropdown ຂອງຊົນເຜົ່າ ແລະ ສາດສະໜາ ນຳເຊັ່ນກັນ
+        if 'ethnicity' in self.fields:
+            self.fields['ethnicity'].empty_label = None
+        if 'religion' in self.fields:
+            self.fields['religion'].empty_label = None
+        
+        # ດຶງຂໍ້ມູນ Subject ທັງໝົດມາສະແດງ
+        if 'subject_set' in self.fields:
+            self.fields['subject_set'].queryset = Subject.objects.all()
