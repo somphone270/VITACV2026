@@ -172,11 +172,6 @@ from django.contrib import messages  # 💡 1. ຕ້ອງອິມພອດ me
 from .forms import RegistrationForm
 
 from django.shortcuts import render, redirect
-from .forms import RegistrationForm  # ປ່ຽນເປັນຊື່ຟອມຂອງທ່ານ
-from django.shortcuts import render, redirect
-from .forms import RegistrationForm  # ປ່ຽນເປັນຊື່ຟອມຂອງທ່ານ
-
-from django.shortcuts import render, redirect
 from django.core.files.base import ContentFile
 from .forms import RegistrationForm  # ປ່ຽນເປັນຊື່ຟອມຂອງທ່ານ
 import base64
@@ -184,18 +179,11 @@ import uuid
 from django.shortcuts import render, redirect
 from django.core.files.base import ContentFile
 from .forms import RegistrationForm  # ປ່ຽນເປັນຊື່ຟອມຂອງທ່ານ
-import uuid
 from django.shortcuts import render, redirect
-from django.core.files.base import ContentFile
-from .forms import RegistrationForm  # ປ່ຽນເປັນຊື່ຟອມຂອງທ່ານ
-import uuid
-from django.shortcuts import render, redirect
-from django.core.files.base import ContentFile
+
 
 from django.shortcuts import render, redirect
-from django.core.files.base import ContentFile
 
-from django.core.files.base import ContentFile
 from django.shortcuts import render, redirect
 
 from django.core.files.base import ContentFile
@@ -278,27 +266,10 @@ def success_view(request):
 def qr_scanner_view(request):
     """ໜ້າເວັບສໍາລັບເປີດກ້ອງສະແກນ QR"""
     return render(request, 'qr_scanner.html')
-from django.http import JsonResponse
 
-import re
-from django.http import JsonResponse
-from django.shortcuts import render
-from .models import FormResponse
 
-import re
 from django.http import JsonResponse
-from django.shortcuts import render
-from .models import FormResponse # 💡 ກວດສອບຊື່ App ຂອງທ່ານຄືນໃຫ້ຖືກຕ້ອງ
-
 import re
-from django.http import JsonResponse
-from django.shortcuts import render
-from .models import FormResponse 
-
-import re
-from django.http import JsonResponse
-from django.shortcuts import render
-from .models import FormResponse  # 💡 ກວດສອບຊື່ App ຂອງທ່ານຄືນໃຫ້ຖືກຕ້ອງ
 
 def check_registration_api(request, registration_id=None):
     """API ສໍາລັບກວດສອບຂໍ້ມູນ ທີ່ຮອງຮັບ VITA002, VITA-002 ແລະ ຕົວເລກລ້ວນ 002 ຫຼື 2"""
