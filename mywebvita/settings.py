@@ -31,7 +31,7 @@ SECRET_KEY = "django-insecure-fk@6pwez0#@6jgt2&lg8_0nx+-c8qa4ri(ryu%x8449&k%_cp%
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG =config("DEBUG", cast=bool)
 
-DEBUG = False
+DEBUG = True
 # AGE =config("AGE", cast=int)
 
 ALLOWED_HOSTS = ['*']
