@@ -63,7 +63,7 @@ class FormResponseResource(resources.ModelResource):
         
         # ກໍານົດຟີວທີ່ຈະໃຫ້ມີການ Import/Export (ເອົາສະເພາະຟີວທີ່ມີແທ້ໃນຖານຂໍ້ມູນ)
         fields = (
-            'id', 'full_name', 'name_Chinese','date_of_birth','organization', 'district', 
+            'id', 'student_code','full_name', 'name_Chinese','date_of_birth','ethnicity','ethnicity_other','religion','religion_other','organization', 'district', 
             'province1', 'is_graduated_m7', 'current_grade', 'chinese_level', 
             'phone_number', 'facebook', 'image', 'timestamp'
         )

@@ -16,9 +16,6 @@ from import_export.formats.base_formats import CSV, XLSX, HTML, JSON, ODS
 import dj_database_url
 from decouple import config
 
-# 🔥 ຕື່ມ 2 ບັນທັດນີ້ເຂົ້າໄປ ເພື່ອບັງຄັບໃຫ້ Django ໂຫຼດຄ່າຈາກໄຟລ໌ .env ໃນເຄື່ອງມາໃຊ້
-from dotenv import load_dotenv
-load_dotenv() 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -138,15 +135,12 @@ WSGI_APPLICATION = 'mywebvita.wsgi.application'
 #      }
 # }
 
-# ລະບົບຈະອ່ານຄ່າ DATABASE_URL ຈາກ Railway ໂດຍກົງ 
-# ຖ້າບໍ່ມີ (ເຊັ່ນ ຕອນທົດສອບທົ່ວໄປ) ຈະໃຊ້ SQLite ໃນເຄື່ອງເປັນໂຕ Fallback
 DATABASES = {
-    'default': dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
-
 
 # DATABASES['default'] = dj_database_url.parse(config("DATABASE_URL"))
 
