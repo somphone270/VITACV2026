@@ -42,9 +42,11 @@ ALLOWED_HOSTS = ['*']
 
 # 🔥 ເພີ່ມໂດເມນຂອງ Railway ເຂົ້າໄປເພື່ອໃຫ້ຜ່ານລະບົບຄວາມປອດໄພ CSRF
 # 🔥 ບັງຄັບຂຽນແທນຄ່າທັງໝົດ ໂດຍບໍ່ຕ້ອງເອີ້ນໃຊ້ config ໃດໆ
+# 🌐 ປ່ຽນຄ່າ CSRF ໃຫ້ຮອງຮັບໂດເມນ VITACV2026 ຂອງທ່ານໂດຍກົງ
 CSRF_TRUSTED_ORIGINS = [
-    'https://railway.app',
-    'https://*.up.railway.app',  # ອະນຸຍາດທຸກ Subdomain ຂອງ Railway
+    "https://railway.app",
+    "https://*.up.railway.app",
+    "https://railway.app",  # 🔥 ຕື່ມບັນທັດນີ້ເຂົ້າໄປ
 ]
 
 # ALLOWED_HOSTS = ['192.168.100.34','192.168.100.184','localhost', '127.0.0.1','.ngrok-free.app']
@@ -195,6 +197,9 @@ SIMPLEUI_ANALYSIS = False
 SIMPLEUI_LOGO = '/static/images/LOGO.png'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# 🚀 ບັງຄັບໃຫ້ Redirect ໄປໜ້າ Admin ຫຼັງຈາກ Login/Logout
+LOGIN_REDIRECT_URL = '/admin/'
+LOGOUT_REDIRECT_URL = '/admin/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
