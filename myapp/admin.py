@@ -56,10 +56,11 @@ class FormResponseResource(resources.ModelResource):
         model = FormResponse
         # 🔥 ກໍານົດໃຫ້ໃຊ້ 'id' ເປັນຕົວເຊັກ (ຖ້າ ID ຊ້ຳ ໃຫ້ອັບເດດຂໍ້ມູນເກົ່າ, ຖ້າບໍ່ຊ້ຳ ໃຫ້ເພີ່ມໃໝ່)
         import_id_fields = ['id'] 
-        
-        # ບັງຄັບໃຫ້ອັບເດດຂໍ້ມູນທີ່ມີຢູ່ແລ້ວ ຖ້າມີການ Import ຂໍ້ມູນທີ່ ID ຕົງກັນ
-        skip_unchanged = True
-        report_skipped = True
+         # 🔥 ບັນທັດສໍາຄັນທີ່ສຸດ: ບັງຄັບໃຫ້ເພີ່ມເປັນແຖວໃໝ່ (New) ຕະຫຼອດ ຫ້າມອັບເດດແຖວເກົ່າ
+        force_init_instance = True
+        # # ບັງຄັບໃຫ້ອັບເດດຂໍ້ມູນທີ່ມີຢູ່ແລ້ວ ຖ້າມີການ Import ຂໍ້ມູນທີ່ ID ຕົງກັນ
+        # skip_unchanged = True
+        # report_skipped = True
         
         # ກໍານົດຟີວທີ່ຈະໃຫ້ມີການ Import/Export (ເອົາສະເພາະຟີວທີ່ມີແທ້ໃນຖານຂໍ້ມູນ)
         fields = (
