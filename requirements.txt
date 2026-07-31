@@ -50,3 +50,5 @@ gunicorn
 cloudinary
 django-cloudinary-storage
 whitenoise
+psycopg2-binary==2.9.9
+dj-database-url==2.1.0
